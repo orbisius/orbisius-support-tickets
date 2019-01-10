@@ -110,7 +110,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 */
 	public function fixOutput($buff) {
 		$buff = esc_html($buff);
-		$buff = "<pre id=\"orbisius_support_tickets_fmt_content' class='orbisius_support_tickets_fmt_content'>$buff</pre>";
+		$buff = "<pre id='orbisius_support_tickets_fmt_content' class='orbisius_support_tickets_fmt_content'>$buff</pre>";
 		return $buff;
 	}
 }
