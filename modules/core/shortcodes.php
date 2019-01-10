@@ -327,7 +327,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			}
 
 			$args = [
-				'order' => 'DESC',
+				'order' => 'ASC', // DESC
 				'post_id' => $ticket_obj->ID,
 				'count' => false,
 				'status' => 'all',
@@ -383,16 +383,21 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
                 <div class="reply_form">
                     <?php
+
+
                     $comments_args = [
 	                    'title_reply' => __('Reply', 'orbisius_support_tickets'),
 	                    'title_reply_to' => '',
 	                    'label_submit' => __('Send', 'orbisius_support_tickets'),
 	                    'comment_notes_after' => '',
+	                    'comment_notes_after' => '',
 	                    'comment_notes_before' => '',
                     ];
 
                     if ($ticket_id) {
+                        add_action('comment_form_top', [ $this, 'injectRedirect' ]);
 	                    comment_form( $comments_args, $ticket_id );
+	                    remove_action('comment_form_top', [ $this, 'injectRedirect' ]);
                     }
                     ?>
                 </div>
@@ -405,6 +410,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 		return $html;
 	}
+
+	public function injectRedirect() {
+		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
+		$req_url = $req_obj->get_request_url();
+		$req_url_esc = esc_url($req_url);
+		echo "<input type='hidden' name='redirect_to' value='$req_url_esc'>";
+    }
 
 	/**
 	 * Gets the data that the plugin expects or the value for a given variable.
