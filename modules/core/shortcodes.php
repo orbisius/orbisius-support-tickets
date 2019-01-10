@@ -372,12 +372,12 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	                <?php foreach ( $items as $item_obj ) : ?>
 		                <?php
 		                $id = $item_obj->comment_ID;
-		                $link = get_permalink( $item_obj->comm );
+		                //$link = get_permalink( $item_obj->comm );
 		                $row_cls = $user_id == $item_obj->user_id
 			                ? 'orbisius_support_tickets_view_ticket_author_msg'
-                            : '';
+                            : 'orbisius_support_tickets_view_ticket_rep_msg';
 		                ?>
-                        <div class="orbisius_support_tickets_view_ticket_discussion_item <?php echo $row_cls;?>">
+                        <div id="comment-<?php echo $id;?>" class="orbisius_support_tickets_view_ticket_discussion_item <?php echo $row_cls;?>">
                             <div class="reply"><?php echo $cpt_obj->fixOutput($item_obj->comment_content); ?></div>
                             <div class="date">Posted on: <?php esc_attr_e( $item_obj->comment_date ); ?></div>
                         </div>
@@ -385,10 +385,17 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	                <?php endforeach; ?>
                 </div>
 
+
+                <?php
+				$ctx = [
+					'ticket_id' => $ticket_id,
+					'ticket_obj' => $ticket_obj,
+				];
+
+				do_action( 'orbisius_support_tickets_action_view_ticket_after_initial_post', $ctx );
+                ?>
                 <div class="reply_form">
                     <?php
-
-
                     $comments_args = [
 	                    'title_reply' => __('Reply', 'orbisius_support_tickets'),
 	                    'title_reply_to' => '',
