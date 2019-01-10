@@ -1,7 +1,6 @@
 <?php
 
 $cpt = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
-
 add_action('init', [ $cpt, 'init' ] ) ;
 
 class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_Singleton {
@@ -12,7 +11,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	}
 
 	/**
-	 *
+	 * Registers the main CPT
 	 */
 	function registerCustomContentTypes() {
 		$cpt_labels = array(// define the name of the custom post type
@@ -21,16 +20,16 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'add_new' => _x('Add New', 'orbisius_support_tickets'),
 			'add_new_item' => __('Add New Ticket', 'orbisius_support_tickets'),
 			'edit_item' => __('Edit Ticket', 'orbisius_support_tickets'),
-			'new_item' => __('New Ticket'),
-			'all_items' => __('All Tickets'),
-			'view_item' => __('View Ticket'),
-			'search_items' => __('Search Ticket'),
-			'not_found' => __('No Tickets Found'),
-			'not_found_in_trash' => __('The Ticket Could Not Be Found in Trash'),
+			'new_item' => __('New Ticket', 'orbisius_support_tickets'),
+			'all_items' => __('All Tickets', 'orbisius_support_tickets'),
+			'view_item' => __('View Ticket', 'orbisius_support_tickets'),
+			'search_items' => __('Search Ticket', 'orbisius_support_tickets'),
+			'not_found' => __('No Tickets Found', 'orbisius_support_tickets'),
+			'not_found_in_trash' => __('The Ticket Could Not Be Found in Trash', 'orbisius_support_tickets'),
 			'parent_item_colon' => '',
 			'has_archive' => true,
 			'hierarchical' => true,
-			'menu_name' => 'Tickets',
+			'menu_name' => __('Tickets', 'orbisius_support_tickets'),
 			'menu_position' => null,
 		);
 
