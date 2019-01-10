@@ -328,7 +328,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			$args = [
 				'order' => 'ASC', // DESC
-				'post_id' => $ticket_obj->ID,
+				'post_id' => $ticket_id,
 				'count' => false,
 				'status' => 'all',
 				'post_type' => $post_type,
@@ -338,7 +338,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		} catch (Exception $e) {
 			$msg = Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
         }
-
 
 		$ctx   = [];
 		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
@@ -351,6 +350,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                     <?php echo $msg; ?>
                 </div>
 			<?php else : ?>
+				<?php echo $msg; ?>
+
                 <div class="table-responsive-md">
                     <table class="table table-striped w-auto">
                         <tbody>
