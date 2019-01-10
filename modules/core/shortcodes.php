@@ -27,6 +27,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes extends Orbisius_Support_T
 	 */
 	public static function renderSubmitTicketForm($attribs = []) {
 		ob_start();
+		$id = 0;
 //
 //		$ad_id = q('ad_id', 0);
 //
@@ -34,13 +35,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes extends Orbisius_Support_T
 //			echo orb_cust_ds_msg::msg('Invalid Ad #', 0);
 //			return;
 //		}
+var_dump($_REQUEST);
 
-		$ad_id = 0;
-
+		$ctx = [];
 		?>
 
 		<div id="orbisius_support_tickets_submit_ticket_wrapper" class="orbisius_support_tickets_submit_ticket_wrapper">
-			<?php do_action('orbisius_support_tickets_action_before_submit_ticket_form'); ?>
+			<?php do_action('orbisius_support_tickets_action_before_submit_ticket_form', $ctx); ?>
 
             <?php if (!isset($attribs['render_title']) || $attribs['render_title']) : ?>
 			    <?php $title = empty($attribs['title']) ? 'Submit ticket' : esc_html($attribs['render_title']); ?>
@@ -51,9 +52,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes extends Orbisius_Support_T
 				<form id="orbisius_support_tickets_submit_ticket_form"
                       class="orbisius_support_tickets_submit_ticket_form form-horizontal"
                       method="post" enctype="multipart/form-data">
-					<?php do_action('orbisius_support_tickets_action_submit_ticket_form_header'); ?>
+					<?php do_action('orbisius_support_tickets_action_submit_ticket_form_header', $ctx); ?>
 					<?php wp_nonce_field( 'orbisius_support_tickets_submit_ticket', 'orbisius_support_tickets_submit_ticket_nonce' ); ?>
-					<input type="hidden" name="ad_id" id="ad_id" value="<?php echo $ad_id; ?>" />
+					<input type="hidden" name="orbisius_support_tickets_data[id]" id="orbisius_support_tickets_data_id" value="<?php echo $id; ?>" />
 
                     <!-- Subject -->
                     <div class="form-group">
@@ -72,10 +73,10 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes extends Orbisius_Support_T
                             class="orbisius_support_tickets_submit_ticket_form_submit">
                         Submit
                     </button>
-					<?php do_action('orbisius_support_tickets_action_submit_ticket_form_footer'); ?>
+					<?php do_action('orbisius_support_tickets_action_submit_ticket_form_footer', $ctx); ?>
 				</form>
 			</div>
-			<?php do_action('orbisius_support_tickets_action_after_submit_ticket_form'); ?>
+			<?php do_action('orbisius_support_tickets_action_after_submit_ticket_form', $ctx); ?>
 		</div> <!-- /orbisius_support_tickets_submit_ticket_wrapper -->
 		<?php
 
