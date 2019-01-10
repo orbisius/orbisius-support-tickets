@@ -208,9 +208,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			$res_obj = $this->processTicketSubmission();
 
 			if ( $res_obj->isSuccess() ) {
-				$msg = 'Created';
+				$msg = Orbisius_Support_Tickets_Msg::success('Created');
 			} else {
-				$msg = $res_obj->msg();
+				$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
 			}
 		}
 
