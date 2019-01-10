@@ -47,7 +47,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'query_var' => true,
 			'rewrite' => array('slug' => 'ticket'), // rewrite the url to make it pretty
 			'menu_position' => 2, // show below Posts but above Media
-			'supports' => array('title', 'editor', 'comments', /*'revisions', */ 'author',), //  'excerpt', 'custom-fields', 'thumbnail', 'post_formats', 'page-attributes'
+			'supports' => array( 'title', 'editor', 'comments', 'author', ), // /*'revisions', */  'excerpt', 'custom-fields', 'thumbnail', 'post_formats', 'page-attributes'
 			'has_archive' => true,
 			'hierarchical' => true,
 			//'taxonomies' => array('orb_support_tickets_cat', 'orb_support_tickets_tag'), // just use default categories and tags
