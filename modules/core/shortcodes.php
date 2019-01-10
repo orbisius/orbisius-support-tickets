@@ -78,12 +78,12 @@ var_dump($_REQUEST);
 
                     <!-- Message body -->
                     <div class="form-group">
-                        <label class="col-md-3 control-label" for="orbisius_support_tickets_data_message">Your message</label>
+                        <label class="col-md-3 control-label" for="orbisius_support_tickets_data_message">Message</label>
                         <div class="col-md-9">
                             <textarea id="orbisius_support_tickets_data_message"
                                       class="orbisius_support_tickets_data_message form-control"
                                       name="orbisius_support_tickets_data[message]"
-                                      placeholder="Please enter your message here..."
+                                      placeholder="Please enter the message here..."
                                       rows="<?php echo $row_num;?>"><?php esc_attr_e($data['message']); ?></textarea>
                         </div>
                     </div>
