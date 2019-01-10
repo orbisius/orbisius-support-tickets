@@ -36,15 +36,17 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 		$cpt_labels = apply_filters('orbisius_support_tickets_filter_ticket_labels', $cpt_labels);
 
+		// https://codex.wordpress.org/Function_Reference/register_post_type
 		$cpt_args = array(
 			'labels' => $cpt_labels,
 			'public' => true, // true=show the post type in the admin section
 			'publicly_queryable' => true,
+			'exclude_from_search' => true,
 			'show_ui' => true, // generate a default admin user interface
 			'show_in_menu' => true, // display as a top-level menu item
 			'query_var' => true,
 			'rewrite' => array('slug' => 'ticket'), // rewrite the url to make it pretty
-			'menu_position' => 5, // show below Posts but above Media
+			'menu_position' => 2, // show below Posts but above Media
 			'supports' => array('title', 'editor', 'comments', /*'revisions', */ 'author',), //  'excerpt', 'custom-fields', 'thumbnail', 'post_formats', 'page-attributes'
 			'has_archive' => true,
 			'hierarchical' => true,
