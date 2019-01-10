@@ -88,12 +88,18 @@ var_dump($_REQUEST);
                         </div>
                     </div>
 
-                    <button type="submit"
-                            id="orbisius_support_tickets_submit_ticket_form_submit"
-                            name="orbisius_support_tickets_submit_ticket_form_submit"
-                            class="orbisius_support_tickets_submit_ticket_form_submit">
-                        Submit
-                    </button>
+                    <!-- Form actions -->
+                    <div class="form-group">
+                        <div class="col-md-12 text-right">
+                            <button type="submit"
+                                    id="orbisius_support_tickets_submit_ticket_form_submit"
+                                    name="orbisius_support_tickets_submit_ticket_form_submit"
+                                    class="orbisius_support_tickets_submit_ticket_form_submit btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+
 					<?php do_action('orbisius_support_tickets_action_submit_ticket_form_footer', $ctx); ?>
 				</form>
 			</div>
