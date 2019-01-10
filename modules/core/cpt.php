@@ -80,8 +80,25 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		return parent::getInstance();
 	}
 
+	public function isMyCpt() {
+		$stat = get_post_type() == $this->getCptSupportTicket();
+
+		if ($stat) {
+			return $stat;
+		}
+
+//		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
+//		$data = $req_obj->getRaw('orbisius_support_tickets_data', []);
+//
+//		if (!empty($data['ticket_id'])) {
+//			$stat = get_post_type($data['ticket_id']) == $this->getCptSupportTicket();
+//		}
+
+		return $stat;
+	}
+
 	public function registerOutput() {
-		if (get_post_type() == $this->getCptSupportTicket()) {
+		if ($this->isMyCpt()) {
 			add_filter( 'the_content', [ $this, 'fixOutput' ], 9999 );
 		}
 	}
@@ -93,11 +110,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 */
 	public function fixOutput($buff) {
 		$buff = esc_html($buff);
-
-		$start = '<div id="orbisius_support_tickets_view_ticket_wrapper" class="orbisius_support_tickets_view_ticket_wrapper">';
-		$end = '</div>';
-		$buff = $start . $buff . $end;
-
+		$buff = "<pre id=\"orbisius_support_tickets_fmt_content' class='orbisius_support_tickets_fmt_content'>$buff</pre>";
 		return $buff;
 	}
 }
