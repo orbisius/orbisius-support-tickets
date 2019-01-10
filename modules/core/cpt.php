@@ -7,6 +7,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	private $cpt_support_ticket = 'orb_support_ticket';
 
 	public function init() {
+		$this->registerOutput();
 		$this->registerCustomContentTypes();
 	}
 
@@ -75,5 +76,32 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 */
 	public static function getInstance() {
 		return parent::getInstance();
+	}
+
+	public function registerOutput() {
+		add_filter('the_content', [ $this, 'fixOutput' ], 9999 );
+	}
+
+	/**
+	 * Because the support text can include anything we'll escape things
+	 * @param string $buff
+	 * @return string
+	 */
+	public function fixOutput($buff) {
+		if (!is_main_query()) {
+			return $buff;
+		}
+
+		if (get_post_type() != $this->getCptSupportTicket()) {
+			return $buff;
+		}
+
+		$buff = esc_html($buff);
+
+		$start = '<div id="orbisius_support_tickets_view_ticket_wrapper" class="orbisius_support_tickets_view_ticket_wrapper">';
+		$end = '</div>';
+		$buff = $start . $buff . $end;
+
+		return $buff;
 	}
 }

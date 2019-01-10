@@ -29,7 +29,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * Processes
 	 * @return Orbisius_Support_Tickets_Result
 	 */
-	public function processTicketSubmission() {
+	public function processTicketSubmission($data = []) {
 		try {
 			$user_id = get_current_user_id();
 			$res     = new Orbisius_Support_Tickets_Result();
@@ -42,7 +42,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				'post_status' => 'private', // 'publish';
 			];
 
-			$raw_post_data = $this->getData();
+			$raw_post_data = empty($data) ? $this->getData() : $data;
 
 			// This is required
 			if ( empty( $raw_post_data['subject'] ) ) {
@@ -195,17 +195,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$msg = '';
 
 		$data = $this->getData();
-//
-//		$ad_id = q('ad_id', 0);
-//
-//		if ( !orb_cust_ds_user::can_edit( $ad_id ) ) {
-//			echo orb_cust_ds_msg::msg('Invalid Ad #', 0);
-//			return;
-//		}
-		var_dump( $_REQUEST );
 
 		if ( ! empty( $data['submit'] ) ) {
-			$res_obj = $this->processTicketSubmission();
+			$res_obj = $this->processTicketSubmission($data);
 
 			if ( $res_obj->isSuccess() ) {
 				$msg = Orbisius_Support_Tickets_Msg::success('Created');
@@ -433,12 +425,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * @return array
 	 */
 	public function getData() {
-		$sanitized_data = empty( $_REQUEST['orbisius_support_tickets_data'] ) ? [] : $_REQUEST['orbisius_support_tickets_data'];
-		$sanitized_data = array_map( 'trim', $sanitized_data );
-		$sanitized_data = array_replace_recursive( $this->defaults, $sanitized_data );
-		$sanitized_data = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $sanitized_data );
-
-		return $sanitized_data;
+		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
+		$data = $req_obj->getRaw('orbisius_support_tickets_data');
+		//$data = empty( $_REQUEST['orbisius_support_tickets_data'] ) ? [] : $_REQUEST['orbisius_support_tickets_data'];
+		$data = array_map( 'trim', $data );
+		$data = array_replace_recursive( $this->defaults, $data );
+		$data = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $data );
+		return $data;
 	}
 
 	/**
