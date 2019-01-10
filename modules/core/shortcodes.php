@@ -156,7 +156,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                             <th>Ticket ID</th>
                             <th>Subject</th>
                             <th>Created at</th>
-                            <th>Edited at</th>
                             <th>Status</th>
                         </tr>
                         </thead>
@@ -170,7 +169,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                                 <td><a href="<?php echo $link; ?>"><?php esc_attr_e( $item_obj->post_title ); ?></a>
                                 </td>
                                 <td><?php esc_attr_e( $item_obj->post_date ); ?></td>
-                                <td><?php esc_attr_e( $item_obj->post_modified ); ?></td>
                                 <td>-</td>
                             </tr>
 						<?php endforeach; ?>
