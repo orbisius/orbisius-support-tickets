@@ -290,8 +290,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function renderViewTicket( $attribs = [] ) {
 		ob_start();
-		$ticket_id = $this->getData('ticket_id');
 		$msg = '';
+		$items = [];
+		$ticket_id = $this->getData('ticket_id');
 		$ticket_obj = '';
 
 		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
