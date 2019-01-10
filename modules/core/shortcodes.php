@@ -396,6 +396,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	                    'comment_notes_after' => '',
 	                    'comment_notes_after' => '',
 	                    'comment_notes_before' => '',
+	                    'comment_field'        => '<p class="comment-form-comment"><label for="comment">' . '</label> <textarea id="comment" name="comment" cols="45" rows="5" maxlength="65525" required="required"></textarea></p>',
                     ];
 
                     if ($ticket_id) {
