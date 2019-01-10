@@ -1,7 +1,7 @@
 <?php
 
-$cpt = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
-add_action('init', [ $cpt, 'init' ] ) ;
+$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+add_action('init', [ $cpt_obj, 'init' ] ) ;
 
 class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_Singleton {
 	private $cpt_support_ticket = 'orb_support_ticket';
@@ -81,7 +81,9 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	}
 
 	public function registerOutput() {
-		add_filter('the_content', [ $this, 'fixOutput' ], 9999 );
+		if (get_post_type() == $this->getCptSupportTicket()) {
+			add_filter( 'the_content', [ $this, 'fixOutput' ], 9999 );
+		}
 	}
 
 	/**
@@ -90,14 +92,6 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 * @return string
 	 */
 	public function fixOutput($buff) {
-		if (!is_main_query()) {
-			return $buff;
-		}
-
-		if (get_post_type() != $this->getCptSupportTicket()) {
-			return $buff;
-		}
-
 		$buff = esc_html($buff);
 
 		$start = '<div id="orbisius_support_tickets_view_ticket_wrapper" class="orbisius_support_tickets_view_ticket_wrapper">';

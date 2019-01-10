@@ -21,6 +21,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	private $defaults = [
+		'id' => 0,
 		'subject' => '',
 		'message' => '',
 	];
@@ -162,7 +163,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                         <tbody>
 						<?php foreach ( $items as $item_obj ) : ?>
 							<?php
-							$link = get_permalink( $item_obj->ID );
+							$link = $this->generateTicketLink( [ 'ticket_id' => $item_obj->ID ] );
 							?>
                             <tr class="table-info">
                                 <th scope="row"><?php echo $item_obj->ID; ?></th>
@@ -289,8 +290,70 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function renderViewTicket( $attribs = [] ) {
 		ob_start();
+		$id = $this->getData('ticket_id');
+		$msg = '';
+		$ticket_obj = '';
 
-		echo '@todo implement view ticket or provide own template';
+		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		$post_type = $cpt_api->getCptSupportTicket();
+
+		try {
+            if (empty($id) || !is_numeric($id)) {
+                throw new Exception(_("Invalid ticket ID", 'orbisius_support_tickets') );
+            }
+
+			if (!is_user_logged_in()) {
+				throw new Exception("You must be logged in to view the ticket.");
+			}
+
+			$ticket_obj = get_post($id);
+
+			if (empty($ticket_obj)) {
+				throw new Exception( __("Invalid ticket ID", 'orbisius_support_tickets') );
+			}
+
+			// The ID is a different post type
+			if ($post_type != get_post_type($ticket_obj)) {
+				throw new Exception( __("Invalid ticket ID", 'orbisius_support_tickets') );
+			}
+
+			$user_id = get_current_user_id();
+
+			// The current user is not the author of the ticket
+			if ($ticket_obj->post_author > 0 && $user_id != $ticket_obj->post_author) {
+				throw new Exception(__("Invalid ticket ID", 'orbisius_support_tickets') );
+			}
+
+		} catch (Exception $e) {
+			$msg = Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
+        }
+
+		$ctx   = [];
+		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		?>
+        <div id="orbisius_support_tickets_view_ticket_wrapper" class="orbisius_support_tickets_view_ticket_wrapper">
+			<?php do_action( 'orbisius_support_tickets_action_before_view_ticket', $ctx ); ?>
+
+			<?php if ( empty( $ticket_obj ) ) : ?>
+                <div class="orbisius_support_tickets_list_ticket_msg">
+                    <?php echo $msg; ?>
+                </div>
+			<?php else : ?>
+                <div class="table-responsive-md">
+                    <table class="table table-striped w-auto">
+                        <tbody>
+                            <tr>
+                                <td><h3><?php echo $cpt_obj->fixOutput($ticket_obj->post_title); ?></h3></td>
+                            </tr>
+                            <tr>
+                                <td><?php echo $cpt_obj->fixOutput($ticket_obj->post_content); ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+			<?php endif; ?>
+        </div>
+		<?php
 
 		$html = ob_get_contents();
 		ob_end_clean();
@@ -299,17 +362,24 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	/**
-	 * @todo sanitize but allow some tags
-	 * @return array
+	 * Gets the data that the plugin expects or the value for a given variable.
+	 * @param string $key (optional
+	 * @return array|mixed
 	 */
-	public function getData() {
+	public function getData($key = '') {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
 		$data = $req_obj->getRaw('orbisius_support_tickets_data');
-		//$data = empty( $_REQUEST['orbisius_support_tickets_data'] ) ? [] : $_REQUEST['orbisius_support_tickets_data'];
-		$data = array_map( 'trim', $data );
 		$data = array_replace_recursive( $this->defaults, $data );
-		$data = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $data );
-		return $data;
+		$val = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $data );
+
+		if (!empty($key)) {
+			$val = empty($data[$key]) ? '' : $data[$key];
+        }
+
+		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
+		$val = $req_obj->trim($val);
+
+		return $val;
 	}
 
 	/**
@@ -327,5 +397,21 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		}
 
 		return $instance;
+	}
+
+	/**
+	 * @param array $params
+     * @return string
+	 */
+	public function generateTicketLink( array $params ) {
+		$query_params = [
+            'orbisius_support_tickets_data' => [
+                'ticket_id' => $params['ticket_id'],
+            ],
+        ];
+
+	    $link = site_url("/support/view-ticket/");
+		$link .= '?' . http_build_query($query_params);
+		return $link;
 	}
 }
