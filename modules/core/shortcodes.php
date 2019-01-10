@@ -153,7 +153,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                     <table class="table table-striped w-auto">
                         <thead>
                         <tr>
-                            <th>Ticket ID</th>
+                            <th>ID</th>
                             <th>Subject</th>
                             <th>Created at</th>
                             <th>Status</th>
