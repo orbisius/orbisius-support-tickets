@@ -412,7 +412,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function getData($key = '') {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
-		$data = $req_obj->getRaw('orbisius_support_tickets_data');
+		$data = $req_obj->getRaw('orbisius_support_tickets_data', []);
 		$data = array_replace_recursive( $this->defaults, $data );
 		$val = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $data );
 
