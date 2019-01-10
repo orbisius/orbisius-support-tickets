@@ -147,7 +147,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			<?php if ( empty( $items ) ) : ?>
                 <div class="orbisius_support_tickets_list_ticket_msg">
-                    No tickets found.
+                    <?php echo Orbisius_Support_Tickets_Msg::info(__("No tickets found.", 'orbisius_support_tickets')) ?>
                 </div>
 			<?php else : ?>
                 <div class="table-responsive-md">
