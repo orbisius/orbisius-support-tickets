@@ -71,5 +71,10 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		$this->cpt_support_ticket = $cpt_support_ticket;
 	}
 
-
+	/**
+	 * @return Orbisius_Support_Tickets_Module_Core_CPT
+	 */
+	public static function getInstance() {
+		return parent::getInstance();
+	}
 }

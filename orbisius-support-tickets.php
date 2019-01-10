@@ -2,7 +2,7 @@
 /*
   Plugin Name: Orbisius Support Tickets
   Plugin URI: http://orbisius.com/products/
-  Description: Is a minimalistic ticket support system that you can use to manage your support requests.
+  Description: Minimalistic ticket support system that you can use to manage your support requests.
   Version: 1.0.0
   Author: Svetoslav Marinov (Slavi)
   Author URI: http://orbisius.com
