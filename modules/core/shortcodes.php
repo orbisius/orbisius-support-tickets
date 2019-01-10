@@ -114,6 +114,7 @@ var_dump($_REQUEST);
 	public function getData() {
 		$sanitized_data = empty($_REQUEST['orbisius_support_tickets_data']) ? [] : $_REQUEST['orbisius_support_tickets_data'];
 		$sanitized_data = array_map('trim', $sanitized_data);
+		$sanitized_data = apply_filters('orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $sanitized_data);
 		return $sanitized_data;
 	}
 }
