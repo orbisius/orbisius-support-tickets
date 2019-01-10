@@ -290,7 +290,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function renderViewTicket( $attribs = [] ) {
 		ob_start();
-		$id = $this->getData('ticket_id');
+		$ticket_id = $this->getData('ticket_id');
 		$msg = '';
 		$ticket_obj = '';
 
@@ -298,15 +298,16 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$post_type = $cpt_api->getCptSupportTicket();
 
 		try {
-            if (empty($id) || !is_numeric($id)) {
+            if (empty($ticket_id) || !is_numeric($ticket_id)) {
                 throw new Exception(_("Invalid ticket ID", 'orbisius_support_tickets') );
+	            $ticket_id = 0;
             }
 
 			if (!is_user_logged_in()) {
 				throw new Exception("You must be logged in to view the ticket.");
 			}
 
-			$ticket_obj = get_post($id);
+			$ticket_obj = get_post($ticket_id);
 
 			if (empty($ticket_obj)) {
 				throw new Exception( __("Invalid ticket ID", 'orbisius_support_tickets') );
@@ -377,6 +378,22 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                         </div>
                         <hr/>
 	                <?php endforeach; ?>
+                </div>
+
+                <div class="reply_form">
+                    <?php
+                    $comments_args = [
+	                    'title_reply' => __('Reply', 'orbisius_support_tickets'),
+	                    'title_reply_to' => '',
+	                    'label_submit' => __('Send', 'orbisius_support_tickets'),
+	                    'comment_notes_after' => '',
+	                    'comment_notes_before' => '',
+                    ];
+
+                    if ($ticket_id) {
+	                    comment_form( $comments_args, $ticket_id );
+                    }
+                    ?>
                 </div>
 			<?php endif; ?>
         </div>
