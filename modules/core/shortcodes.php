@@ -294,6 +294,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$items = [];
 		$ticket_id = $this->getData('ticket_id');
 		$ticket_obj = '';
+		$user_api = Orbisius_Support_Tickets_User::getInstance();
 
 		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 		$post_type = $cpt_api->getCptSupportTicket();
@@ -323,7 +324,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			// The current user is not the author of the ticket
 			if ($ticket_obj->post_author > 0 && $user_id != $ticket_obj->post_author) {
-				throw new Exception(__("Invalid ticket ID", 'orbisius_support_tickets') );
+				if (!$user_api->isAdmin()) {
+					throw new Exception( __( "Invalid ticket ID", 'orbisius_support_tickets' ) );
+				}
 			}
 
 			$args = [
