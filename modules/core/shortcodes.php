@@ -324,9 +324,19 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				throw new Exception(__("Invalid ticket ID", 'orbisius_support_tickets') );
 			}
 
+			$args = [
+				'order' => 'DESC',
+				'post_id' => $ticket_obj->ID,
+				'count' => false,
+				'status' => 'all',
+				'post_type' => $post_type,
+			];
+
+			$items = get_comments( $args );
 		} catch (Exception $e) {
 			$msg = Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
         }
+
 
 		$ctx   = [];
 		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
@@ -350,6 +360,23 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div id="orbisius_support_tickets_view_ticket_discussion_wrapper" class="orbisius_support_tickets_view_ticket_discussion_wrapper">
+	                <?php foreach ( $items as $item_obj ) : ?>
+		                <?php
+		                $id = $item_obj->comment_ID;
+		                $link = get_permalink( $item_obj->comm );
+		                $row_cls = $user_id == $item_obj->user_id
+			                ? 'orbisius_support_tickets_view_ticket_author_msg'
+                            : '';
+		                ?>
+                        <div class="orbisius_support_tickets_view_ticket_discussion_item <?php echo $row_cls;?>">
+                            <div class="reply"><?php echo $cpt_obj->fixOutput($item_obj->comment_content); ?></div>
+                            <div class="date">Posted on: <?php esc_attr_e( $item_obj->comment_date ); ?></div>
+                        </div>
+                        <hr/>
+	                <?php endforeach; ?>
                 </div>
 			<?php endif; ?>
         </div>
