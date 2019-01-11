@@ -15,9 +15,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 *
 	 */
 	function registerCodes() {
-		add_shortcode( 'orbisius_support_list_tickets', [ $this, 'renderTickets' ] );
-		add_shortcode( 'orbisius_support_view_ticket', [ $this, 'renderViewTicket' ] );
-		add_shortcode( 'orbisius_support_submit_ticket', [ $this, 'renderSubmitTicketForm' ] );
+		add_shortcode( 'orbisius_support_tickets_list_tickets', [ $this, 'renderTickets' ] );
+		add_shortcode( 'orbisius_support_tickets_view_ticket', [ $this, 'renderViewTicket' ] );
+		add_shortcode( 'orbisius_support_tickets_submit_ticket', [ $this, 'renderSubmitTicketForm' ] );
 	}
 
 	private $defaults = [
