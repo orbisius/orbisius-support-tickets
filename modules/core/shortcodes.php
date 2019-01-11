@@ -83,9 +83,12 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			if ( empty( $ins_post_data['ID'] ) ) {
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_insert', $ctx );
 				$id = wp_insert_post( $ins_post_data );
+				$ctx['ticket_id'] = $id;
+				do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', $ctx );
 			} else {
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_update', $ctx );
 				wp_update_post( $ins_post_data );
+				do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_update', $ctx );
 			}
 
 			if ( ! is_numeric( $id ) || $id <= 0 ) {
@@ -194,14 +197,14 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		ob_start();
 		$id  = 0;
 		$msg = '';
-
+		$res_obj = new Orbisius_Support_Tickets_Result();
 		$data = $this->getData();
 
 		if ( ! empty( $data['submit'] ) ) {
 			$res_obj = $this->processTicketSubmission($data);
 
 			if ( $res_obj->isSuccess() ) {
-				$msg = Orbisius_Support_Tickets_Msg::success('Created');
+				$msg = Orbisius_Support_Tickets_Msg::success('Created. Ticket #' . $res_obj->data('id'));
 			} else {
 				$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
 			}
@@ -221,56 +224,61 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			<?php echo $msg; ?>
 
-            <div id="orbisius_support_tickets_submit_ticket_form_wrapper"
-                 class="orbisius_support_tickets_submit_ticket_form_wrapper">
-                <form id="orbisius_support_tickets_submit_ticket_form"
-                      class="orbisius_support_tickets_submit_ticket_form form-horizontal"
-                      method="post" enctype="multipart/form-data">
-					<?php do_action( 'orbisius_support_tickets_action_submit_ticket_form_header', $ctx ); ?>
-					<?php wp_nonce_field( 'orbisius_support_tickets_submit_ticket', 'orbisius_support_tickets_submit_ticket_nonce' ); ?>
-                    <input type="hidden" name="orbisius_support_tickets_data[submit]" value="1"/>
-                    <input type="hidden" name="orbisius_support_tickets_data[id]" id="orbisius_support_tickets_data_id"
-                           value="<?php echo $id; ?>"/>
+            <?php if ( empty( $data['submit'] ) || $res_obj->isError() ) : ?>
+                <div id="orbisius_support_tickets_submit_ticket_form_wrapper"
+                     class="orbisius_support_tickets_submit_ticket_form_wrapper">
+                    <form id="orbisius_support_tickets_submit_ticket_form"
+                          class="orbisius_support_tickets_submit_ticket_form form-horizontal"
+                          method="post" enctype="multipart/form-data">
+                        <?php do_action( 'orbisius_support_tickets_action_submit_ticket_form_header', $ctx ); ?>
+                        <?php wp_nonce_field( 'orbisius_support_tickets_submit_ticket', 'orbisius_support_tickets_submit_ticket_nonce' ); ?>
+                        <input type="hidden" name="orbisius_support_tickets_data[submit]" value="1"/>
+                        <input type="hidden" name="orbisius_support_tickets_data[id]" id="orbisius_support_tickets_data_id"
+                               value="<?php echo $id; ?>"/>
 
-                    <div class="form-group">
-                        <label class="col-md-3 control-label"
-                               for="orbisius_support_tickets_data_subject"><?php _e( 'Subject', 'orbisius_support_tickets' ); ?></label>
-                        <div class="col-md-9">
-                            <input name="orbisius_support_tickets_data[subject]"
-                                   id="orbisius_support_tickets_data_subject"
-                                   type="text" placeholder="<?php _e( 'Subject', 'orbisius_support_tickets' ); ?>"
-                                   value="<?php esc_attr_e( $data['subject'] ); ?>"
-                                   class="form-control orbisius_support_tickets_data_subject"/>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"
+                                   for="orbisius_support_tickets_data_subject">
+                                <?php _e( 'Subject', 'orbisius_support_tickets' ); ?></label>
+                            <div class="col-md-9">
+                                <input name="orbisius_support_tickets_data[subject]"
+                                       id="orbisius_support_tickets_data_subject"
+                                       type="text" placeholder="<?php _e( 'Subject', 'orbisius_support_tickets' ); ?>"
+                                       value="<?php esc_attr_e( $data['subject'] ); ?>"
+                                       class="form-control orbisius_support_tickets_data_subject"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="col-md-3 control-label"
-                               for="orbisius_support_tickets_data_message"><?php _e( 'Message', 'orbisius_support_tickets' ); ?></label>
-                        <div class="col-md-9">
-                            <textarea id="orbisius_support_tickets_data_message"
-                                      class="orbisius_support_tickets_data_message form-control"
-                                      name="orbisius_support_tickets_data[message]"
-                                      placeholder="Please enter the message here..."
-                                      rows="<?php echo $row_num; ?>"><?php esc_attr_e( $data['message'] ); ?></textarea>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"
+                                   for="orbisius_support_tickets_data_message">
+                                <?php _e( 'Message', 'orbisius_support_tickets' ); ?></label>
+                            <div class="col-md-9">
+                                <textarea id="orbisius_support_tickets_data_message"
+                                          class="orbisius_support_tickets_data_message form-control"
+                                          name="orbisius_support_tickets_data[message]"
+                                          placeholder="Please enter the message here..."
+                                          rows="<?php echo $row_num; ?>"><?php esc_attr_e( $data['message'] ); ?></textarea>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <div class="col-md-12 text-right">
-                            <button type="submit"
-                                    id="orbisius_support_tickets_submit_ticket_form_submit"
-                                    name="orbisius_support_tickets_submit_ticket_form_submit"
-                                    class="orbisius_support_tickets_submit_ticket_form_submit btn btn-primary">
-                                <?php _e( 'Submit', 'orbisius_support_tickets' ); ?>
-                            </button>
+                        <div class="form-group">
+                            <div class="col-md-12 text-right">
+                                <button type="submit"
+                                        id="orbisius_support_tickets_submit_ticket_form_submit"
+                                        name="orbisius_support_tickets_submit_ticket_form_submit"
+                                        class="orbisius_support_tickets_submit_ticket_form_submit btn btn-primary">
+                                    <?php _e( 'Submit', 'orbisius_support_tickets' ); ?>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-					<?php do_action( 'orbisius_support_tickets_action_submit_ticket_form_footer', $ctx ); ?>
-                </form>
-            </div>
-			<?php do_action( 'orbisius_support_tickets_action_after_submit_ticket_form', $ctx ); ?>
+                        <?php do_action( 'orbisius_support_tickets_action_submit_ticket_form_footer', $ctx ); ?>
+                    </form>
+                </div>
+                <?php do_action( 'orbisius_support_tickets_action_after_submit_ticket_form', $ctx ); ?>
+            </div> <!-- /orbisius_support_tickets_submit_ticket_wrapper -->
+            <?php endif; ?>
         </div> <!-- /orbisius_support_tickets_submit_ticket_wrapper -->
 		<?php
 
