@@ -1,8 +1,8 @@
 <?php
 /*
   Plugin Name: Orbisius Support Tickets
-  Plugin URI: http://orbisius.com/products/
-  Description: Minimalistic ticket support system that you can use to manage your support requests.
+  Plugin URI: https://orbisius.com/products/wordpress-plugins/orbisius-support-tickets
+  Description: Minimalistic support ticket system that enables you to start providing awesome support a lot quicker.
   Version: 1.0.0
   Author: Svetoslav Marinov (Slavi)
   Author URI: http://orbisius.com
@@ -19,17 +19,8 @@ define('ORBISIUS_SUPPORT_TICKETS_DEV_ENV', !empty($_SERVER['DEV_ENV'])
                          || (!empty($_SERVER['HTTP_HOST']) && preg_match('#localhost|devel\.ca|qsandbox|\.clients\.|staging#si', $_SERVER['HTTP_HOST'])));
 define('ORBISIUS_SUPPORT_TICKETS_LIVE_ENV', !ORBISIUS_SUPPORT_TICKETS_DEV_ENV);
 
-defined('ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL') || define('ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL', "/support/view-ticket/");
-defined('ORBISIUS_SUPPORT_TICKETS_PAGES_SUBMIT_TICKET_URL') || define('ORBISIUS_SUPPORT_TICKETS_PAGES_SUBMIT_TICKET_URL', "/support/submit-ticket/");
-defined('ORBISIUS_SUPPORT_TICKETS_PAGES_LIST_TICKETS_URL') || define('ORBISIUS_SUPPORT_TICKETS_PAGES_LIST_TICKETS_URL', "/support/my-tickets/");
-
 $libs = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/lib/*.php');
-//$module_libs = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/modules/*/lib/*.php');
 $mods = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/modules/*/*.php');
-
-if (file_exists(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/vendor/autoload.php')) {
-	$mods[] = ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/vendor/autoload.php';
-}
 
 $libs = array_merge((array) $libs, (array) $mods);
 $libs = array_unique($libs);
