@@ -175,6 +175,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                             $pages_dropdown = wp_dropdown_pages($args); // must be hierachical
                                                             echo $pages_dropdown;
                                                         ?>
+                                                        <div>
+                                                            The page needs to contain this shortcode:
+                                                            <input type="text" class="widefat" readonly="readonly" value="<?php esc_attr_e('[orbisius_support_submit_ticket]');?>" />
+                                                            <br/>It shows ticket submission form
+                                                        </div>
                                                     </td>
                                                 </tr>
 
@@ -199,6 +204,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			                                            $pages_dropdown = wp_dropdown_pages($args); // must be hierachical
 			                                            echo $pages_dropdown;
 			                                            ?>
+                                                        <div>
+                                                            The page needs to contain this shortcode:
+                                                            <input type="text" class="widefat" readonly="readonly" value="<?php esc_attr_e('[orbisius_support_list_tickets]');?>" />
+                                                            <br/>It lists user's tickets.
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <tr valign="top">
@@ -222,6 +232,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			                                            $pages_dropdown = wp_dropdown_pages($args); // must be hierachical
 			                                            echo $pages_dropdown;
 			                                            ?>
+                                                        <div>
+                                                            The page needs to contain this shortcode:
+                                                            <input type="text" class="widefat" readonly="readonly" value="<?php esc_attr_e('[orbisius_support_view_ticket]');?>" />
+                                                            <br/>It lists a single ticket's data.
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </table>
