@@ -307,12 +307,12 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 		try {
             if (empty($ticket_id) || !is_numeric($ticket_id)) {
-                throw new Exception(_("Invalid ticket ID", 'orbisius_support_tickets') );
+                throw new Exception(__("Invalid ticket ID", 'orbisius_support_tickets') );
 	            $ticket_id = 0;
             }
 
 			if (!is_user_logged_in()) {
-				throw new Exception("You must be logged in to view the ticket.");
+				throw new Exception(__("You must be logged in to view the ticket.", 'orbisius_support_tickets'));
 			}
 
 			$ticket_obj = get_post($ticket_id);
