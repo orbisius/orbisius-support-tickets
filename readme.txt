@@ -45,8 +45,13 @@ Next, you need to link to these pages from your menu or from other pages.
 > Support is handled on our site: <a href="http://orbisius.com/support/" target="_blank" title="[new window]">http://orbisius.com/support/</a>
 > Please do NOT use other places to seek support.
 
+
 == Demo ==
-TODO
+
+TODO:
+- notifications
+- settings page
+-
 
 Bugs? Suggestions? If you want a faster response contact us through our website's contact form [ orbisius.com ] and not through the support tab of this plugin or WordPress forums.
 We don't get notified when such requests get posted in the forums.
