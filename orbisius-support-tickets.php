@@ -19,6 +19,10 @@ define('ORBISIUS_SUPPORT_TICKETS_DEV_ENV', !empty($_SERVER['DEV_ENV'])
                          || (!empty($_SERVER['HTTP_HOST']) && preg_match('#localhost|devel\.ca|qsandbox|\.clients\.|staging#si', $_SERVER['HTTP_HOST'])));
 define('ORBISIUS_SUPPORT_TICKETS_LIVE_ENV', !ORBISIUS_SUPPORT_TICKETS_DEV_ENV);
 
+defined('ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL') || define('ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL', "/support/view-ticket/");
+defined('ORBISIUS_SUPPORT_TICKETS_PAGES_SUBMIT_TICKET_URL') || define('ORBISIUS_SUPPORT_TICKETS_PAGES_SUBMIT_TICKET_URL', "/support/submit-ticket/");
+defined('ORBISIUS_SUPPORT_TICKETS_PAGES_LIST_TICKETS_URL') || define('ORBISIUS_SUPPORT_TICKETS_PAGES_LIST_TICKETS_URL', "/support/my-tickets/");
+
 $libs = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/lib/*.php');
 //$module_libs = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/modules/*/lib/*.php');
 $mods = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/modules/*/*.php');

@@ -483,7 +483,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
             ],
         ];
 
-	    $link = site_url("/support/view-ticket/");
+	    $link = site_url(ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL);
 		$link .= '?' . http_build_query($query_params);
 		return $link;
 	}
