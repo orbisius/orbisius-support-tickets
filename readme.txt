@@ -52,7 +52,7 @@ If you've found a security glitch please email ASAP to: help at orbisius.com.
 
 TODO:
 - notifications
-- settings page
+- settings page -> set pages
 - ticket statuses
 
 = Author =
