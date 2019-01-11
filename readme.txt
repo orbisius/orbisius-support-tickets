@@ -42,8 +42,10 @@ define('ORBISIUS_SUPPORT_TICKETS_PAGES_LIST_TICKETS_URL', "/support/my-tickets/"
 Next, you need to link to these pages from your menu or from other pages.
 
 = Support =
-> Support is handled on our site: <a href="http://orbisius.com/support/" target="_blank" title="[new window]">http://orbisius.com/support/</a>
-> Please do NOT use other places to seek support.
+> If you have found a bug or have a recommendation submit a ticket https://github.com/orbisius/orbisius-support-tickets/issues
+We can't fix something we don't know about.
+
+If you've found a security glitch please email ASAP to: help at orbisius.com.
 
 
 == Demo ==
@@ -52,9 +54,6 @@ TODO:
 - notifications
 - settings page
 -
-
-Bugs? Suggestions? If you want a faster response contact us through our website's contact form [ orbisius.com ] and not through the support tab of this plugin or WordPress forums.
-We don't get notified when such requests get posted in the forums.
 
 = Author =
 
