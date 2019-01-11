@@ -1,0 +1,3 @@
+<FilesMatch '\.(js|css|png|gif|jpe?g)$'>
+	allow from all
+</FilesMatch>
