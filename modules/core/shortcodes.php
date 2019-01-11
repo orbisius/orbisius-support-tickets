@@ -34,7 +34,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		try {
 			$user_id = get_current_user_id();
 			$res     = new Orbisius_Support_Tickets_Result();
-
 			$cpt_api       = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 			$post_type     = $cpt_api->getCptSupportTicket();
 			$ins_post_data = [
@@ -204,7 +203,10 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			$res_obj = $this->processTicketSubmission($data);
 
 			if ( $res_obj->isSuccess() ) {
-				$msg = Orbisius_Support_Tickets_Msg::success('Created. Ticket #' . $res_obj->data('id'));
+			    $ticket_id = $res_obj->data('id');
+				$ticket_link = $this->generateTicketLink( [ 'ticket_id' => $ticket_id, ] );
+				$msg = sprintf( __( "Ticket created. <a href='%s' target='_blank'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
+				$msg = Orbisius_Support_Tickets_Msg::success($msg);
 			} else {
 				$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
 			}
