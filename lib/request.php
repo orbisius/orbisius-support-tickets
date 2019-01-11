@@ -185,8 +185,10 @@ class Orbisius_Support_Tickets_Request {
 			foreach ( $val as $key => & $loop_val ) {
 				$loop_val = $this->trim( $loop_val );
 			}
+		} elseif (is_null($val)) {
+			// should be ok
 		} else {
-			throw new Exception("Wrong type.");
+			throw new Exception("Wrong type. Type: " . gettype($val));
 		}
 
 		return $val;
