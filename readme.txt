@@ -11,7 +11,7 @@ Minimalistic ticket support system that you can use to manage your support reque
 
 == Description ==
 
-Orbisius Support Tickets is a minimalistic ticket support system that allows you to handle your support requests.
+Orbisius Support Tickets is a minimalistic ticket support system that enables you to handle support requests nicely.
 You need to create several pages and paste the relevant shortcodes so your customer can submit their support requests.
 
 You need to create these pages with the following shortcodes.
@@ -53,7 +53,7 @@ If you've found a security glitch please email ASAP to: help at orbisius.com.
 TODO:
 - notifications
 - settings page
--
+- ticket statuses
 
 = Author =
 
