@@ -90,7 +90,7 @@ class Orbisius_Support_Tickets_Result {
 		return empty($this->status);
 	}
 
-	public function is_error() {
+	public function isError() {
 		return empty($this->status);
 	}
 
