@@ -165,7 +165,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                         <tbody>
 						<?php foreach ( $items as $item_obj ) : ?>
 							<?php
-							$link = $this->generateTicketLink( [ 'ticket_id' => $item_obj->ID ] );
+							$link = $this->generateViewTicketLink( [ 'ticket_id' => $item_obj->ID ] );
 							?>
                             <tr class="table-info">
                                 <th scope="row"><?php echo $item_obj->ID; ?></th>
@@ -204,7 +204,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			if ( $res_obj->isSuccess() ) {
 			    $ticket_id = $res_obj->data('id');
-				$ticket_link = $this->generateTicketLink( [ 'ticket_id' => $ticket_id, ] );
+				$ticket_link = $this->generateViewTicketLink( [ 'ticket_id' => $ticket_id, ] );
 				$msg = sprintf( __( "Ticket created. <a href='%s' target='_blank'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
 				$msg = Orbisius_Support_Tickets_Msg::success($msg);
 			} else {
@@ -478,15 +478,28 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * @param array $params
      * @return string
 	 */
-	public function generateTicketLink( array $params ) {
+	public function generateViewTicketLink( array $params ) {
 		$query_params = [
             'orbisius_support_tickets_data' => [
                 'ticket_id' => $params['ticket_id'],
             ],
         ];
 
-	    $link = site_url(ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL);
-		$link .= '?' . http_build_query($query_params);
+		if (defined('ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL')) {
+			$link = site_url(ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL);
+        } else {
+			$cpt  = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+			$opts = $cpt->getOptions();
+
+			if (!empty($opts['view_ticket_page_id'])) {
+			    $link = get_page_link($opts['view_ticket_page_id']);
+            } else {
+				$link = site_url('/');
+            }
+		}
+
+		$link = add_query_arg($query_params, $link);
+
 		return $link;
 	}
 }
