@@ -97,13 +97,13 @@ class Orbisius_Support_Tickets_Module_Core_Assets {
 			}
 		} // shared libs
 
-//		$file_rel = '/assets/js/orbisius-support-tickets.js';
-//		wp_enqueue_script(
-//			'orbisius-support-tickets',
-//			plugins_url( $file_rel, ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN ), array( 'jquery', ),
-//			filemtime( plugin_dir_path( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN ) . $file_rel ),
-//			true
-//		);
+		$file_rel = '/assets/js/orbisius-support-tickets.js';
+		wp_enqueue_script(
+			'orbisius-support-tickets',
+			plugins_url( $file_rel, ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN ), array( 'jquery', ),
+			filemtime( plugin_dir_path( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN ) . $file_rel ),
+			true
+		);
 	}
 
 	/**

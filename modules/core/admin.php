@@ -177,7 +177,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                         ?>
                                                         <div>
                                                             The page needs to contain this shortcode:
-                                                            <input type="text" class="widefat" readonly="readonly" value="<?php esc_attr_e('[orbisius_support_submit_ticket]');?>" />
+                                                            <input type="text" class="widefat orbisius_support_tickets_selectable"
+                                                                   readonly="readonly" value="<?php esc_attr_e('[orbisius_support_submit_ticket]');?>" />
                                                             <br/>It shows ticket submission form
                                                         </div>
                                                     </td>
@@ -206,7 +207,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			                                            ?>
                                                         <div>
                                                             The page needs to contain this shortcode:
-                                                            <input type="text" class="widefat" readonly="readonly" value="<?php esc_attr_e('[orbisius_support_list_tickets]');?>" />
+                                                            <input type="text" class="widefat orbisius_support_tickets_selectable"
+                                                                   readonly="readonly" value="<?php esc_attr_e('[orbisius_support_list_tickets]');?>" />
                                                             <br/>It lists user's tickets.
                                                         </div>
                                                     </td>
@@ -234,7 +236,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			                                            ?>
                                                         <div>
                                                             The page needs to contain this shortcode:
-                                                            <input type="text" class="widefat" readonly="readonly" value="<?php esc_attr_e('[orbisius_support_view_ticket]');?>" />
+                                                            <input type="text" class="widefat orbisius_support_tickets_selectable" readonly="readonly"
+                                                                   value="<?php esc_attr_e('[orbisius_support_view_ticket]');?>" />
                                                             <br/>It lists a single ticket's data.
                                                         </div>
                                                     </td>
