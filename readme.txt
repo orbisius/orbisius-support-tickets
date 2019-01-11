@@ -3,7 +3,7 @@ Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: orbisius,support,ticket,help,helpdesk,tickets
 Requires at least: 3.0
-Tested up to: 5
+Tested up to: 5.0
 Stable tag: 1.0.0
 License: GPLv2 or later
 
@@ -14,14 +14,30 @@ Minimalistic ticket support system that you can use to manage your support reque
 Orbisius Support Tickets is a minimalistic ticket support system that allows you to handle your support requests.
 You need to create several pages and paste the relevant shortcodes so your customer can submit their support requests.
 
-You need to create these pages and use these shortcodes.
+You need to create these pages with the following shortcodes.
+Ideally, you should create a top level page called Support (/support) or Help (/help).
+Then create the following subpages. The parent page link will be prepended automatically.
 
-This shortcode lists ticket submission form
-[orbisius_support_submit_ticket]
-
+My Tickets
+link: /support/my-tickets
 This shortcode lists user's tickets
 [orbisius_support_list_tickets]
 
+View Ticket
+link: /support/view-ticket
+
+This shortcode is for viewing a given ticket
+[orbisius_support_view_ticket]
+
+Submit Ticket
+link: /support/submit-ticket
+This shortcode lists ticket submission form
+[orbisius_support_submit_ticket]
+
+Add these php constants to your wp-config.php
+define('ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL', "/support/view-ticket/");
+define('ORBISIUS_SUPPORT_TICKETS_PAGES_SUBMIT_TICKET_URL', "/support/submit-ticket/");
+define('ORBISIUS_SUPPORT_TICKETS_PAGES_LIST_TICKETS_URL', "/support/my-tickets/");
 
 Next, you need to link to these pages from your menu or from other pages.
 
