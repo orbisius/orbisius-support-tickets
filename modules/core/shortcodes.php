@@ -208,7 +208,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		}
 
 		$ctx = [];
-
 		$row_num = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_message_row_num', 4 );
 		?>
 
@@ -233,23 +232,21 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                     <input type="hidden" name="orbisius_support_tickets_data[id]" id="orbisius_support_tickets_data_id"
                            value="<?php echo $id; ?>"/>
 
-                    <!-- Subject -->
                     <div class="form-group">
                         <label class="col-md-3 control-label"
-                               for="orbisius_support_tickets_data_subject">Subject</label>
+                               for="orbisius_support_tickets_data_subject"><?php _e( 'Subject', 'orbisius_support_tickets' ); ?></label>
                         <div class="col-md-9">
                             <input name="orbisius_support_tickets_data[subject]"
                                    id="orbisius_support_tickets_data_subject"
-                                   type="text" placeholder="Subject"
+                                   type="text" placeholder="<?php _e( 'Subject', 'orbisius_support_tickets' ); ?>"
                                    value="<?php esc_attr_e( $data['subject'] ); ?>"
                                    class="form-control orbisius_support_tickets_data_subject"/>
                         </div>
                     </div>
 
-                    <!-- Message body -->
                     <div class="form-group">
                         <label class="col-md-3 control-label"
-                               for="orbisius_support_tickets_data_message">Message</label>
+                               for="orbisius_support_tickets_data_message"><?php _e( 'Message', 'orbisius_support_tickets' ); ?></label>
                         <div class="col-md-9">
                             <textarea id="orbisius_support_tickets_data_message"
                                       class="orbisius_support_tickets_data_message form-control"
@@ -259,14 +256,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                         </div>
                     </div>
 
-                    <!-- Form actions -->
                     <div class="form-group">
                         <div class="col-md-12 text-right">
                             <button type="submit"
                                     id="orbisius_support_tickets_submit_ticket_form_submit"
                                     name="orbisius_support_tickets_submit_ticket_form_submit"
                                     class="orbisius_support_tickets_submit_ticket_form_submit btn btn-primary">
-                                Submit
+                                <?php _e( 'Submit', 'orbisius_support_tickets' ); ?>
                             </button>
                         </div>
                     </div>
