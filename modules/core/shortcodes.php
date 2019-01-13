@@ -15,10 +15,10 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 *
 	 */
 	function registerCodes() {
-		add_shortcode( 'orbisius_support_tickets_page_url', [ $this, 'renderSubmitTicketPageUrl' ] );
 		add_shortcode( 'orbisius_support_tickets_view_ticket', [ $this, 'renderViewTicket' ] );
 		add_shortcode( 'orbisius_support_tickets_list_tickets', [ $this, 'renderTickets' ] );
 		add_shortcode( 'orbisius_support_tickets_submit_ticket', [ $this, 'renderSubmitTicketForm' ] );
+		add_shortcode( 'orbisius_support_tickets_generate_page_link', [ $this, 'generatePageLink' ] );
 	}
 
 	private $defaults = [
@@ -432,10 +432,10 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	/**
-	 * Processes [orbisius_support_tickets_page_url] shortcode and returns the page URL for a given requested page
+	 * Processes [orbisius_support_tickets_generate_page_link] shortcode and returns the page URL for a given requested page
 	 * @return string
 	 */
-	public function renderSubmitTicketPageUrl( $attribs = [] ) {
+	public function generatePageLink( $attribs = [] ) {
 		$link = '#';
 
 		if (empty($attribs['page'])) {

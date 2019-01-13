@@ -43,6 +43,19 @@ We can't fix something we don't know about.
 
 If you've found a security glitch please email ASAP to: help at orbisius.com.
 
+You can use the following shortcode to generate a link to a given page.
+
+Link to view single ticket page
+[orbisius_support_tickets_generate_page_link page=view_ticket]
+
+Link to my tickets page
+[orbisius_support_tickets_generate_page_link page=list_tickets]
+
+Link to submit tickets page
+[orbisius_support_tickets_generate_page_link page=submit_ticket]
+
+if you want the link to be passed through esc_url pass this attribute.
+esc=1
 
 == Demo ==
 
