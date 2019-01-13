@@ -124,7 +124,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		$opts = $this->getOptions();
 
-		if ($req_obj->has('orbisius_support_tickets_create_pages')) {
+		if ($req_obj->has('orbisius_support_tickets_admin_create_pages')) {
 			$create_pages_res = $this->createPages();
 
 			$updates = 0;
@@ -296,6 +296,14 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 										); ?></span></h2>
 
                                 <div class="inside">
+                                    <p>
+                                        The plugin can create the pages for you. If a page already exists it won't be created.
+                                        <br/>
+                                        <a href="<?php echo esc_url(add_query_arg('orbisius_support_tickets_admin_create_pages', '1')); ?>"
+                                           class="button"
+                                            >Create pages</a>
+                                    </p>
+                                    <hr/>
                                     <p>
                                         To make a suggestion submit a ticket at
                                         <a href="https://github.com/orbisius/orbisius-support-tickets/issues" target="_blank">github</a>
