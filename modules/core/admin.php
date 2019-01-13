@@ -184,12 +184,112 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 */
 	public function renderPluginDashboardPage() {
 		?>
-        <div class="wrap">
-            <h1><?php esc_attr_e( 'Orbisius Support Tickets', 'orbisius_support_tickets' ); ?> > Dashboard</h1>
 
-            <div>
-                Show something useful here.
+        <div class="wrap">
+
+            <div id="icon-options-general" class="icon32"></div>
+            <h1><?php esc_attr_e( 'Orbisius Support Tickets', 'orbisius_support_tickets' ); ?></h1>
+
+            <div id="poststuff">
+
+                <div id="post-body" class="metabox-holder columns-2">
+
+                    <!-- main content -->
+                    <div id="post-body-content">
+
+                        <div class="meta-box-sortables ui-sortable">
+
+                            <div class="postbox">
+
+                                <h2><span><?php esc_attr_e( 'Dashboard', 'orbisius_support_tickets' ); ?></span></h2>
+
+                                <div class="inside">
+                                    <p><?php esc_attr_e(
+											"Welcome. We, at Orbisius, are hoping that with this plugin you'll be able to provide awesome support to your clients.",
+											'orbisius_support_tickets'
+										); ?></p>
+                                </div>
+
+                                <?php
+
+                                $cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+
+                                $total_tickets_stats = [
+                                    'open' => 0,
+                                    'closed' => 0,
+                                ];
+
+                                $total_tickets_stats_obj = wp_count_posts($cpt_obj->getCptSupportTicket());
+
+                                $total_tickets_stats['open'] = $total_tickets_stats_obj->draft + $total_tickets_stats_obj->private;
+                                $total_tickets_stats['closed'] = $total_tickets_stats_obj->publish;
+
+                                ?>
+                                <div class="inside">
+                                    <p>
+                                    <table class="widefat">
+                                        <tr>
+                                            <td class="row-title"><label for="tablecell"><?php esc_attr_e(
+						                                'Open Tickets', 'orbisius_support_tickets'
+					                                ); ?></label></td>
+                                            <td><?php echo $total_tickets_stats['open']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="row-title"><label for="tablecell"><?php esc_attr_e(
+						                                'Closed Tickets', 'orbisius_support_tickets'
+					                                ); ?></label></td>
+                                            <td><?php echo $total_tickets_stats['closed']; ?></td>
+                                        </tr>
+
+                                    </table>
+
+                                    </p>
+                                </div>
+                                <!-- .inside -->
+
+                            </div>
+                            <!-- .postbox -->
+
+                        </div>
+                        <!-- .meta-box-sortables .ui-sortable -->
+
+                    </div>
+                    <!-- post-body-content -->
+
+                    <!-- sidebar -->
+                    <div id="postbox-container-1" class="postbox-container">
+
+                        <div class="meta-box-sortables">
+
+                            <div class="postbox">
+
+                                <h2><span><?php esc_attr_e(
+											'Sidebar', 'orbisius_support_tickets'
+										); ?></span></h2>
+
+                                <div class="inside">
+                                    <p>
+                                        Create awesome stuff!
+                                    </p>
+                                </div>
+                                <!-- .inside -->
+
+                            </div>
+                            <!-- .postbox -->
+
+                        </div>
+                        <!-- .meta-box-sortables -->
+
+                    </div>
+                    <!-- #postbox-container-1 .postbox-container -->
+
+                </div>
+                <!-- #post-body .metabox-holder .columns-2 -->
+
+                <br class="clear">
             </div>
+            <!-- #poststuff -->
+
         </div> <!-- .wrap -->
 		<?php
 	}
