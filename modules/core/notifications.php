@@ -19,7 +19,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		    return;
         }
 
-		if (!empty($ticket_obj->ID)) {
+		if (empty($ticket_obj->ID)) {
 			return;
 		}
 
@@ -134,7 +134,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		$ticket_obj = get_post($ctx['ticket_id']); // find ticket
 
-		if (!empty($ticket_obj->ID)) {
+		if (empty($ticket_obj->ID)) {
 			return;
 		}
 

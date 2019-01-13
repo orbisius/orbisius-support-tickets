@@ -13,6 +13,8 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		$this->registerOutput();
 		$this->registerCustomContentTypes();
 		$this->registerCommentAdd();
+
+		add_action( 'orbisius_support_tickets_action_ticket_activity', [ $this, 'openClosedTicket' ] );
 	}
 
 	/**
@@ -288,6 +290,20 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			$ticket_obj = $this->getTicket($ticket_obj);
 		}
 
-		return empty($ticket_obj->post_status) ? '' : empty($ticket_obj->post_status);
+		return empty($ticket_obj->post_status) ? '' : $ticket_obj->post_status;
+	}
+
+	/**
+	 * @param array $ctx
+	 * @return void
+	 */
+	public function openClosedTicket(array $ctx) {
+		if (empty($ctx['ticket_id'])) {
+			return;
+		}
+
+		if ($this->getStatus($ctx['ticket_id']) == Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED) {
+			$this->changeStatus($ctx['ticket_id'], self::STATUS_OPEN);
+		}
 	}
 }
