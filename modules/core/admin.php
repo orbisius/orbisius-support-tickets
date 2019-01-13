@@ -489,7 +489,6 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			'comment_status' => 'closed',
 		);
 
-		//$res_obj->data('parent_page_created'
 	    $parent_page_rec = [
             'id' => 'support_page_id',
             'slug' => $parent_page_slug,
@@ -522,7 +521,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
         $parent_page = get_page_by_path($parent_page_slug);
 		$parent_page_created = 0;
 
-        if (empty($parent_page)) {
+        if (empty($parent_page->ID)) {
             $my_post = array_replace_recursive($create_page_defaults, array(
                 'post_name'     => $parent_page_slug,
                 'post_title'    => $parent_page_rec['page_title'],
@@ -534,6 +533,19 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
             $parent_page_created = 1;
         } else {
 	        $parent_page_id = $parent_page->ID;
+
+	        // The support page exists but doesn't have the links to the relevant pages so we will add links to them.
+	        if ((stripos($parent_page->post_content, '[orbisius_support_tickets_generate_page_link') === false)
+                    && !preg_match('#Submit[\-\_]*Ticket#si', $parent_page->post_content)
+                    && !preg_match('#(list|my)[\-\_]*Ticket#si', $parent_page->post_content)
+                ) {
+	            $up_parent_page_arr = [
+                    'ID' => $parent_page->ID,
+                    'post_content' => $parent_page->post_content . "<br/>" . $parent_page_rec['post_content'],
+                ];
+
+		        $stat = wp_update_post($up_parent_page_arr, true);
+            }
         }
 
 		$res_obj->data($parent_page_slug, $parent_page_id);
