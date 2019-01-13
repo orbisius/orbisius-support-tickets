@@ -225,6 +225,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                             $args = array(
                                                                 'name' => "{$settings_key}[submit_ticket_page_id]",
                                                                 'id' => 'orbisius_support_tickets_data_submit_ticket_page_id',
+                                                                'class' => 'orbisius_support_tickets_dropdown_field',
                                                                 'depth'            => 0,
                                                                 'child_of'         => 0,
                                                                 'echo'             => 0,
@@ -255,6 +256,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			                                            $args = array(
 				                                            'name' => "{$settings_key}[list_tickets_page_id]",
 				                                            'id' => 'orbisius_support_tickets_data_list_tickets_page_id',
+				                                            'class' => 'orbisius_support_tickets_dropdown_field',
 				                                            'depth'            => 0,
 				                                            'child_of'         => 0,
 				                                            'echo'             => 0,
@@ -284,6 +286,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			                                            $args = array(
 				                                            'name' => "{$settings_key}[view_ticket_page_id]",
 				                                            'id' => 'orbisius_support_tickets_data_view_ticket_page_id',
+				                                            'class' => 'orbisius_support_tickets_dropdown_field',
 				                                            'depth'            => 0,
 				                                            'child_of'         => 0,
 				                                            'echo'             => 0,
