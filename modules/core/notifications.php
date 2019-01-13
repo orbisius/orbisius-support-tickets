@@ -56,11 +56,14 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$host = str_replace('www.', '', $host);
 		$host = trim($host);
 
+		$shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
+
 		$vars = [
 			'domain' => $host,
 			'site_url' => site_url('/'),
 			'site_name' => get_bloginfo('name'),
 			'ticket_id' => $ctx['ticket_id'],
+			'ticket_url' => $shortcode_api->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] ),
 			'recipient_email' => $email,
 		];
 
@@ -75,7 +78,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$message = $notif_opts['new_ticket_message'];
 		$message = do_shortcode($message);
 		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
-
+		//$message = nl2br($message);
 		$headers = [];
 
 		$from_name = empty($notif_opts['support_from_name']) ? get_bloginfo('name') . ' Support' : $notif_opts['support_from_name'];

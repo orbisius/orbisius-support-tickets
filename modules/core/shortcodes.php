@@ -1,8 +1,8 @@
 <?php
 
-$cpt = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
+$shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
 
-add_action('init', [ $cpt, 'init' ] ) ;
+add_action('init', [ $shortcode_api, 'init' ] ) ;
 
 class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	private $cpt_support_ticket = 'orb_support_tickets_item';

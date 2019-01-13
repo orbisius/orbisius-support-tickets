@@ -411,8 +411,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                 <tr valign="top">
                                                     <th scope="row">Enable/Disable</th>
                                                     <td>
+                                                        <input type="hidden" name="<?php echo "{$notif_settings_key}[new_ticket_notification_enabled]";?>" value="0" />
                                                         <label>
-                                                        <input type="checkbox" class=""
+                                                            <input type="checkbox" class=""
                                                                name="<?php echo "{$notif_settings_key}[new_ticket_notification_enabled]";?>"
                                                                <?php checked(empty($notif_opts['new_ticket_notification_enabled'])
                                                                     ? '' : $notif_opts['new_ticket_notification_enabled'], 1); ?>
@@ -533,13 +534,19 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 	private $plugin_default_opts_other = array(
         'orbisius_support_tickets_notification' => [
-            'new_ticket_subject' => '',
-            'new_ticket_message' => '',
-            'new_ticket_notification_enabled' => '',
-            'support_email_receiver' => '',
             'support_from_name' => '',
             'support_from_email' => '',
             'support_email_reply_to' => '',
+            'support_email_receiver' => '',
+
+            // New ticket stuff
+            'new_ticket_subject' => '[#{ticket_id}] New ticket has been created',
+            'new_ticket_message' => "We've received your message and will get back to you within next 24h.
+
+Ticket ID: {ticket_id}
+Ticket link: {ticket_url}
+",
+            'new_ticket_notification_enabled' => 1,
         ],
     );
 
