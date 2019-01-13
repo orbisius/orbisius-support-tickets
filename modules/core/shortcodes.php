@@ -201,11 +201,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 		$data = $this->getData();
 
-	    if (!empty($data['sub_cmd']) && $data['sub_cmd'] == 'close') {
-		    $cpt_obj->changeStatus($ctx['ticket_id'], Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED);
-		    return;
-	    }
-
 		if ($cpt_obj->getStatus($ticket_obj) == Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED) {
 			return;
 		}
@@ -214,14 +209,26 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		?>
         <div id="orbisius_support_tickets_close_ticket_wrapper" class="orbisius_support_tickets_close_ticket_wrapper">
             <?php
-            $admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
-            $settings_key = $admin_api->getPluginSettingsKey();
-            $link = $this->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] );
-            $link = add_query_arg("{$settings_key}_data[cmd]", 'view_ticket', $link);
-            $link = add_query_arg("{$settings_key}_data[sub_cmd]", 'close', $link);
-            $label = __('Close Ticket', 'orbisius_support_tickets');
+            if (!empty($data['sub_cmd']) && $data['sub_cmd'] == 'close') {
+	            $status = $cpt_obj->changeStatus($ctx['ticket_id'], Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED);
+
+                if ($status) {
+	                $msg = Orbisius_Support_Tickets_Msg::success( __('Ticket closed', 'orbisius_support_tickets') );
+                } else {
+	                $msg = Orbisius_Support_Tickets_Msg::error( __('Cannot close the ticket', 'orbisius_support_tickets') );
+                }
+
+                echo $msg;
+            } else {
+	            $admin_api    = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+	            $settings_key = $admin_api->getPluginSettingsKey();
+	            $link         = $this->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] );
+	            $link         = add_query_arg( "{$settings_key}_data[cmd]", 'view_ticket', $link );
+	            $link         = add_query_arg( "{$settings_key}_data[sub_cmd]", 'close', $link );
+	            $label        = __( 'Close Ticket', 'orbisius_support_tickets' );
+	            echo "<a href='$link'>$label</a>";
+            }
             ?>
-            <?php echo "<a href='$link'>$label</a>"; ?>
         </div> <!-- /orbisius_support_tickets_close_ticket_wrapper -->
 		<?php
 		$html = ob_get_contents();

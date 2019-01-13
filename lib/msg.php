@@ -13,9 +13,9 @@ class Orbisius_Support_Tickets_Msg {
         $icon = 'exclamation-sign';
 
         if ( $status == self::INFO ) { // notice
-            $cls = 'app_info alert alert-info';
+            $cls = 'orbisius_support_tickets_app_alert app_info alert alert-info';
         } elseif ( $status === 6 ) { // dismissable notice
-            $cls = 'app_info alert alert-danger alert-dismissable';
+            $cls = 'orbisius_support_tickets_app_alert app_info alert alert-danger alert-dismissable';
             $extra = ' <button type="button" class="close" data-dismiss="alert" aria-hidden="false"><span aria-hidden="true">&times;</span><span class="__sr-only">Close</span></button>';
             //$extra = ' <button type="button" class="close" data-dismiss="alert" aria-hidden="false">X</button>';
         } elseif ( $status === 4 ) { // dismissable notice
@@ -23,10 +23,10 @@ class Orbisius_Support_Tickets_Msg {
             $extra = ' <button type="button" class="close" data-dismiss="alert" aria-hidden="false"><span aria-hidden="true">&times;</span><span class="__sr-only">Close</span></button>';
             //$extra = ' <button type="button" class="close" data-dismiss="alert" aria-hidden="false">X</button>';
         } elseif ( $status == self::ERROR || $status == 0 || $status === false ) {
-            $cls = 'app_error alert alert-danger';
+            $cls = 'orbisius_support_tickets_app_alert app_error alert alert-danger';
             $icon = 'remove';
         } elseif ( $status == self::SUCCESS || $status == 1 || $status === true ) {
-            $cls = 'app_success alert alert-success';
+            $cls = 'orbisius_support_tickets_app_alert app_success alert alert-success';
             $icon = 'ok';
         }
 

@@ -15,3 +15,15 @@
     width: 100%;
 }
 
+.orbisius_support_tickets_app_alert {
+    margin: 10px 0;
+    padding: 5px;
+}
+
+.orbisius_support_tickets_app_error {
+    color:red;
+}
+
+.orbisius_support_tickets_app_success {
+    color:green;
+}
