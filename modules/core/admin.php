@@ -368,7 +368,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                         <div>
                                                             You can leave this blank. If your customers hit the reply button the email will used as recipient to you.
                                                             <br/>
-                                                            Example: MyCompany Awesome Support &lt;awesome.support@example.com&gt;
+                                                            Example:
+                                                            &lt;awesome.support@example.com&gt; OR
+                                                            MyCompany Awesome Support &lt;awesome.support@example.com&gt;
                                                         </div>
                                                     </td>
                                                 </tr>

@@ -77,11 +77,20 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$from_name = empty($notif_opts['support_from_name']) ? get_bloginfo('name') . ' Support' : $notif_opts['support_from_name'];
 		$from_email = empty($notif_opts['support_from_email']) ? 'mailer@' . $host : $notif_opts['support_from_email'];
 		$from_full_email = "'$from_name' <$from_email>";
-
-		$reply_to_full_email = '"Club Orbisius Support" <help+club+orbisius@orbisius.com>';
-
 		$headers[] = "From: $from_full_email";
-		$headers[] = "Reply-to: $reply_to_full_email";
+
+		$reply_to_full_email = '';
+
+		if (!empty($notif_opts['support_email_reply_to'])) {
+			$reply_to_full_email = $notif_opts['support_email_reply_to'];
+		} elseif (!empty($notif_opts['support_email_receiver'])) {
+			$reply_to_full_email = $notif_opts['support_email_receiver'];
+		}
+
+		if (!empty($reply_to_full_email)) {
+			$headers[] = "Reply-to: $reply_to_full_email";
+		}
+
 		$headers = apply_filters( 'orbisius_support_tickets_filter_notification_email_headers', $headers, $ctx );
 
 		$attachments = [];
