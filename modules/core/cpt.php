@@ -45,7 +45,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'show_ui' => true, // generate a default admin user interface
 			'show_in_menu' => true, // display as a top-level menu item
 			'query_var' => true,
-			'rewrite' => array('slug' => 'ticket'), // rewrite the url to make it pretty
+			'rewrite' => array('slug' => 'orbisius_support_ticket'), // rewrite the url to make it pretty
 			'menu_position' => 2, // show below Posts but above Media
 			'supports' => array( 'title', 'editor', 'comments', 'author', ), // /*'revisions', */  'excerpt', 'custom-fields', 'thumbnail', 'post_formats', 'page-attributes'
 			'has_archive' => true,
