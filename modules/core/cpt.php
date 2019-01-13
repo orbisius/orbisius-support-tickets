@@ -197,6 +197,10 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		do_action('orbisius_support_tickets_action_ticket_activity', $ctx);
 	}
 
+	/**
+	 * @param array $user_filter
+	 * @return array
+	 */
 	public function getItems(array $user_filter = []) {
 		global $wpdb;
 		$post_type = $this->getCptSupportTicket();
@@ -217,6 +221,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			$q = $user_filter['search'];
 		}
 
+		// @todo if this is done hook temporarily to filter out non requested cols
 		if (!empty($user_filter['fields'])) {
 			$filter['fields'] = $user_filter['fields'];
 		}

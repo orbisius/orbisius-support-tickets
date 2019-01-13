@@ -20,6 +20,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		add_shortcode( 'orbisius_support_tickets_list_tickets', [ $this, 'renderTickets' ] );
 		add_shortcode( 'orbisius_support_tickets_submit_ticket', [ $this, 'renderSubmitTicketForm' ] );
 		add_shortcode( 'orbisius_support_tickets_generate_page_link', [ $this, 'generatePageLink' ] );
+
+		add_action('orbisius_support_tickets_view_ticket_after_output', [ $this, 'renderCloseTicketButton'] );
 	}
 
 	private $defaults = [
@@ -182,6 +184,31 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	/**
+	 * Processes [orbisius_support_list_tickets] shortcode
+	 * @return string
+	 */
+	public function renderCloseTicketButton( $ctx = [] ) {
+	    if (empty($ctx['ticket_id'])) {
+	        return;
+        }
+
+		ob_start();
+		?>
+        <div id="orbisius_support_tickets_close_ticket_wrapper" class="orbisius_support_tickets_close_ticket_wrapper">
+            <?php
+            $link = $this->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] );
+            $label = __('Close Ticket', 'orbisius_support_tickets');
+            ?>
+            <?php echo "<a href='$link'>$label</a>"; ?>
+        </div> <!-- /orbisius_support_tickets_close_ticket_wrapper -->
+		<?php
+		$html = ob_get_contents();
+		ob_end_clean();
+
+		echo $html;
+	}
+
+	/**
 	 * Processes [orbisius_support_submit_ticket] shortcode
 	 * @return string
 	 */
@@ -290,6 +317,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	public function renderViewTicket( $attribs = [] ) {
 		ob_start();
 		$msg = '';
+		$ctx = [];
 		$items = [];
 		$ticket_id = $this->getData('ticket_id');
 		$ticket_obj = '';
@@ -337,11 +365,15 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			];
 
 			$items = get_comments( $args );
+
+			$ctx = [
+				'ticket_id' => $ticket_id,
+			];
 		} catch (Exception $e) {
 			$msg = Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
         }
 
-		$ctx   = [];
+
 		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 		?>
         <div id="orbisius_support_tickets_view_ticket_wrapper" class="orbisius_support_tickets_view_ticket_wrapper">
@@ -361,9 +393,14 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                     <div class="ticket_id_wrapper">
                         <?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ticket_obj->ID ); ?>
                     </div>
+
+                    <?php do_action('orbisius_support_tickets_view_ticket_before_output', $ctx); ?>
+
                     <div class="ticket_content_wrapper">
-                        <?php echo $cpt_obj->fixOutput($ticket_obj->post_content); ?>
+	                    <?php echo $cpt_obj->fixOutput($ticket_obj->post_content); ?>
                     </div>
+
+                    <?php do_action('orbisius_support_tickets_view_ticket_after_output', $ctx); ?>
                 </div>
 
                 <div id="orbisius_support_tickets_view_ticket_discussion_wrapper" class="orbisius_support_tickets_view_ticket_discussion_wrapper">
@@ -375,6 +412,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			                ? 'orbisius_support_tickets_view_ticket_author_msg'
                             : 'orbisius_support_tickets_view_ticket_rep_msg';
 		                ?>
+
                         <div id="comment-<?php echo $id;?>" class="orbisius_support_tickets_view_ticket_discussion_item <?php echo $row_cls;?>">
                             <div class="reply"><?php echo $cpt_obj->fixOutput($item_obj->comment_content); ?></div>
                             <div class="date">Posted on: <?php esc_attr_e( $item_obj->comment_date ); ?></div>
