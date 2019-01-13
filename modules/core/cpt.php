@@ -113,4 +113,37 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		//$buff = "<pre id='orbisius_support_tickets_fmt_content' class='orbisius_support_tickets_fmt_content'>$buff</pre>";
 		return $buff;
 	}
+
+	private $statuses = [
+		'draft' => 'open',
+		'private' => 'open',
+		'publish' => 'closed',
+	];
+
+	/**
+	 *
+	 */
+	public function getStatuses() {
+		$statuses = apply_filters('orbisius_support_tickets_filter_ticket_statuses', $this->statuses);
+		return $statuses;
+	}
+
+	const STATUS_OPEN = 'draft';
+	const STATUS_CLOSED = 'publish';
+
+	/**
+	 * @param $checkingStatus
+	 * @return bool
+	 */
+	public function isStatus($checkingStatus) {
+		return 0;
+	}
+
+	/**
+	 * @param $item_obj
+	 */
+	public function getTicketStatus( $item_obj ) {
+		$statuses = $this->getStatuses();
+		return ! empty( $item_obj->post_status ) && !empty( $statuses[ $item_obj->post_status ] ) ? $statuses[ $item_obj->post_status ] : '';
+	}
 }

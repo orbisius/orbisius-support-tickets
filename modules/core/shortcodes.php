@@ -166,13 +166,14 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 						<?php foreach ( $items as $item_obj ) : ?>
 							<?php
 							$link = $this->generateViewTicketLink( [ 'ticket_id' => $item_obj->ID ] );
+							$status = $cpt_api->getTicketStatus($item_obj);
 							?>
                             <tr class="table-info">
                                 <th scope="row"><?php echo $item_obj->ID; ?></th>
                                 <td><a href="<?php echo $link; ?>"><?php esc_attr_e( $item_obj->post_title ); ?></a>
                                 </td>
                                 <td><?php esc_attr_e( $item_obj->post_date ); ?></td>
-                                <td>-</td>
+                                <td><?php esc_attr_e( $status ); ?></td>
                             </tr>
 						<?php endforeach; ?>
                         </tbody>
