@@ -99,7 +99,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 */
 	public function addMenuPages() {
 		$ctx = [
-			'top_menu_slug' => 'orbisius_support_tickets',
+			'top_menu_slug' => $this->plugin_settings_key,
 			'req_cap' => $this->req_cap,
 		];
 
@@ -128,16 +128,36 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			array( $this, 'renderPluginDashboardPage' )
 		);
 
+		$ctx['settings_slug'] = $ctx['top_menu_slug'] . '_settings';
+
 		// This way we have the top level menu leads to this and there's no duplication.
 		add_submenu_page( $ctx['top_menu_slug'],
 			__( 'Settings', 'orbisius_support_tickets'),
 			__( 'Settings', 'orbisius_support_tickets'),
 			$ctx['req_cap'],
-			$ctx['top_menu_slug'] . '_settings',
+			$ctx['settings_slug'],
 			array( $this, 'renderPluginSettingsPage' )
 		);
 
 		do_action('orbisius_support_tickets_admin_action_setup_menu', $ctx);
+
+		add_filter( 'plugin_action_links', [ $this, 'addQuickLinksIoPluginListing' ], 10, 2 );
+	}
+
+	/**
+	 * Adds the action link to settings when listing Plugins
+	 * @param array $links
+	 * @param string $file
+	 * @return array
+	 */
+	function addQuickLinksIoPluginListing($links, $file) {
+		if ($file == plugin_basename(ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN)) {
+			$link = admin_url('admin.php?page=' . urlencode($this->plugin_settings_key . '_settings'));
+			$link = "<a href=\"{$link}\">Settings</a>";
+			array_unshift($links, $link);
+		}
+
+		return $links;
 	}
 
 	/**
