@@ -205,7 +205,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			if ( $res_obj->isSuccess() ) {
 			    $ticket_id = $res_obj->data('id');
 				$ticket_link = $this->generateViewTicketLink( [ 'ticket_id' => $ticket_id, ] );
-				$msg = sprintf( __( "Ticket created. <a href='%s' target='_blank'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
+				$msg = sprintf( __( "Ticket created. <a href='%s'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
 				$msg = Orbisius_Support_Tickets_Msg::success($msg);
 			} else {
 				$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
@@ -247,7 +247,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                                        id="orbisius_support_tickets_data_subject"
                                        type="text" placeholder="<?php _e( 'Subject', 'orbisius_support_tickets' ); ?>"
                                        value="<?php esc_attr_e( $data['subject'] ); ?>"
-                                       class="form-control orbisius_support_tickets_data_subject"/>
+                                       class="form-control orbisius_support_tickets_data_subject orbisius_support_tickets_full_width"/>
                             </div>
                         </div>
 
@@ -257,7 +257,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                                 <?php _e( 'Message', 'orbisius_support_tickets' ); ?></label>
                             <div class="col-md-9">
                                 <textarea id="orbisius_support_tickets_data_message"
-                                          class="orbisius_support_tickets_data_message form-control"
+                                          class="orbisius_support_tickets_data_message form-control orbisius_support_tickets_full_width"
                                           name="orbisius_support_tickets_data[message]"
                                           placeholder="Please enter the message here..."
                                           rows="<?php echo $row_num; ?>"><?php esc_attr_e( $data['message'] ); ?></textarea>

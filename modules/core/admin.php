@@ -202,13 +202,13 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 				                                            $args['selected'] = $opts['list_tickets_page_id'];
 			                                            }
 
-			                                            $pages_dropdown = wp_dropdown_pages($args); // must be hierachical
+			                                            $pages_dropdown = wp_dropdown_pages($args); // must be hierarchical
 			                                            echo $pages_dropdown;
 			                                            ?>
                                                         <br/><br/>
                                                         <div>
                                                             The page needs to contain this shortcode which lists user's tickets.
-                                                            <input type="text" class="widefat orbisius_support_tickets_selectable"
+                                                            <input type="text" class="widefat orbisius_support_tickets_selectable orbisius_support_tickets_full_width"
                                                                    readonly="readonly" value="<?php esc_attr_e('[orbisius_support_tickets_list_tickets]');?>" />
                                                         </div>
                                                     </td>
@@ -237,7 +237,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                         <br/><br/>
                                                         <div>
                                                             The page needs to contain this shortcode which lists a single ticket's data.
-                                                            <input type="text" class="widefat orbisius_support_tickets_selectable" readonly="readonly"
+                                                            <input type="text" class="widefat orbisius_support_tickets_selectable orbisius_support_tickets_full_width" readonly="readonly"
                                                                    value="<?php esc_attr_e('[orbisius_support_tickets_view_ticket]');?>" />
                                                         </div>
                                                     </td>
