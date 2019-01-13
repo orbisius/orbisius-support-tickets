@@ -14,7 +14,7 @@ Minimalistic ticket support system that you can use to manage your support reque
 Orbisius Support Tickets is a minimalistic ticket support system that enables you to handle support requests nicely.
 You need to create several pages and paste the relevant shortcodes so your customer can submit their support requests.
 
-You need to create several pages with the following shortcodes.
+You can manually create the pages that the plugin needs with the following shortcodes or let the plugin create them for you (Orbisius Support Tickets > Settings).
 Ideally, you should create a top level page called Support (/support) or Help (/help).
 Then create the following subpages. The parent page link will be prepended automatically by WordPress.
 
@@ -34,7 +34,8 @@ link: /support/submit-ticket
 This shortcode lists ticket submission form
 [orbisius_support_tickets_submit_ticket]
 
-Next, you need to link go in to Orbisius Support Tickets > Orbisius Support Tickets and set the pages.
+Add the newly created pages to the site's nav menu.
+You need to go in to Appearance > Menus
 
 = Support =
 > If you have found a bug or have a recommendation submit a ticket https://github.com/orbisius/orbisius-support-tickets/issues
