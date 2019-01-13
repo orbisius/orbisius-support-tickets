@@ -23,7 +23,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		'site_url' => 'Site URL',
 		'site_name' => 'Your site name (from WP settings)',
 		'ticket_id' => 'The ticket id',
-		'ticket_url' => 'The link to view ticket',
+		'ticket_url' => 'The view ticket link',
 		'recipient_email' => 'Who is going to receive the email (ticket creator)',
 		//'recipient_name' => 'Who is going to receive',
     ];
