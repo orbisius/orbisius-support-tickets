@@ -208,6 +208,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
         <div id="orbisius_support_tickets_close_ticket_wrapper" class="orbisius_support_tickets_close_ticket_wrapper">
             <?php
 		    $data = $this->getData();
+            $admin_api    = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+            $settings_key = $admin_api->getPluginSettingsKey();
 
             if (!empty($data['sub_cmd']) && $data['sub_cmd'] == 'close') {
 	            $status = $cpt_obj->changeStatus($ctx['ticket_id'], Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED);
@@ -219,9 +221,16 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                 }
 
                 echo $msg;
+
+                $req_obj = Orbisius_Support_Tickets_Request::getInstance();
+
+                $url = $req_obj->getRequestUrl();
+                $url = remove_query_arg("{$settings_key}_data[cmd]", $url);
+                $url = remove_query_arg("{$settings_key}_data[sub_cmd]", $url);
+
+                // we redirect becasu we want the url to change. the current one has cmd to close the ticket
+	            $req_obj->redirect($url);
             } else {
-	            $admin_api    = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
-	            $settings_key = $admin_api->getPluginSettingsKey();
 	            $link         = $this->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] );
 	            $link         = add_query_arg( "{$settings_key}_data[cmd]", 'view_ticket', $link );
 	            $link         = add_query_arg( "{$settings_key}_data[sub_cmd]", 'close', $link );
@@ -543,7 +552,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 	public function injectRedirect() {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
-		$req_url = $req_obj->get_request_url();
+		$req_url = $req_obj->getRequestUrl();
 		$req_url_esc = esc_url($req_url);
 		echo "<input type='hidden' name='redirect_to' value='$req_url_esc'>";
     }

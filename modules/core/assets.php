@@ -12,7 +12,7 @@ class Orbisius_Support_Tickets_Module_Core_Assets {
 
 	public function enqueue() {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
-		$req_url = $req_obj->get_request_url();
+		$req_url = $req_obj->getRequestUrl();
 
 		if (!is_admin()) {
 			// @todo Should we check if it's any of our pages first before outputting this css?
