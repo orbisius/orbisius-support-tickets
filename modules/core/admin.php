@@ -161,7 +161,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			$links[] = $link;
 
 			$link = 'https://github.com/orbisius/orbisius-support-tickets/issues';
-			$link = "<a href='{$link}' target='_blank' title='Opens in a new window'>Report bug</a>";
+			$link = "<a href='{$link}' target='_blank' title='Opens in a new window'>Report a bug</a>";
 			$links[] = $link;
 
 			$link = 'https://orbisius.com/products/wordpress-plugins/orbisius-support-tickets';
