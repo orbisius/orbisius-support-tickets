@@ -275,7 +275,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                 <!-- Toggle -->
 
                                 <h2 class="hndle"><span><?php esc_attr_e(
-											'Extra Infor', 'orbisius_support_tickets'
+											'Extra Info', 'orbisius_support_tickets'
 										); ?></span></h2>
 
                                 <div class="inside">
