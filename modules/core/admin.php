@@ -330,6 +330,20 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		                                    <?php settings_fields($notif_settings_group); ?>
                                             <table class="form-table">
                                                 <tr valign="top">
+                                                    <th scope="row" colspan="2">Admin</th>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <th scope="row">Support Notification Recipient</th>
+                                                    <td>
+                                                        <input type="text" class="widefat"
+                                                               name="<?php echo "{$notif_settings_key}[support_email_receiver]";?>"
+                                                               value="<?php esc_attr_e( empty($notif_opts['support_email_receiver'])
+                                                                   ? get_option('admin_email')
+                                                                   : $notif_opts['support_email_receiver']);?>" />
+                                                    </td>
+                                                </tr>
+
+                                                <tr valign="top">
                                                     <th scope="row" colspan="2">New ticket</th>
                                                 </tr>
                                                 <tr valign="top">
@@ -476,6 +490,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
             'new_ticket_subject' => '',
             'new_ticket_message' => '',
             'new_ticket_notification_enabled' => '',
+            'support_email_receiver' => '',
         ],
     );
 

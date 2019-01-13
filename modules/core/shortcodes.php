@@ -76,6 +76,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			}
 
 			$ctx = [
+				'author_id' => $user_id,
 				'data' => $ins_post_data,
 			];
 
@@ -84,16 +85,23 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			if ( empty( $ins_post_data['ID'] ) ) {
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_insert', $ctx );
 				$id = wp_insert_post( $ins_post_data );
+
+				if ( empty($id) || ! is_numeric( $id ) || $id <= 0 ) {
+					throw new Exception( "Couldn't save item." );
+				}
+
 				$ctx['ticket_id'] = $id;
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', $ctx );
 			} else {
+				$ctx['ticket_id'] = $ins_post_data['ID'];
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_update', $ctx );
-				wp_update_post( $ins_post_data );
-				do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_update', $ctx );
-			}
+				$id = wp_update_post( $ins_post_data );
 
-			if ( ! is_numeric( $id ) || $id <= 0 ) {
-				throw new Exception( "Couldn't save item." );
+				if ( empty($id) || ! is_numeric( $id ) || $id <= 0 ) {
+					throw new Exception( "Couldn't save item." );
+				}
+
+				do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_update', $ctx );
 			}
 
 			$res->data( 'id', $id );

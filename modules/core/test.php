@@ -17,8 +17,8 @@ class Orbisius_Support_Tickets_Module_Core_Test {
 
 		// http://orbclub.com.clients.com/?orbisius_support_tickets_test_data[orbisius_support_tickets_action_before_submit_ticket_after_insert]=1
 		if (!empty($test_data['orbisius_support_tickets_action_before_submit_ticket_after_insert'])) {
-			$id = 123;
-			$ctx['ticket_id'] = $id;
+			$ctx['author_id'] = 13; //
+			$ctx['ticket_id'] = 123;
 			do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', $ctx );
 
 			//echo 'orbisius_support_tickets_action_before_submit_ticket_after_insert';

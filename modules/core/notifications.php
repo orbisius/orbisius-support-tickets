@@ -26,6 +26,22 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		    return;
         }
 
+		if (!empty($ctx['author_id'])) {
+			$user_id = $ctx['author_id'];
+
+			$user_obj = get_user_by('id', $user_id);
+
+			if (empty($user_obj)) { // user not found.
+				return;
+			}
+
+			$email = $user_obj->user_email;
+		} elseif (!empty($ctx['recipient_email'])) {
+			$email = $ctx['recipient_email'];
+		} else {
+			return '';
+		}
+
 		// 1 email to user
 		$subject = $notif_opts['new_ticket_subject'];
 		$message = $notif_opts['new_ticket_message'];
@@ -40,11 +56,16 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$subject = Orbisius_Support_Tickets_String_Util::replaceVars($subject, $vars);
 		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
 
+		$mail_sent_status = wp_mail($email, $subject, $message);
+
+		if (empty($notif_opts['support_email_receiver'])) {
+			return;
+		}
+
 		// 1 email to admin or just BCC?
 //		$subject = $notif_opts['new_ticket_subject'];
 //		$message = $notif_opts['new_ticket_message'];
 
-		//wp_mail()
 	}
 
 	/**
