@@ -333,6 +333,47 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                     <th scope="row" colspan="2">Admin</th>
                                                 </tr>
                                                 <tr valign="top">
+                                                    <th scope="row">From Name</th>
+                                                    <td>
+                                                        <input type="text" class="widefat"
+                                                               name="<?php echo "{$notif_settings_key}[support_from_name]";?>"
+                                                               value="<?php esc_attr_e( empty($notif_opts['support_from_name'])
+				                                                   ? ''
+				                                                   : $notif_opts['support_from_name']);?>" />
+                                                    </td>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <th scope="row">From Email</th>
+                                                    <td>
+                                                        <input type="text" class="widefat"
+                                                               name="<?php echo "{$notif_settings_key}[support_from_email]";?>"
+                                                               value="<?php esc_attr_e( empty($notif_opts['support_from_email'])
+                                                                   ? ''
+                                                                   : $notif_opts['support_from_email']);?>" />
+                                                        <div>
+                                                            Example: <br/>
+                                                            <img src="<?php echo ORBISIUS_SUPPORT_TICKETS_BASE_URL; ?>/assets/help/images/email_from_stuff.png" alt="Shows what is email from name and email" />
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                                <tr valign="top">
+                                                    <th scope="row">Reply-to Email (optional)</th>
+                                                    <td>
+                                                        <input type="text" class="widefat"
+                                                               name="<?php echo "{$notif_settings_key}[support_email_reply_to]";?>"
+                                                               value="<?php esc_attr_e( empty($notif_opts['support_email_reply_to'])
+                                                                   ? ''
+                                                                   : $notif_opts['support_email_reply_to']);?>" />
+                                                        <div>
+                                                            You can leave this blank. If your customers hit the reply button the email will used as recipient to you.
+                                                            <br/>
+                                                            Example: MyCompany Awesome Support &lt;awesome.support@example.com&gt;
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                                <tr valign="top">
                                                     <th scope="row">Support Notification Recipient</th>
                                                     <td>
                                                         <input type="text" class="widefat"
@@ -340,6 +381,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                                value="<?php esc_attr_e( empty($notif_opts['support_email_receiver'])
                                                                    ? get_option('admin_email')
                                                                    : $notif_opts['support_email_receiver']);?>" />
+                                                        <div>
+                                                            Who from your team should be notified when new ticket is created, updated, closed.
+                                                        </div>
                                                     </td>
                                                 </tr>
 
@@ -491,6 +535,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
             'new_ticket_message' => '',
             'new_ticket_notification_enabled' => '',
             'support_email_receiver' => '',
+            'support_from_name' => '',
+            'support_from_email' => '',
+            'support_email_reply_to' => '',
         ],
     );
 
