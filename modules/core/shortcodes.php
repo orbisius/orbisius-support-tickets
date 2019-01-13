@@ -15,8 +15,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 *
 	 */
 	function registerCodes() {
-		add_shortcode( 'orbisius_support_tickets_list_tickets', [ $this, 'renderTickets' ] );
+		add_shortcode( 'orbisius_support_tickets_page_url', [ $this, 'renderSubmitTicketPageUrl' ] );
 		add_shortcode( 'orbisius_support_tickets_view_ticket', [ $this, 'renderViewTicket' ] );
+		add_shortcode( 'orbisius_support_tickets_list_tickets', [ $this, 'renderTickets' ] );
 		add_shortcode( 'orbisius_support_tickets_submit_ticket', [ $this, 'renderSubmitTicketForm' ] );
 	}
 
@@ -428,6 +429,35 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		ob_end_clean();
 
 		return $html;
+	}
+
+	/**
+	 * Processes [orbisius_support_tickets_page_url] shortcode and returns the page URL for a given requested page
+	 * @return string
+	 */
+	public function renderSubmitTicketPageUrl( $attribs = [] ) {
+		$link = '#';
+
+		if (empty($attribs['page'])) {
+		    return $link;
+        }
+
+		$admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+		$opts = $admin_api->getOptions();
+
+		// req: submit_ticket, In the settings page we'll look for 'submit_ticket_page_id'
+        // and if it's set we'll return the link to it
+		if ( empty( $opts[ $attribs['page'] . '_page_id' ] ) ) {
+			return $link;
+        }
+
+		$link = get_permalink($opts[ $attribs['page'] . '_page_id' ]);
+
+		if (!empty($attribs['esc'])) {
+		    $link = esc_url($link);
+        }
+
+		return $link;
 	}
 
 	public function injectRedirect() {

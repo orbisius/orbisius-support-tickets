@@ -1,9 +1,9 @@
 <?php
 
-$cpt = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+$admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
 
-add_action('init', [ $cpt, 'init' ] ) ;
-add_action('init', [ $cpt, 'performAdminInit' ] ) ;
+add_action('init', [ $admin_api, 'init' ] ) ;
+add_action('init', [ $admin_api, 'performAdminInit' ] ) ;
 
 class Orbisius_Support_Tickets_Module_Core_Admin {
     private $plugin_settings_group_key = 'orbisius_support_tickets';
@@ -478,7 +478,6 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 */
 	public function createPages() {
 		$res_obj = new Orbisius_Support_Tickets_Result();
-	    $parent_page_title = 'Support';
 	    $parent_page_slug = 'support';
 		$create_page_defaults = array(
 			'post_type'     => 'page',
@@ -490,38 +489,49 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			'comment_status' => 'closed',
 		);
 
+		//$res_obj->data('parent_page_created'
+	    $parent_page_rec = [
+            'id' => 'support_page_id',
+            'slug' => $parent_page_slug,
+            'page_title' => __('Support', 'orbisius_support_tickets'),
+            'post_content' => "<div><a href='[orbisius_support_tickets_page_url page=submit_ticket esc=1]'>Submit Ticket</a></div>
+<div><a href='[orbisius_support_tickets_page_url page=list_tickets esc=1]'>My Tickets</a></div>",
+        ];
+
 	    $child_pages = [
             [
                 'id' => 'list_tickets_page_id',
                 'slug' => 'my-tickets',
                 'page_title' => 'My Tickets',
-                'post_content' => '<p>[orbisius_support_tickets_list_tickets]</p>',
+                'post_content' => '<div>[orbisius_support_tickets_list_tickets]</div>',
             ],
             [
 	            'id' => 'submit_ticket_page_id',
                 'slug' => 'submit-ticket',
                 'page_title' => 'Submit Ticket',
-                'post_content' => '<p>[orbisius_support_tickets_submit_ticket]</p>',
+                'post_content' => '<div>[orbisius_support_tickets_submit_ticket]</div>',
             ],
             [
 	            'id' => 'view_ticket_page_id',
                 'slug' => 'view-ticket',
                 'page_title' => 'View Ticket',
-                'post_content' => '<p>[orbisius_support_tickets_view_ticket]</p>',
+                'post_content' => '<div>[orbisius_support_tickets_view_ticket]</div>',
             ],
         ];
 
         $parent_page = get_page_by_path($parent_page_slug);
+		$parent_page_created = 0;
 
         if (empty($parent_page)) {
             $my_post = array_replace_recursive($create_page_defaults, array(
                 'post_name'     => $parent_page_slug,
-                'post_title'    => wp_strip_all_tags( $parent_page_title ),
-                //'post_content'  => '<p> </p>',
+                'post_title'    => $parent_page_rec['page_title'],
+                'post_content'  => $parent_page_rec['post_content'],
             ));
 
             // Insert the post into the database
             $parent_page_id = wp_insert_post( $my_post ); // or error
+            $parent_page_created = 1;
         } else {
 	        $parent_page_id = $parent_page->ID;
         }
@@ -551,6 +561,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		    $res_obj->data($page_rec['id'], $page_id);
         }
+
+	    $res_obj->data('parent_page_created', $parent_page_created);
 
 		return $res_obj;
 	}
