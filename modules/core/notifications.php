@@ -19,6 +19,10 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		    return;
         }
 
+		if (!empty($ticket_obj->ID)) {
+			return;
+		}
+
 		$admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
 		$notif_key_in_opts = $admin_api->getPluginSettingsNotificationKey();
 		$notif_opts = $admin_api->getOptions($notif_key_in_opts);
@@ -128,6 +132,12 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		    return;
         }
 
+		$ticket_obj = get_post($ctx['ticket_id']); // find ticket
+
+		if (!empty($ticket_obj->ID)) {
+			return;
+		}
+
 		$admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
 		$notif_key_in_opts = $admin_api->getPluginSettingsNotificationKey();
 		$notif_opts = $admin_api->getOptions($notif_key_in_opts);
@@ -171,11 +181,12 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		// support posts a reply -> notify client
 		if ($user_api->isEditor($ctx['author_id'])) {
-			$ticket_obj = get_post($ctx['ticket_id']); // find ticket
-			$client_obj = $user_api->getUser($ticket_obj->post_author); // find who created it.
+			if (!empty($ticket_obj->post_author)) {
+				$client_obj = $user_api->getUser( $ticket_obj->post_author ); // Find who created the ticket.
 
-			if (!empty($client_obj->user_email)) {
-				$recipient_email = $client_obj->user_email;
+				if ( ! empty( $client_obj->user_email ) ) {
+					$recipient_email = $client_obj->user_email;
+				}
 			}
 		}
 
