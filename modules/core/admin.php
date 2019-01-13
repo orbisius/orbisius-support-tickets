@@ -442,6 +442,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
                                         <div>
                                             <h3>Supported merge tags (variables) in the email: </h3>
+                                            <div>
+                                                You can use these tags in subject, message, from email, from name, reply-to.
+                                            </div>
                                             <ul>
                                                 <?php foreach ($this->getReplaceVars() as $key => $val) : ?>
                                                     <li>

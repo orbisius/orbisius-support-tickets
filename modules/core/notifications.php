@@ -84,6 +84,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$from_name = empty($notif_opts['support_from_name']) ? get_bloginfo('name') . ' Support' : $notif_opts['support_from_name'];
 		$from_email = empty($notif_opts['support_from_email']) ? 'mailer@' . $host : $notif_opts['support_from_email'];
 		$from_full_email = "'$from_name' <$from_email>";
+		$from_full_email = Orbisius_Support_Tickets_String_Util::replaceVars($from_full_email, $vars);
 		$headers[] = "From: $from_full_email";
 
 		$reply_to_full_email = '';
@@ -95,6 +96,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		}
 
 		if (!empty($reply_to_full_email)) {
+			$reply_to_full_email = Orbisius_Support_Tickets_String_Util::replaceVars($reply_to_full_email, $vars);
 			$headers[] = "Reply-to: $reply_to_full_email";
 		}
 
