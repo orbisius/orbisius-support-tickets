@@ -12,7 +12,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	/**
 	 * @var string
 	 */
-	private $req_cap = 'manage_options'; // admin
+	//private $req_cap = 'manage_options'; // admin
+	private $req_cap = 'edit_others_posts'; // editor
 
 	public function init() {
 	}
