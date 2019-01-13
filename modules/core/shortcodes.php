@@ -373,16 +373,15 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				<?php echo $msg; ?>
 
                 <div class="table-responsive-md">
-                    <table class="table table-striped w-auto">
-                        <tbody>
-                            <tr>
-                                <td><h3><?php echo $cpt_obj->fixOutput($ticket_obj->post_title); ?></h3></td>
-                            </tr>
-                            <tr>
-                                <td><?php echo $cpt_obj->fixOutput($ticket_obj->post_content); ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="ticket_title_wrapper">
+                        <h3><?php echo $cpt_obj->fixOutput($ticket_obj->post_title); ?></h3>
+                    </div>
+                    <div class="ticket_id_wrapper">
+                        <?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ticket_obj->ID ); ?>
+                    </div>
+                    <div class="ticket_content_wrapper">
+                        <?php echo $cpt_obj->fixOutput($ticket_obj->post_content); ?>
+                    </div>
                 </div>
 
                 <div id="orbisius_support_tickets_view_ticket_discussion_wrapper" class="orbisius_support_tickets_view_ticket_discussion_wrapper">
