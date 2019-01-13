@@ -21,6 +21,13 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	public function performAdminInit() {
 		add_action( 'admin_menu', array( $this, 'addMenuPages' ) );
 		register_setting($this->plugin_settings_group_key, $this->plugin_settings_key, array($this, 'validateSettingsData'));
+
+		$ctx = [
+			'settings_key' => $this->plugin_settings_key,
+			'settings_group_key' => $this->plugin_settings_group_key,
+        ];
+
+		do_action('orbisius_support_tickets_admin_action_register_settings', $ctx);
 	}
 
 	/**
@@ -357,8 +364,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	/**
 	 * @return array
 	 */
-	public function getOptions() {
-		$opts = get_option($this->plugin_settings_key);
+	public function getOptions($key = '') {
+		$opts = get_option(empty($key) ? $this->plugin_settings_key : $key);
 		$opts = empty($opts) ? array() : (array) $opts;
 		$opts = array_replace_recursive($this->plugin_default_opts, $opts);
 		return $opts;
