@@ -549,10 +549,10 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 	private $plugin_default_opts_other = array(
         'orbisius_support_tickets_notification' => [
-            'support_from_name' => '',
-            'support_from_email' => '',
-            'support_email_reply_to' => '',
-            'support_email_receiver' => '',
+            'support_from_name' => "{site_name} Mailer",
+            'support_from_email' => 'mailer@{domain}',
+            'support_email_reply_to' => 'support@{domain}',
+            'support_email_receiver' => 'support@{domain}',
 
             // New ticket stuff
             'new_ticket_subject' => '[#{ticket_id}] New ticket has been created',
