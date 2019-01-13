@@ -400,7 +400,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                 </tr>
 
                                                 <tr valign="top">
-                                                    <th scope="row" colspan="2">New ticket</th>
+                                                    <th scope="row" colspan="2">New ticket
+                                                        <hr/>
+                                                    </th>
                                                 </tr>
                                                 <tr valign="top">
                                                     <th scope="row">Subject</th>
@@ -427,6 +429,40 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                                name="<?php echo "{$notif_settings_key}[new_ticket_notification_enabled]";?>"
                                                                <?php checked(empty($notif_opts['new_ticket_notification_enabled'])
                                                                     ? '' : $notif_opts['new_ticket_notification_enabled'], 1); ?>
+                                                               value="1" />
+                                                            Enable notification
+                                                        </label>
+                                                    </td>
+                                                </tr>
+
+                                                <tr valign="top">
+                                                    <th scope="row" colspan="2">Ticket activity<hr/></th>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <th scope="row">Subject</th>
+                                                    <td>
+                                                        <input type="text" class="widefat"
+                                                               name="<?php echo "{$notif_settings_key}[ticket_activity_subject]";?>"
+                                                               value="<?php empty($notif_opts['ticket_activity_subject']) ? '' : esc_attr_e($notif_opts['ticket_activity_subject']);?>" />
+                                                    </td>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <th scope="row">Message</th>
+                                                    <td>
+                                                        <textarea class="widefat"
+                                                               name="<?php echo "{$notif_settings_key}[ticket_activity_message]";?>" rows="8"><?php
+                                                            empty($notif_opts['ticket_activity_message']) ? '' : esc_attr_e($notif_opts['ticket_activity_message']);?></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <th scope="row">Enable/Disable</th>
+                                                    <td>
+                                                        <input type="hidden" name="<?php echo "{$notif_settings_key}[ticket_activity_notification_enabled]";?>" value="0" />
+                                                        <label>
+                                                            <input type="checkbox" class=""
+                                                               name="<?php echo "{$notif_settings_key}[ticket_activity_notification_enabled]";?>"
+                                                               <?php checked(empty($notif_opts['ticket_activity_notification_enabled'])
+                                                                    ? '' : $notif_opts['ticket_activity_notification_enabled'], 1); ?>
                                                                value="1" />
                                                             Enable notification
                                                         </label>
@@ -562,6 +598,15 @@ Ticket ID: {ticket_id}
 Ticket link: {ticket_url}
 ",
             'new_ticket_notification_enabled' => 1,
+
+            // Ticket activity
+            'ticket_activity_subject' => '[#{ticket_id}] The ticket has been updated',
+            'ticket_activity_message' => "The ticket has been updated. Please, visit the ticket page to view the update.
+
+Ticket ID: {ticket_id}
+Ticket link: {ticket_url}
+",
+            'ticket_activity_notification_enabled' => 1,
         ],
     );
 
