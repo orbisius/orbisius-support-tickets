@@ -57,6 +57,9 @@ Link to submit tickets page
 if you want the link to be passed through esc_url pass this attribute.
 esc=1
 
+You can customize the email notification templates.
+The plugin provides merge tags that you can using in the email templates. That way you'll be able to use the same template on multiple sites.
+
 == Demo ==
 
 TODO:
