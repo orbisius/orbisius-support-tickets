@@ -152,9 +152,23 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 */
 	function addQuickLinksIoPluginListing($links, $file) {
 		if ($file == plugin_basename(ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN)) {
+		    $old_links = $links;
+			$links = [];
+
+			// Add the links in the order we want
 			$link = admin_url('admin.php?page=' . urlencode($this->plugin_settings_key . '_settings'));
-			$link = "<a href=\"{$link}\">Settings</a>";
-			array_unshift($links, $link);
+			$link = "<a href='{$link}'>Settings</a>";
+			$links[] = $link;
+
+			$link = 'https://github.com/orbisius/orbisius-support-tickets/issues';
+			$link = "<a href='{$link}' target='_blank' title='Opens in a new window'>Report bug</a>";
+			$links[] = $link;
+
+			$link = 'https://orbisius.com/products/wordpress-plugins/orbisius-support-tickets';
+			$link = "<a href='{$link}' target='_blank' title='Opens in a new window'>Product Page</a>";
+			$links[] = $link;
+
+			$links = array_merge($links, $old_links);
 		}
 
 		return $links;
