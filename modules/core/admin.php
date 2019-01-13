@@ -357,6 +357,17 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                 <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
                                             </p>
                                          </form>
+
+
+                                        <div>
+                                            <h3>Supported merge tags (variables): </h3>
+                                            <ul>
+                                                <li>
+                                                    {subject} -> subject
+                                                </li>
+                                            </ul>
+                                        </div>
+
                                     </p>
 
                                 </div>
