@@ -25,11 +25,11 @@ class Orbisius_Support_Tickets_String_Util {
     }
 
     /**
-     * Orbisius_Support_Tickets_String_Util::is_alpha_num();
+     * Orbisius_Support_Tickets_String_Util::isAlphaNum();
      * Allowing a dash
      * @return res
      */
-    public static function is_alpha_num( $str ) {
+    public static function isAlphaNum( $str ) {
         return preg_match( '#^[\w\-]+$#si', $str );
     }
 
@@ -49,18 +49,18 @@ class Orbisius_Support_Tickets_String_Util {
         return array_map( 'self::trim', $data );
     }
 
-    const STRIP_SOME_TAGS = 2;
-    const STRIP_ALL_TAGS = 4;
+    const STRIP_ALL_TAGS = 2;
+    const STRIP_SOME_TAGS = 4;
 
     /**
      * Uses WP's wp_kses to clear some of the html tags but allow some attribs
-     * usage: Orbisius_Support_Tickets_String_Util::strip_some_tags($str);
+     * usage: Orbisius_Support_Tickets_String_Util::stripSomeTags($str);
 	 * uses WordPress' wp_kses()
      * @param str $buffer string buffer
      * @return str cleaned up text
      * borrowed from Slavi's qSandbox
      */
-    public static function strip_some_tags($buffer, $flags = self::STRIP_SOME_TAGS ) {
+    public static function stripSomeTags($buffer, $flags = self::STRIP_SOME_TAGS ) {
         // these work only in WP ctx
         static $default_attribs = array(
             'id' => array(),
@@ -124,7 +124,7 @@ class Orbisius_Support_Tickets_String_Util {
     /**
      * Orbisius_Support_Tickets_String_Util::hash();
      * @param mixed $param
-     * @return str
+     * @return string
      */
     public static function hash( $param, $sel_arr_keys = [] ) {
         // we want db NULL values to be treated as empty strings so the hashes
@@ -149,7 +149,7 @@ class Orbisius_Support_Tickets_String_Util {
         }
 
         $param = serialize( $param );
-        $param = $param . 'AAAAAA;afafihasf@#490asfasF';
+        $param = $param . 'AAAAA2345sdfsdfsfsdS23590asfasF';
         $param = sha1( $param );
         $param = strtoupper( $param );
         
@@ -201,18 +201,18 @@ class Orbisius_Support_Tickets_String_Util {
     
     /**
      * Replaces the template variables
-     * Orbisius_Support_Tickets_String_Util::replace_vars();
+     * Orbisius_Support_Tickets_String_Util::replaceVars();
      * @param string buffer to operate on
      * @param array the keys are uppercased and surrounded by %%KEY_NAME%% or {KEY_NAME}
      * @return string modified data
      */
-    public static function replace_vars( $buffer, $params = array() ) {
+    public static function replaceVars( $buffer, $params = array() ) {
         if ( is_array( $buffer ) ) {
             foreach ( $buffer as $k => $v ) {
                 $old_k = $k;
 
-                $k = self::replace_vars( $k, $params );
-                $v = self::replace_vars( $v, $params );
+                $k = self::replaceVars( $k, $params );
+                $v = self::replaceVars( $v, $params );
 
                 $buffer[ $k ] = $v;
 

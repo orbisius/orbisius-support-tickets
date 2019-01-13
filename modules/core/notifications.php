@@ -14,8 +14,12 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 	 * @param array $ctx
 	 */
 	public function notifyOnNewTicket($ctx = []) {
+		if (empty($ctx['ticket_id'])) {
+		    return;
+        }
+
 		$admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
-	    $notif_key_in_opts = $admin_api->getPluginSettingsNotificationKey();
+		$notif_key_in_opts = $admin_api->getPluginSettingsNotificationKey();
 		$notif_opts = $admin_api->getOptions($notif_key_in_opts);
 
 		if (empty($notif_opts['new_ticket_notification_enabled'])) {
@@ -28,6 +32,13 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		$subject = do_shortcode($subject);
 		$message = do_shortcode($message);
+
+		$vars = [
+			'ticket_id' => $ctx['ticket_id'],
+		];
+
+		$subject = Orbisius_Support_Tickets_String_Util::replaceVars($subject, $vars);
+		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
 
 		// 1 email to admin or just BCC?
 //		$subject = $notif_opts['new_ticket_subject'];
