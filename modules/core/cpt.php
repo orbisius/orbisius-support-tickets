@@ -270,4 +270,24 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 		return false;
 	}
+
+	/**
+	 * @param int $ticket_id
+	 */
+	public function getTicket($ticket_id) {
+		$post_obj = get_post($ticket_id);
+		return $post_obj;
+	}
+
+	/**
+	 * @param int|WP_Post $ticket_obj
+	 * @return string
+	 */
+	public function getStatus( $ticket_obj ) {
+		if (is_numeric($ticket_obj)) {
+			$ticket_obj = $this->getTicket($ticket_obj);
+		}
+
+		return empty($ticket_obj->post_status) ? '' : empty($ticket_obj->post_status);
+	}
 }

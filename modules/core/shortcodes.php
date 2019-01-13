@@ -192,11 +192,33 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	        return;
         }
 
+		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		$ticket_obj = $cpt_obj->getTicket($ctx['ticket_id']);
+
+		if (empty($ticket_obj)) {
+			return;
+		}
+
+		$data = $this->getData();
+
+	    if (!empty($data['sub_cmd']) && $data['sub_cmd'] == 'close') {
+		    $cpt_obj->changeStatus($ctx['ticket_id'], Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED);
+		    return;
+	    }
+
+		if ($cpt_obj->getStatus($ticket_obj) == Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED) {
+			return;
+		}
+
 		ob_start();
 		?>
         <div id="orbisius_support_tickets_close_ticket_wrapper" class="orbisius_support_tickets_close_ticket_wrapper">
             <?php
+            $admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+            $settings_key = $admin_api->getPluginSettingsKey();
             $link = $this->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] );
+            $link = add_query_arg("{$settings_key}_data[cmd]", 'view_ticket', $link);
+            $link = add_query_arg("{$settings_key}_data[sub_cmd]", 'close', $link);
             $label = __('Close Ticket', 'orbisius_support_tickets');
             ?>
             <?php echo "<a href='$link'>$label</a>"; ?>

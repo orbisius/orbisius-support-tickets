@@ -961,4 +961,18 @@ Ticket link: {ticket_url}
 	public function setReplaceVars( $replace_vars ) {
 		$this->replace_vars = $replace_vars;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getPluginSettingsKey() {
+		return $this->plugin_settings_key;
+	}
+
+	/**
+	 * @param string $plugin_settings_key
+	 */
+	public function setPluginSettingsKey( $plugin_settings_key ) {
+		$this->plugin_settings_key = $plugin_settings_key;
+	}
 }
