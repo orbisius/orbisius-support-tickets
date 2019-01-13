@@ -43,6 +43,8 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			return '';
 		}
 
+		$recipient_email = $email;
+
 		$host = 'localhost';
 
 		if (!empty($_SERVER['SERVER_NAME'])) {
@@ -106,7 +108,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$attachments = [];
 		$attachments = apply_filters( 'orbisius_support_tickets_filter_notification_email_attachments', $attachments, $ctx );
 
-		$mail_sent_status = wp_mail($email, $subject, $message, $headers, $attachments);
+		$mail_sent_status = wp_mail($recipient_email, $subject, $message, $headers, $attachments);
 
 		if (empty($notif_opts['support_email_receiver'])) {
 			return;
@@ -117,8 +119,8 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 //		$message = $notif_opts['new_ticket_message'];
 	}
 
-
 	/**
+	 * Notifies the other party about the ticket activity. Admin posts -> notify client. Client posts -> notify admin
 	 * @param array $ctx
 	 */
 	public function notifyOnTicketActivity($ctx = []) {
@@ -130,7 +132,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$notif_key_in_opts = $admin_api->getPluginSettingsNotificationKey();
 		$notif_opts = $admin_api->getOptions($notif_key_in_opts);
 
-		if (empty($notif_opts['new_ticket_notification_enabled'])) {
+		if (empty($notif_opts['ticket_activity_notification_enabled'])) {
 		    return;
         }
 
@@ -164,6 +166,19 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$host = str_replace('www.', '', $host);
 		$host = trim($host);
 
+		$user_api = Orbisius_Support_Tickets_User::getInstance();
+		$recipient_email = $notif_opts['support_email_receiver'];
+
+		// support posts a reply -> notify client
+		if ($user_api->isEditor($ctx['author_id'])) {
+			$ticket_obj = get_post($ctx['ticket_id']); // find ticket
+			$client_obj = $user_api->getUser($ticket_obj->post_author); // find who created it.
+
+			if (!empty($client_obj->user_email)) {
+				$recipient_email = $client_obj->user_email;
+			}
+		}
+
 		$shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
 
 		$vars = [
@@ -172,18 +187,18 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			'site_name' => get_bloginfo('name'),
 			'ticket_id' => $ctx['ticket_id'],
 			'ticket_url' => $shortcode_api->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] ),
-			'recipient_email' => $email,
+			'recipient_email' => $recipient_email,
 		];
 
 		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
 
 		// subject
-		$subject = $notif_opts['new_ticket_subject'];
+		$subject = $notif_opts['ticket_activity_subject'];
 		$subject = do_shortcode($subject);
 		$subject = Orbisius_Support_Tickets_String_Util::replaceVars($subject, $vars);
 
 		// message
-		$message = $notif_opts['new_ticket_message'];
+		$message = $notif_opts['ticket_activity_message'];
 		$message = do_shortcode($message);
 		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
 		//$message = nl2br($message);
@@ -213,15 +228,11 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$attachments = [];
 		$attachments = apply_filters( 'orbisius_support_tickets_filter_notification_email_attachments', $attachments, $ctx );
 
-		$mail_sent_status = wp_mail($email, $subject, $message, $headers, $attachments);
+		$mail_sent_status = wp_mail($recipient_email, $subject, $message, $headers, $attachments);
 
 		if (empty($notif_opts['support_email_receiver'])) {
 			return;
 		}
-
-		// 1 email to admin or just BCC?
-//		$subject = $notif_opts['new_ticket_subject'];
-//		$message = $notif_opts['new_ticket_message'];
 	}
 
 	/**

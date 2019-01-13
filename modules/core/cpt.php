@@ -12,6 +12,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	public function init() {
 		$this->registerOutput();
 		$this->registerCustomContentTypes();
+		$this->registerCommentAdd();
 	}
 
 	/**
@@ -163,5 +164,36 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 */
 	public function processPluginDeactivate() {
 		flush_rewrite_rules();
+	}
+
+	public function registerCommentAdd() {
+		add_action( 'comment_post', [ $this, 'processCommentAdd' ], 20, 3 );
+	}
+
+	/**
+	 * This hooks into comment adding which a ticket activity event regardless who did it.
+	 * @param int $comment_ID
+	 * @param int $comment_approved
+	 * @param array $comment_data
+	 */
+	public function processCommentAdd($comment_ID, $comment_approved, $comment_data) {
+		// Something is missing so we won't care. This is ticket it
+		if (empty($comment_ID) || empty($comment_data['comment_post_ID'])) {
+			return;
+		}
+
+		// Not our ticket comment type
+		if ($this->getCptSupportTicket() != get_post_type($comment_data['comment_post_ID'])) {
+			return;
+		}
+
+		//
+		$ctx = array_replace_recursive( $comment_data, [
+			'reply_id' => $comment_ID,
+			'ticket_id' => $comment_data['comment_post_ID'],
+			'author_id' => $comment_data['user_id'],
+		]);
+
+		do_action('orbisius_support_tickets_action_ticket_activity', $ctx);
 	}
 }
