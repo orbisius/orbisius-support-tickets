@@ -42,7 +42,24 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			return '';
 		}
 
+		$host = 'localhost';
+
+		if (!empty($_SERVER['SERVER_NAME'])) {
+			$host = $_SERVER['SERVER_NAME'];
+		} elseif (!empty($_SERVER['HTTP_HOST'])) {
+			$host = $_SERVER['HTTP_HOST'];
+		} elseif (function_exists('shell_exec')) {
+			$host = shell_exec('hostname');
+		}
+
+		$host = wp_strip_all_tags($host);
+		$host = str_replace('www.', '', $host);
+		$host = trim($host);
+
 		$vars = [
+			'domain' => $host,
+			'site_url' => site_url('/'),
+			'site_name' => get_bloginfo('name'),
 			'ticket_id' => $ctx['ticket_id'],
 			'recipient_email' => $email,
 		];
@@ -60,19 +77,6 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
 
 		$headers = [];
-		$host = 'localhost';
-
-		if (!empty($_SERVER['SERVER_NAME'])) {
-			$host = $_SERVER['SERVER_NAME'];
-		} elseif (!empty($_SERVER['HTTP_HOST'])) {
-			$host = $_SERVER['HTTP_HOST'];
-		} elseif (function_exists('shell_exec')) {
-			$host = shell_exec('hostname');
-		}
-
-		$host = wp_strip_all_tags($host);
-		$host = str_replace('www.', '', $host);
-		$host = trim($host);
 
 		$from_name = empty($notif_opts['support_from_name']) ? get_bloginfo('name') . ' Support' : $notif_opts['support_from_name'];
 		$from_email = empty($notif_opts['support_from_email']) ? 'mailer@' . $host : $notif_opts['support_from_email'];
