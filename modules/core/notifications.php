@@ -42,21 +42,31 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			return '';
 		}
 
-		// 1 email to user
-		$subject = $notif_opts['new_ticket_subject'];
-		$message = $notif_opts['new_ticket_message'];
-
-		$subject = do_shortcode($subject);
-		$message = do_shortcode($message);
-
 		$vars = [
 			'ticket_id' => $ctx['ticket_id'],
+			'recipient_email' => $ctx['recipient_email'],
 		];
 
+		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
+
+		// subject
+		$subject = $notif_opts['new_ticket_subject'];
+		$subject = do_shortcode($subject);
 		$subject = Orbisius_Support_Tickets_String_Util::replaceVars($subject, $vars);
+
+		// message
+		$message = $notif_opts['new_ticket_message'];
+		$message = do_shortcode($message);
 		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
 
-		$mail_sent_status = wp_mail($email, $subject, $message);
+		$headers = [];
+		$headers = apply_filters( 'orbisius_support_tickets_filter_notification_email_headers', $headers, $ctx );
+
+		$attachments = [];
+		$attachments = apply_filters( 'orbisius_support_tickets_filter_notification_email_attachments', $attachments, $ctx );
+
+		// @todo reply-to and other stuff. attachments?
+		$mail_sent_status = wp_mail($email, $subject, $message, $headers, $attachments);
 
 		if (empty($notif_opts['support_email_receiver'])) {
 			return;
@@ -65,7 +75,6 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		// 1 email to admin or just BCC?
 //		$subject = $notif_opts['new_ticket_subject'];
 //		$message = $notif_opts['new_ticket_message'];
-
 	}
 
 	/**
