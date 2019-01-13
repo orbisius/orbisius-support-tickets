@@ -124,6 +124,23 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		$opts = $this->getOptions();
 
+		if ($req_obj->has('orbisius_support_tickets_create_pages')) {
+			$create_pages_res = $this->createPages();
+
+			$updates = 0;
+
+			foreach ($this->plugin_default_opts as $key => $default_val) {
+				if ( empty( $opts[$key] ) && $create_pages_res->data($key) > 0) {
+					$opts[$key] = $create_pages_res->data($key);
+					$updates++;
+				}
+            }
+
+			if ($updates) {
+				$opts = $this->setOptions($opts);
+            }
+		}
+
 		?>
         <h2><?php esc_attr_e( 'Orbisius Support Tickets', 'orbisius_support_tickets' ); ?></h2>
 
@@ -337,5 +354,92 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		$opts = empty($opts) ? array() : (array) $opts;
 		$opts = array_replace_recursive($this->plugin_default_opts, $opts);
 		return $opts;
+	}
+
+	public function setOptions( array $opts ) {
+		$opts = update_option($this->plugin_settings_key, $opts);
+		return $opts;
+	}
+
+	/**
+	 * @return Orbisius_Support_Tickets_Result
+	 */
+	public function createPages() {
+		$res_obj = new Orbisius_Support_Tickets_Result();
+	    $parent_page_title = 'Support';
+	    $parent_page_slug = 'support';
+		$create_page_defaults = array(
+			'post_type'     => 'page',
+			'page_title'  => '',
+			'ping_status' => 'closed',
+			'post_status'   => 'publish',
+			'post_author'   => get_current_user_id(),
+			'post_content'  => '<p> </p>',
+			'comment_status' => 'closed',
+		);
+
+	    $child_pages = [
+            [
+                'id' => 'list_tickets_page_id',
+                'slug' => 'my-tickets',
+                'page_title' => 'My Tickets',
+                'post_content' => '<p>[orbisius_support_tickets_list_tickets]</p>',
+            ],
+            [
+	            'id' => 'submit_ticket_page_id',
+                'slug' => 'submit-ticket',
+                'page_title' => 'Submit Ticket',
+                'post_content' => '<p>[orbisius_support_tickets_submit_ticket]</p>',
+            ],
+            [
+	            'id' => 'view_ticket_page_id',
+                'slug' => 'view-ticket',
+                'page_title' => 'View Ticket',
+                'post_content' => '<p>[orbisius_support_tickets_view_ticket]</p>',
+            ],
+        ];
+
+        $parent_page = get_page_by_path($parent_page_slug);
+
+        if (empty($parent_page)) {
+            $my_post = array_replace_recursive($create_page_defaults, array(
+                'post_name'     => $parent_page_slug,
+                'post_title'    => wp_strip_all_tags( $parent_page_title ),
+                //'post_content'  => '<p> </p>',
+            ));
+
+            // Insert the post into the database
+            $parent_page_id = wp_insert_post( $my_post ); // or error
+        } else {
+	        $parent_page_id = $parent_page->ID;
+        }
+
+		$res_obj->data($parent_page_slug, $parent_page_id);
+
+	    foreach ($child_pages as $page_rec) {
+		    $slug = $page_rec['slug'];
+		    $page = get_page_by_path($slug);
+
+		    if (empty($page)) {
+			    $page = get_page_by_path("$parent_page_slug/$slug");
+            }
+
+		    if (empty($page)) {
+			    $my_post = array_replace_recursive($create_page_defaults, array(
+				    'post_name'     => $slug,
+				    'post_title'    => wp_strip_all_tags( $page_rec['page_title'] ),
+				    'post_content'  => $page_rec['post_content'],
+				    'post_parent'   => $parent_page_id,
+			    ));
+
+			    $page_id = wp_insert_post( $my_post ); // or error
+            } else {
+			    $page_id = $page->ID;
+            }
+
+		    $res_obj->data($page_rec['id'], $page_id);
+        }
+
+		return $res_obj;
 	}
 }
