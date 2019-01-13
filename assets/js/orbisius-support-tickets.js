@@ -6,5 +6,5 @@ jQuery(document).ready(function($) {
         $(this).select();
     } );
 
-    $(".orbisius_support_tickets_dropdown_field").chosen(); // {disable_search_threshold: 10}
+    $(".orbisius_support_tickets_dropdown_field").chosen({"search_contains": true}); // {disable_search_threshold: 10}
 } );
