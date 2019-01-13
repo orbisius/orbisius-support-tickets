@@ -239,7 +239,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
                                                 <?php foreach ($items as $item_obj) : ?>
                                                     <div class="ticket">
-                                                        <a href="<?php echo esc_url($shortcode_api->generateViewTicketLink( [ 'ticket_id' => $item_obj->ID ] ) );?>"
+                                                        #<?php echo $item_obj->ID;?> | <a href="<?php echo esc_url($shortcode_api->generateViewTicketLink( [ 'ticket_id' => $item_obj->ID ] ) );?>"
                                                            target="_blank"
                                                             ><?php
                                                             echo $cpt_api->fixOutput($item_obj->post_title); ?></a>
