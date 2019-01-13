@@ -7,7 +7,7 @@ Tested up to: 5.0
 Stable tag: 1.0.0
 License: GPLv2 or later
 
-Minimalistic ticket support system that you can use to manage your support requests.
+Minimalistic support ticket system that enables you to start providing awesome support in 2 minutes.
 
 == Description ==
 
