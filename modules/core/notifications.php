@@ -44,7 +44,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		$vars = [
 			'ticket_id' => $ctx['ticket_id'],
-			'recipient_email' => $ctx['recipient_email'],
+			'recipient_email' => $email,
 		];
 
 		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
@@ -60,12 +60,33 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
 
 		$headers = [];
+		$host = 'localhost';
+
+		if (!empty($_SERVER['SERVER_NAME'])) {
+			$host = $_SERVER['SERVER_NAME'];
+		} elseif (!empty($_SERVER['HTTP_HOST'])) {
+			$host = $_SERVER['HTTP_HOST'];
+		} elseif (function_exists('shell_exec')) {
+			$host = shell_exec('hostname');
+		}
+
+		$host = wp_strip_all_tags($host);
+		$host = str_replace('www.', '', $host);
+		$host = trim($host);
+
+		$from_name = empty($notif_opts['support_from_name']) ? get_bloginfo('name') . ' Support' : $notif_opts['support_from_name'];
+		$from_email = empty($notif_opts['support_from_email']) ? 'mailer@' . $host : $notif_opts['support_from_email'];
+		$from_full_email = "'$from_name' <$from_email>";
+
+		$reply_to_full_email = '"Club Orbisius Support" <help+club+orbisius@orbisius.com>';
+
+		$headers[] = "From: $from_full_email";
+		$headers[] = "Reply-to: $reply_to_full_email";
 		$headers = apply_filters( 'orbisius_support_tickets_filter_notification_email_headers', $headers, $ctx );
 
 		$attachments = [];
 		$attachments = apply_filters( 'orbisius_support_tickets_filter_notification_email_attachments', $attachments, $ctx );
 
-		// @todo reply-to and other stuff. attachments?
 		$mail_sent_status = wp_mail($email, $subject, $message, $headers, $attachments);
 
 		if (empty($notif_opts['support_email_receiver'])) {
