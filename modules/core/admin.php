@@ -405,7 +405,10 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                         <br/>
                                         <a href="<?php echo esc_url(add_query_arg('orbisius_support_tickets_admin_create_pages', '1')); ?>"
                                            class="button"
-                                            >Create pages</a>
+                                            ><?php esc_attr_e(
+		                                        'Create pages', 'orbisius_support_tickets'
+	                                        ); ?>
+                                        </a>
                                     </p>
                                     <hr/>
                                     <p>
