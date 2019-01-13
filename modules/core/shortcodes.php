@@ -15,6 +15,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 *
 	 */
 	function registerCodes() {
+		add_shortcode( 'orbisius_support_tickets_field', [ $this, 'renderTicketField' ] );
 		add_shortcode( 'orbisius_support_tickets_view_ticket', [ $this, 'renderViewTicket' ] );
 		add_shortcode( 'orbisius_support_tickets_list_tickets', [ $this, 'renderTickets' ] );
 		add_shortcode( 'orbisius_support_tickets_submit_ticket', [ $this, 'renderSubmitTicketForm' ] );
@@ -460,6 +461,30 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		return $link;
 	}
 
+	private $supported_ticket_fields = [
+        'ticket_id' => '',
+    ];
+
+	/**
+	 * Processes [orbisius_support_tickets_field] shortcode and returns the page URL for a given requested page
+	 * @return string
+	 */
+	public function renderTicketField( $attribs = [] ) {
+		$field = '';
+
+		if (!empty($attribs['id'])) {
+			$field = $attribs['id'];
+        } elseif (!empty($attribs['field'])) {
+			$field = $attribs['field'];
+		} else {
+		    return '';
+        }
+
+		$field = 'TODO';
+
+		return $field;
+	}
+
 	public function injectRedirect() {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
 		$req_url = $req_obj->get_request_url();
@@ -532,5 +557,19 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$link = add_query_arg($query_params, $link);
 
 		return $link;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getSupportedTicketFields() {
+		return apply_filters('orbisius_support_tickets_filter_ticket_supported_fields', $this->supported_ticket_fields);
+	}
+
+	/**
+	 * @param array $supported_ticket_fields
+	 */
+	public function setSupportedTicketFields( $supported_ticket_fields ) {
+		$this->supported_ticket_fields = $supported_ticket_fields;
 	}
 }

@@ -9,6 +9,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
     private $plugin_settings_group_key = 'orbisius_support_tickets';
     private $plugin_settings_key = 'orbisius_support_tickets';
 
+	private $plugin_settings_notification_key = 'orbisius_support_tickets_notification';
+	private $plugin_settings_notification_group_key = 'orbisius_support_tickets_notification';
+
 	/**
 	 * @var string
 	 */
@@ -612,5 +615,12 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	    $res_obj->data('parent_page_created', $parent_page_created);
 
 		return $res_obj;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPluginSettingsNotificationKey() {
+		return $this->plugin_settings_notification_key;
 	}
 }
