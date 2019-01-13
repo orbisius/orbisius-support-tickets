@@ -327,28 +327,35 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		                                    <?php settings_fields($notif_settings_group); ?>
                                             <table class="form-table">
                                                 <tr valign="top">
-                                                    <th scope="row">Ticket update subject</th>
+                                                    <th scope="row" colspan="2">New ticket</th>
+                                                </tr>
+                                                <tr valign="top">
+                                                    <th scope="row">Subject</th>
                                                     <td>
                                                         <input type="text" class="widefat"
-                                                               name="<?php echo "{$notif_settings_key}[subject]";?>"
-                                                               value="<?php empty($notif_opts['subject']) ? '' : esc_attr_e($notif_opts['subject']);?>" />
+                                                               name="<?php echo "{$notif_settings_key}[new_ticket_subject]";?>"
+                                                               value="<?php empty($notif_opts['new_ticket_subject']) ? '' : esc_attr_e($notif_opts['new_ticket_subject']);?>" />
                                                     </td>
                                                 </tr>
                                                 <tr valign="top">
-                                                    <th scope="row">Ticket update message</th>
+                                                    <th scope="row">Message</th>
                                                     <td>
                                                         <textarea class="widefat"
-                                                               name="<?php echo "{$notif_settings_key}[message]";?>" rows="8"><?php
-                                                            empty($notif_opts['message']) ? '' : esc_attr_e($notif_opts['message']);?></textarea>
+                                                               name="<?php echo "{$notif_settings_key}[new_ticket_message]";?>" rows="8"><?php
+                                                            empty($notif_opts['new_ticket_message']) ? '' : esc_attr_e($notif_opts['new_ticket_message']);?></textarea>
                                                     </td>
                                                 </tr>
                                                 <tr valign="top">
-                                                    <th scope="row">Enable notification</th>
+                                                    <th scope="row">Enable/Disable</th>
                                                     <td>
+                                                        <label>
                                                         <input type="checkbox" class=""
-                                                               name="<?php echo "{$notif_settings_key}[enabled]";?>"
-                                                               <?php checked(empty($notif_opts['enabled']) ? '' : $notif_opts['enabled'], 1); ?>
+                                                               name="<?php echo "{$notif_settings_key}[new_ticket_notification_enabled]";?>"
+                                                               <?php checked(empty($notif_opts['new_ticket_notification_enabled'])
+                                                                    ? '' : $notif_opts['new_ticket_notification_enabled'], 1); ?>
                                                                value="1" />
+                                                            Enable notification
+                                                        </label>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -461,13 +468,38 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		'submit_ticket_page_id' => '',
     );
 
+	private $plugin_default_opts_other = array(
+        'orbisius_support_tickets_notification' => [
+            'new_ticket_subject' => '',
+            'new_ticket_message' => '',
+            'new_ticket_notification_enabled' => '',
+        ],
+    );
+
 	/**
 	 * @return array
 	 */
 	public function getOptions($key = '') {
 		$opts = get_option(empty($key) ? $this->plugin_settings_key : $key);
 		$opts = empty($opts) ? array() : (array) $opts;
-		$opts = array_replace_recursive($this->plugin_default_opts, $opts);
+
+		if (!empty($key)) {
+		    // There are defaults for a section
+		    if (!empty($this->plugin_default_opts_other[$key])) {
+			    $opts = array_replace_recursive( $this->plugin_default_opts_other[ $key ], $opts );
+		    } else {
+		        // Let's search for a partial match
+		        $keys = preg_grep('#' . preg_quote($key) . '#si', array_keys($this->plugin_default_opts_other));
+
+		        if (count($keys) == 1) {
+			        $found_key = array_shift($keys);
+			        $opts = array_replace_recursive( $this->plugin_default_opts_other[ $found_key ], $opts );
+		        }
+            }
+        } else {
+			$opts = array_replace_recursive( $this->plugin_default_opts, $opts );
+		}
+
 		return $opts;
 	}
 
