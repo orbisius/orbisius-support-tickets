@@ -521,27 +521,47 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                 <!-- Toggle -->
 
                                 <h2 class="hndle"><span><?php esc_attr_e(
-											'Extra Info', 'orbisius_support_tickets'
+											'Extra Stuff', 'orbisius_support_tickets'
 										); ?></span></h2>
 
                                 <div class="inside">
                                     <p>
-                                        The plugin can create the pages for you. If a page already exists it won't be created.
+                                    <h4>Support Pages Creation Tool</h4>
+                                    Click the buttom below and the plugin will create the pages with the shortcodes for you and set the options.
+                                    If a page already exists it won't be created (but support page maybe updated to include links to submit ticket & my tickets).
+                                    <br/>
+                                    <a href="<?php echo esc_url(add_query_arg('orbisius_support_tickets_admin_create_pages', '1')); ?>"
+                                       class="button"
+                                    ><?php esc_attr_e(
+				                            'Create pages', 'orbisius_support_tickets'
+			                            ); ?>
+                                    </a>
+                                    </p>
+                                </div>
+                                <!-- .inside -->
+                                <hr/>
+                                <div class="inside">
+                                    <p>
+                                        <h4>Custom WordPress Plugin Development</h4>
+                                        Do you need a custom plugin developed specifically for your needs?
                                         <br/>
-                                        <a href="<?php echo esc_url(add_query_arg('orbisius_support_tickets_admin_create_pages', '1')); ?>"
+                                        <a href="//orbisius.com/free-quote/?utm_source=orbisius_support_tickets"
                                            class="button"
                                             ><?php esc_attr_e(
-		                                        'Create pages', 'orbisius_support_tickets'
+		                                        'Contact us', 'orbisius_support_tickets'
 	                                        ); ?>
                                         </a>
                                     </p>
                                     <hr/>
                                     <p>
-                                        To make a suggestion submit a ticket at
-                                        <a href="https://github.com/orbisius/orbisius-support-tickets/issues" target="_blank">github</a>
+                                        <h4>Want to help?</h4>
+                                        If you want to help, make a suggestion or found a glitch
+                                    <a class="button" href="https://github.com/orbisius/orbisius-support-tickets/issues" target="_blank">Submit a ticket</a>
                                     </p>
                                 </div>
                                 <!-- .inside -->
+
+
 
                             </div>
                             <!-- .postbox -->
