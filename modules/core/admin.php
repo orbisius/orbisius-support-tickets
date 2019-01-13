@@ -496,8 +496,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
             'id' => 'support_page_id',
             'slug' => $parent_page_slug,
             'page_title' => __('Support', 'orbisius_support_tickets'),
-            'post_content' => "<div><a href='[orbisius_support_tickets_generate_page_link page=submit_ticket esc=1]'>Submit Ticket</a></div>
-<div><a href='[orbisius_support_tickets_generate_page_link page=list_tickets esc=1]'>My Tickets</a></div>",
+            'post_content' => "\n<div><a href='[orbisius_support_tickets_generate_page_link page=submit_ticket esc=1]'>Submit Ticket</a></div>
+<div><a href='[orbisius_support_tickets_generate_page_link page=list_tickets esc=1]'>My Tickets</a></div>\n",
         ];
 
 	    $child_pages = [
