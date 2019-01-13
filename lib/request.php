@@ -360,7 +360,7 @@ class Orbisius_Support_Tickets_Request {
 
 	/**
 	 * Smart redirect method. Sends header redirect or HTTP meta redirect.
-	 * @param $url
+	 * @param string $url
 	 */
 	public function redirect($url) {
 		if (empty($url)) {
@@ -385,7 +385,7 @@ class Orbisius_Support_Tickets_Request {
 	/**
 	 * @return string
 	 */
-	public function get_request_url() {
+	public function getRequestUrl() {
 		$req_url = empty($_SERVER['REQUEST_URI']) ? '' : $_SERVER['REQUEST_URI'];
 		return $req_url;
 	}
