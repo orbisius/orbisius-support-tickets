@@ -3,6 +3,9 @@
 $cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 add_action('init', [ $cpt_obj, 'init' ] ) ;
 
+register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, [ $cpt_obj, 'processPluginActivate' ] ) ;
+register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, [ $cpt_obj, 'processPluginDeactivate' ] ) ;
+
 class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_Singleton {
 	private $cpt_support_ticket = 'orb_support_ticket';
 
@@ -145,5 +148,20 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	public function getTicketStatus( $item_obj ) {
 		$statuses = $this->getStatuses();
 		return ! empty( $item_obj->post_status ) && !empty( $statuses[ $item_obj->post_status ] ) ? $statuses[ $item_obj->post_status ] : '';
+	}
+
+	/**
+	 * @param void
+	 */
+	public function processPluginActivate() {
+		$this->registerCustomContentTypes();
+		flush_rewrite_rules();
+	}
+
+	/**
+	 * @param void
+	 */
+	public function processPluginDeactivate() {
+		flush_rewrite_rules();
 	}
 }
