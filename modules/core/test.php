@@ -13,6 +13,7 @@ add_action('init', [ $test_api, 'init' ] ) ;
 
 class Orbisius_Support_Tickets_Module_Core_Test {
 	public function init() {
+		$res = '';
 		$test_data = $_REQUEST['orbisius_support_tickets_test_data'];
 
 		// http://orbclub.com.clients.com/?orbisius_support_tickets_test_data[orbisius_support_tickets_action_before_submit_ticket_after_insert]=1
@@ -22,8 +23,22 @@ class Orbisius_Support_Tickets_Module_Core_Test {
 			do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', $ctx );
 
 			//echo 'orbisius_support_tickets_action_before_submit_ticket_after_insert';
-			exit;
 		}
+
+		// http://orbclub.com.clients.com/?orbisius_support_tickets_test_data[change_status]=1&orbisius_support_tickets_test_data[ticket_id]=489&orbisius_support_tickets_test_data[new_status]=publish
+		if (!empty($test_data['change_status'])) {
+			$ctx['ticket_id'] = $test_data['ticket_id'];
+			$ctx['new_status'] = $test_data['new_status'];
+
+			$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+			$res = $cpt_obj->changeStatus($ctx['ticket_id'], $ctx['new_status']);
+		}
+
+		echo "<pre>";
+		var_dump($res);
+		echo "</pre>";
+
+		exit;
 	}
 
 	/**

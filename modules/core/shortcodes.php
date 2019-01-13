@@ -95,7 +95,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			} else {
 				$ctx['ticket_id'] = $ins_post_data['ID'];
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_update', $ctx );
-				$id = wp_update_post( $ins_post_data );
+				$id = wp_orbisius_support_tickets( $ins_post_data );
 
 				if ( empty($id) || ! is_numeric( $id ) || $id <= 0 ) {
 					throw new Exception( "Couldn't save item." );

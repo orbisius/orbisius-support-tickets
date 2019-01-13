@@ -207,7 +207,6 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		];
 
 		$filter['offset']         = empty( $user_filter['offset'] ) ? 0 : absint( $user_filter['offset'] );
-
 		$filter['posts_per_page'] = empty( $user_filter['limit'] ) ? 250 : absint( $user_filter['limit'] );
 
 		if ( ! empty( $user_filter['q'] ) ) {
@@ -235,7 +234,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		}
 
 		if ( ! empty( $q ) ) {
-			$q                             = preg_replace( '#\*+#si', '%', $q );
+			$q                        = preg_replace( '#\*+#si', '%', $q );
 			$filter['s']              = $wpdb->esc_like( $q );
 			$filter['posts_per_page'] = 10;
 		}
@@ -243,5 +242,27 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		$items = get_posts( $filter );
 		$items = empty($items) ? [] : $items;
 		return $items;
+	}
+
+	/**
+	 * @param int $ticket_id
+	 * @param string $new_status
+	 */
+	public function changeStatus($ticket_id, $new_status) {
+		$status_wp_mapping = $this->getStatuses();
+		$wp_post_status = empty($status_wp_mapping[$new_status]) ? self::STATUS_CLOSED : $new_status;
+
+		$up_parent_page_arr = [
+			'ID' => $ticket_id,
+			'post_status' => $wp_post_status,
+		];
+
+		$stat = wp_update_post($up_parent_page_arr, true);
+
+		if (!empty($stat) && is_numeric($stat)) {
+			return true;
+		}
+
+		return false;
 	}
 }
