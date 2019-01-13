@@ -210,42 +210,47 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 										); ?></p>
                                 </div>
 
-                                <?php
-
-                                $cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
-
-                                $total_tickets_stats = [
-                                    'open' => 0,
-                                    'closed' => 0,
-                                ];
-
-                                $total_tickets_stats_obj = wp_count_posts($cpt_obj->getCptSupportTicket());
-
-                                $total_tickets_stats['open'] = $total_tickets_stats_obj->draft + $total_tickets_stats_obj->private;
-                                $total_tickets_stats['closed'] = $total_tickets_stats_obj->publish;
-
-                                ?>
                                 <div class="inside">
                                     <p>
-                                    <table class="widefat">
-                                        <tr>
-                                            <td class="row-title"><label for="tablecell"><?php esc_attr_e(
-						                                'Open Tickets', 'orbisius_support_tickets'
-					                                ); ?></label></td>
-                                            <td><?php echo $total_tickets_stats['open']; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="row-title"><label for="tablecell"><?php esc_attr_e(
-						                                'Closed Tickets', 'orbisius_support_tickets'
-					                                ); ?></label></td>
-                                            <td><?php echo $total_tickets_stats['closed']; ?></td>
-                                        </tr>
+                                        <h3><?php esc_attr_e(
+											"Recent tickets",
+											'orbisius_support_tickets'
+										); ?> </h3>
 
-                                    </table>
+                                        <div>
+                                            <?php
 
+                                            $filter = [
+                                                'order' => 'desc',
+                                                'order_by' => 'date',
+                                                'author' => 0,
+                                                'limit' => 10,
+                                                'fields' => [ 'ID', 'post_title' ],
+                                            ];
+                                            $cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+                                            $items = $cpt_api->getItems($filter);
+                                            $shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
+
+                                            ?>
+
+                                            <?php if (empty($items)) : ?>
+
+                                            <?php else : ?>
+
+                                                <?php foreach ($items as $item_obj) : ?>
+                                                    <div class="ticket">
+                                                        <a href="<?php echo esc_url($shortcode_api->generateViewTicketLink( [ 'ticket_id' => $item_obj->ID ] ) );?>"
+                                                           target="_blank"
+                                                            ><?php
+                                                            echo $cpt_api->fixOutput($item_obj->post_title); ?></a>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            <?php endif; ?>
+                                        </div>
                                     </p>
                                 </div>
-                                <!-- .inside -->
+
+
 
                             </div>
                             <!-- .postbox -->
@@ -267,11 +272,42 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 											'Sidebar', 'orbisius_support_tickets'
 										); ?></span></h2>
 
+                                <!--                                Stats -->
+	                            <?php
+	                            $cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+
+	                            $total_tickets_stats = [
+		                            'open' => 0,
+		                            'closed' => 0,
+	                            ];
+
+	                            $total_tickets_stats_obj = wp_count_posts($cpt_obj->getCptSupportTicket());
+
+	                            $total_tickets_stats['open'] = $total_tickets_stats_obj->draft + $total_tickets_stats_obj->private;
+	                            $total_tickets_stats['closed'] = $total_tickets_stats_obj->publish;
+
+	                            ?>
                                 <div class="inside">
                                     <p>
-                                        Create awesome stuff!
+                                    <table class="widefat">
+                                        <tr>
+                                            <td class="row-title"><label for="tablecell"><?php esc_attr_e(
+							                            'Open Tickets', 'orbisius_support_tickets'
+						                            ); ?></label></td>
+                                            <td><?php echo $total_tickets_stats['open']; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="row-title"><label for="tablecell"><?php esc_attr_e(
+							                            'Closed Tickets', 'orbisius_support_tickets'
+						                            ); ?></label></td>
+                                            <td><?php echo $total_tickets_stats['closed']; ?></td>
+                                        </tr>
+
+                                    </table>
+
                                     </p>
                                 </div>
+                                <!-- .inside -->
                                 <!-- .inside -->
 
                             </div>

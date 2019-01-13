@@ -120,39 +120,21 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	public function renderTickets( $attribs = [] ) {
 		ob_start();
 
-		$id  = 0;
-		$msg = '';
-		global $wpdb;
-
 		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
-		$post_type = $cpt_api->getCptSupportTicket();
 
-		$list_params = [
-			'post_type'   => $post_type,
-			'post_status' => array( 'publish', 'draft', 'private', 'trash' ),
-		];
+		$filter = [];
+		$filter['offset']         = empty( $orb_cloud_lib_data['offset'] ) ? 0 : int( $orb_cloud_lib_data['offset'] );
+		$filter['author']         = get_current_user_id();
+		$filter['posts_per_page'] = empty( $orb_cloud_lib_data['limit'] ) ? 250 : int( $orb_cloud_lib_data['limit'] );
+		$orb_cloud_lib_data       = [];
 
-		$orb_cloud_lib_data            = [];
-		$list_params['offset']         = empty( $orb_cloud_lib_data['offset'] ) ? 0 : int( $orb_cloud_lib_data['offset'] );
-		$list_params['author']         = get_current_user_id();
-		$list_params['posts_per_page'] = empty( $orb_cloud_lib_data['limit'] ) ? 250 : int( $orb_cloud_lib_data['limit'] );
-
-		if ( ! empty( $orb_cloud_lib_data['q'] ) ) {
-			$q = $orb_cloud_lib_data['q'];
-		} elseif ( ! empty( $orb_cloud_lib_data['query'] ) ) {
-			$q = $orb_cloud_lib_data['query'];
-		} elseif ( ! empty( $orb_cloud_lib_data['search'] ) ) {
-			$q = $orb_cloud_lib_data['search'];
+		if ( ! empty( $orb_cloud_lib_data['search'] ) ) {
+			$filter['search'] = $orb_cloud_lib_data['search'];
 		}
 
-		if ( ! empty( $q ) ) {
-			$q                             = preg_replace( '#\*+#si', '%', $q );
-			$list_params['s']              = $wpdb->esc_like( $q );
-			$list_params['posts_per_page'] = 10;
-		}
+		$items = $cpt_api->getItems($filter);
 
 		$ctx   = [];
-		$items = get_posts( $list_params );
 		?>
         <div id="orbisius_support_tickets_list_ticket_wrapper" class="orbisius_support_tickets_list_ticket_wrapper">
 			<?php do_action( 'orbisius_support_tickets_action_before_submit_ticket_form', $ctx ); ?>

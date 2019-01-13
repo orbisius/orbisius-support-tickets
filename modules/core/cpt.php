@@ -196,4 +196,52 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 		do_action('orbisius_support_tickets_action_ticket_activity', $ctx);
 	}
+
+	public function getItems(array $user_filter = []) {
+		global $wpdb;
+		$post_type = $this->getCptSupportTicket();
+
+		$filter = [
+			'post_type'   => $post_type,
+			'post_status' => array( 'publish', 'draft', 'private', 'trash' ),
+		];
+
+		$filter['offset']         = empty( $user_filter['offset'] ) ? 0 : absint( $user_filter['offset'] );
+
+		$filter['posts_per_page'] = empty( $user_filter['limit'] ) ? 250 : absint( $user_filter['limit'] );
+
+		if ( ! empty( $user_filter['q'] ) ) {
+			$q = $user_filter['q'];
+		} elseif ( ! empty( $user_filter['query'] ) ) {
+			$q = $user_filter['query'];
+		} elseif ( ! empty( $user_filter['search'] ) ) {
+			$q = $user_filter['search'];
+		}
+
+		if (!empty($user_filter['fields'])) {
+			$filter['fields'] = $user_filter['fields'];
+		}
+
+		if (!empty($user_filter['order'])) {
+			$filter['order'] = $user_filter['order'];
+		}
+
+		if (!empty($user_filter['order_by'])) {
+			$filter['orderby'] = $user_filter['order_by'];
+		}
+
+		if (!empty($user_filter['author'])) {
+			$filter['author'] = $user_filter['author'];
+		}
+
+		if ( ! empty( $q ) ) {
+			$q                             = preg_replace( '#\*+#si', '%', $q );
+			$filter['s']              = $wpdb->esc_like( $q );
+			$filter['posts_per_page'] = 10;
+		}
+
+		$items = get_posts( $filter );
+		$items = empty($items) ? [] : $items;
+		return $items;
+	}
 }
