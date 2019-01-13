@@ -199,8 +199,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			return;
 		}
 
-		$data = $this->getData();
-
 		if ($cpt_obj->getStatus($ticket_obj) == Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED) {
 			return;
 		}
@@ -209,6 +207,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		?>
         <div id="orbisius_support_tickets_close_ticket_wrapper" class="orbisius_support_tickets_close_ticket_wrapper">
             <?php
+		    $data = $this->getData();
+
             if (!empty($data['sub_cmd']) && $data['sub_cmd'] == 'close') {
 	            $status = $cpt_obj->changeStatus($ctx['ticket_id'], Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED);
 
