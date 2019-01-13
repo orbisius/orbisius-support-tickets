@@ -18,6 +18,16 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	//private $req_cap = 'manage_options'; // admin
 	private $req_cap = 'edit_others_posts'; // editor
 
+	private $replace_vars = [
+		'domain' => 'The current domain',
+		'site_url' => 'Site URL',
+		'site_name' => 'Your site name (from WP settings)',
+		'ticket_id' => 'The ticket id',
+		'ticket_url' => 'The link to view ticket',
+		'recipient_email' => 'Who is going to receive the email (ticket creator)',
+		//'recipient_name' => 'Who is going to receive',
+    ];
+
 	public function init() {
 	}
 
@@ -431,11 +441,13 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 
                                         <div>
-                                            <h3>Supported merge tags (variables): </h3>
+                                            <h3>Supported merge tags (variables) in the email: </h3>
                                             <ul>
-                                                <li>
-                                                    {subject} -> subject
-                                                </li>
+                                                <?php foreach ($this->getReplaceVars() as $key => $val) : ?>
+                                                    <li>
+                                                        <?php echo '{' . $key . "} -> " . $val; ?>
+                                                    </li>
+                                                <?php endforeach;?>
                                             </ul>
                                         </div>
 
@@ -693,5 +705,19 @@ Ticket link: {ticket_url}
 	 */
 	public function getPluginSettingsNotificationKey() {
 		return $this->plugin_settings_notification_key;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getReplaceVars() {
+		return $this->replace_vars;
+	}
+
+	/**
+	 * @param array $replace_vars
+	 */
+	public function setReplaceVars( $replace_vars ) {
+		$this->replace_vars = $replace_vars;
 	}
 }
