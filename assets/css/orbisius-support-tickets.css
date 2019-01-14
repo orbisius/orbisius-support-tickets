@@ -27,3 +27,9 @@
 .orbisius_support_tickets_app_success {
     color:green;
 }
+
+.orbisius_support_tickets_view_ticket_wrapper .ticket_content_wrapper {
+    margin: 10px 0;
+    background: #eee;
+    padding: 5px;
+}
