@@ -1143,10 +1143,22 @@ Ticket link: {ticket_url}
 	 * @param array $ctx
 	 */
 	public function renderSidebarShareLinks( array $ctx = [] ) {
+		$plugin_data = get_plugin_data(ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, false);
+
+		// https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en
+	    // https://stackoverflow.com/questions/10713542/how-to-make-custom-linkedin-share-button
+	    // https://www.linkedin.com/shareArticle?mini=true&url={articleUrl}&title={articleTitle}&summary={articleSummary}&source={articleSource}
+	    $linked_in_params = [
+		    'mini' => 'true',
+            'url' => $plugin_data['PluginURI'],
+            'title' => $plugin_data['Title'],
+            'summary' => $plugin_data['Description'],
+        ];
+		$linked_in_share_link = 'https://www.linkedin.com/shareArticle?' . http_build_query($linked_in_params);
 		ob_start();
         ?>
         <div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
-            aaa
+            <a href='<?php echo esc_url($linked_in_share_link);?>' target="_blank">Share this plugin on LinkedIn</a>
         </div>
 		<?php
 		$html = ob_get_contents();
