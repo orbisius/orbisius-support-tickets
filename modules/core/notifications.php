@@ -122,9 +122,9 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		$mail_sent_status = wp_mail($recipient_email, $subject, $message, $headers, $attachments);
 
-		// 1 email to admin or just BCC?
-//		$subject = $notif_opts['new_ticket_subject'];
-//		$message = $notif_opts['new_ticket_message'];
+		// @todo 1 email to admin or just BCC?
+//		$subject = $notif_opts['new_ticket_subject_admin'];
+//		$message = $notif_opts['new_ticket_message_admin'];
 	}
 
 	/**
