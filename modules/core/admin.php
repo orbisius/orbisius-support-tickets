@@ -579,6 +579,16 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                                                             $pages_dropdown = wp_dropdown_pages($args); // must be hierachical
                                                             echo $pages_dropdown;
                                                         ?>
+
+	                                                    <?php
+	                                                    if ( ! empty( $opts['submit_ticket_page_id'] ) ) {
+		                                                    $page_link = get_permalink($opts['submit_ticket_page_id']);
+
+		                                                    if ( ! empty( $page_link ) ) {
+			                                                    echo sprintf(" | <a href='$page_link' target='_blank'>%s</a>", __('View page', 'orbisius_support_tickets' ) );
+		                                                    }
+	                                                    }
+	                                                    ?>
                                                         <br/><br/>
                                                         <div>
                                                             The page needs to contain this shortcode which shows ticket submission form:
@@ -609,6 +619,16 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 
 			                                            $pages_dropdown = wp_dropdown_pages($args); // must be hierarchical
 			                                            echo $pages_dropdown;
+			                                            ?>
+
+                                                        <?php
+                                                        if ( ! empty( $opts['list_tickets_page_id'] ) ) {
+                                                            $page_link = get_permalink($opts['list_tickets_page_id']);
+
+	                                                        if ( ! empty( $page_link ) ) {
+	                                                            echo sprintf(" | <a href='$page_link' target='_blank'>%s</a>", __('View page', 'orbisius_support_tickets' ) );
+	                                                        }
+                                                        }
 			                                            ?>
                                                         <br/><br/>
                                                         <div>
