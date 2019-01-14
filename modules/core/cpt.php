@@ -138,7 +138,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		return $statuses;
 	}
 
-	const STATUS_OPEN = 'draft';
+	const STATUS_OPEN = 'private'; // draft don't allow comments
 	const STATUS_CLOSED = 'publish';
 
 	/**
