@@ -66,10 +66,8 @@ The plugin should also work if your hosting is running php v5.2.4 (min php versi
 
 == Demo ==
 
-TODO:
-- notifications
-- settings page -> set pages
-- ticket statuses
+TODO
+
 
 = Author =
 
