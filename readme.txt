@@ -17,6 +17,9 @@ Orbisius Support Tickets is a minimalistic ticket support system that enables yo
 You need to create/update several pages and paste the relevant shortcodes so your customer can submit their support requests.
 There is a tool in the plugin's settings page that can help with the page creation.
 
+This is 2 minute demo showing you how to configure and use the plugin.
+https://youtu.be/4TBbLAjCaFY
+
 You can manually create the pages that the plugin needs with the following shortcodes or let the plugin create them for you (Orbisius Support Tickets > Settings).
 Ideally, you should create a top level page called Support (/support) or Help (/help).
 Then create the following subpages. The parent page link will be prepended automatically by WordPress.
@@ -67,10 +70,6 @@ The plugin provides merge tags that you can using in the email templates. That w
 The plugin should also work even if your hosting is running php v5.2.4 (min php version required by WordPress itself).
 
 You can easily view the View tickets or submit ticket pages from plugin's settings page.
-
-== Demo ==
-
-TODO
 
 
 = Credits =
