@@ -62,6 +62,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'hierarchical' => false,
 			//'taxonomies' => array('orb_support_tickets_cat', 'orb_support_tickets_tag'), // just use default categories and tags
 			'menu_position' => 200,
+			//'capability_type' => 'post',
 		);
 
 		$cpt_args = apply_filters('orbisius_support_tickets_filter_ticket_arg', $cpt_args);
@@ -302,6 +303,10 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 */
 	public function openClosedTicket(array $ctx) {
 		if (empty($ctx['ticket_id'])) {
+			return;
+		}
+
+		if (!current_user_can('edit_post', $ctx['ticket_id'])) {
 			return;
 		}
 
