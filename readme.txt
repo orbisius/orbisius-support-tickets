@@ -62,6 +62,8 @@ esc=1
 You can customize the email notification templates.
 The plugin provides merge tags that you can using in the email templates. That way you'll be able to use the same template on multiple sites.
 
+The plugin should also work if your hosting is running php v5.2.4 (min php version required by WordPress itself).
+
 == Demo ==
 
 TODO:
