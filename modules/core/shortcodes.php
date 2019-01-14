@@ -254,20 +254,29 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		ob_start();
 		$id  = 0;
 		$msg = '';
-		$res_obj = new Orbisius_Support_Tickets_Result();
 		$data = $this->getData();
+		$res_obj = new Orbisius_Support_Tickets_Result();
 
-		if ( ! empty( $data['submit'] ) ) {
-			$res_obj = $this->processTicketSubmission($data);
+		try {
+			if ( ! empty( $data['submit'] ) ) {
+				if ( empty( $_POST['orbisius_support_tickets_submit_ticket_nonce'] )
+				    || ! wp_verify_nonce( $_POST['orbisius_support_tickets_submit_ticket_nonce'], 'orbisius_support_tickets_submit_ticket' ) ) {
+					throw new Exception( __("Invalid submission", 'orbisius_support_tickets') );
+				}
 
-			if ( $res_obj->isSuccess() ) {
-			    $ticket_id = $res_obj->data('id');
-				$ticket_link = $this->generateViewTicketLink( [ 'ticket_id' => $ticket_id, ] );
-				$msg = sprintf( __( "Ticket created. <a href='%s'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
-				$msg = Orbisius_Support_Tickets_Msg::success($msg);
-			} else {
-				$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
+				$res_obj = $this->processTicketSubmission($data);
+
+				if ( $res_obj->isError() ) {
+				    throw new Exception( $res_obj->msg() );
+				}
+
+                $ticket_id = $res_obj->data('id');
+                $ticket_link = $this->generateViewTicketLink( [ 'ticket_id' => $ticket_id, ] );
+                $msg = sprintf( __( "Ticket created. <a href='%s'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
+                $msg = Orbisius_Support_Tickets_Msg::success($msg);
 			}
+        } catch (Exception $e) {
+			$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
 		}
 
 		$ctx = [];
