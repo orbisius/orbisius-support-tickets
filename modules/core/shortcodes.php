@@ -165,8 +165,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 							$status = $cpt_api->getTicketStatus($item_obj);
 							?>
                             <tr class="table-info">
-                                <th scope="row"><?php echo $item_obj->ID; ?></th>
-                                <td><a href="<?php echo $link; ?>"><?php esc_attr_e( $item_obj->post_title ); ?></a>
+                                <td scope="row"><?php echo $item_obj->ID; ?></td>
+                                <td>
+                                    <a href="<?php echo $link; ?>"><?php esc_attr_e( $item_obj->post_title ); ?></a>
                                 </td>
                                 <td><?php esc_attr_e( $item_obj->post_date ); ?></td>
                                 <td><?php esc_attr_e( $status ); ?></td>

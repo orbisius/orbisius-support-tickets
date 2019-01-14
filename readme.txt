@@ -112,6 +112,9 @@ You can get in touch with us at
 
 == Changelog ==
 
+= 1.0.1 =
+* Fixes in the list tickets section (td had to be used when in the table body)
+
 = 1.0.0 =
 * Initial release
 
