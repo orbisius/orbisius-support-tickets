@@ -750,6 +750,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                         Do you need a custom plugin developed specifically for your needs?
                                         <br/>
                                         <a href="//orbisius.com/free-quote/?utm_source=orbisius_support_tickets"
+                                           target="_blank"
                                            class="button"
                                             ><?php esc_attr_e(
 		                                        'Contact us', 'orbisius_support_tickets'
