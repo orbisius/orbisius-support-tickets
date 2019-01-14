@@ -5,6 +5,8 @@ $admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
 add_action('init', array( $admin_api, 'init' ) ) ;
 add_action('init', array( $admin_api, 'performAdminInit' ) ) ;
 
+register_uninstall_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, 'Orbisius_Support_Tickets_Module_Core_Admin::cleanup' ) ;
+
 class Orbisius_Support_Tickets_Module_Core_Admin {
     private $plugin_settings_group_key = 'orbisius_support_tickets';
     private $plugin_settings_key = 'orbisius_support_tickets';
@@ -1025,9 +1027,23 @@ Ticket link: {ticket_url}
 		return $opts;
 	}
 
-	public function setOptions( array $opts ) {
-		$opts = update_option($this->plugin_settings_key, $opts);
+	/**
+	 * @param array $opts
+	 * @param string $key - optional
+	 * @return array
+	 */
+	public function setOptions( array $opts, $key = '' ) {
+		$key = empty($key) ? $this->plugin_settings_key : $key;
+		$opts = update_option($key, $opts);
 		return $opts;
+	}
+
+	/**
+	 * @param string $key
+	 */
+	public function deleteOptions( $key = '' ) {
+		$key = empty($key) ? $this->plugin_settings_key : $key;
+		delete_option($key);
 	}
 
 	/**
@@ -1258,4 +1274,13 @@ Ticket link: {ticket_url}
 
 		echo $html;
 	}
+
+	/**
+	 * Removes plugin's settings upon plugin uninstall
+	 */
+	public static function cleanup() {
+		$admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+		$admin_api->deleteOptions();
+		$admin_api->deleteOptions($admin_api->getPluginSettingsNotificationKey());
+    }
 }

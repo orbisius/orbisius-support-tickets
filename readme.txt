@@ -112,6 +112,7 @@ You can get in touch with at at
 
 = 1.0.1 =
 * Added links to View page in the settings
+* Added code to remove options upon uninstall
 
 = 1.0.0 =
 * Initial release
