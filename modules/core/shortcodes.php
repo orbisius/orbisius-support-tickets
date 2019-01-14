@@ -210,6 +210,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		    $data = $this->getData();
             $admin_api    = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
             $settings_key = $admin_api->getPluginSettingsKey();
+            $view_ticket_link         = $this->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] );
 
             if (!empty($data['sub_cmd']) && $data['sub_cmd'] == 'close') {
 	            $status = $cpt_obj->changeStatus($ctx['ticket_id'], Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED);
@@ -223,19 +224,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                 echo $msg;
 
                 $req_obj = Orbisius_Support_Tickets_Request::getInstance();
-
-                $url = $req_obj->getRequestUrl();
-                $url = remove_query_arg("{$settings_key}_data[cmd]", $url);
-                $url = remove_query_arg("{$settings_key}_data[sub_cmd]", $url);
-
-                // we redirect becasu we want the url to change. the current one has cmd to close the ticket
-	            $req_obj->redirect($url);
+                // we redirect because we want the url to change. The current one has cmd to close the ticket
+	            $req_obj->redirect($view_ticket_link);
             } else {
-	            $link         = $this->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] );
-	            $link         = add_query_arg( "{$settings_key}_data[cmd]", 'view_ticket', $link );
-	            $link         = add_query_arg( "{$settings_key}_data[sub_cmd]", 'close', $link );
+	            $view_ticket_link         = add_query_arg( "{$settings_key}_data[cmd]", 'view_ticket', $view_ticket_link );
+	            $view_ticket_link         = add_query_arg( "{$settings_key}_data[sub_cmd]", 'close', $view_ticket_link );
 	            $label        = __( 'Close Ticket', 'orbisius_support_tickets' );
-	            echo "<a href='$link'>$label</a>";
+	            echo "<a href='$view_ticket_link'>$label</a>";
             }
             ?>
         </div> <!-- /orbisius_support_tickets_close_ticket_wrapper -->
@@ -454,7 +449,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	                <?php foreach ( $items as $item_obj ) : ?>
 		                <?php
 		                $id = $item_obj->comment_ID;
-		                //$link = get_permalink( $item_obj->comm );
 		                $row_cls = $user_id == $item_obj->user_id
 			                ? 'orbisius_support_tickets_view_ticket_author_msg'
                             : 'orbisius_support_tickets_view_ticket_rep_msg';
