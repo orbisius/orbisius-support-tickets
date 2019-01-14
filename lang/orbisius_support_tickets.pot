@@ -1,0 +1,256 @@
+# Copyright (C) 2019 Orbisius Support Tickets
+# This file is distributed under the same license as the Orbisius Support Tickets package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Orbisius Support Tickets 1.0.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbisius-support-tickets\n"
+"POT-Creation-Date: 2019-01-14 23:46:32+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: modules/core/admin.php:142 modules/core/admin.php:143
+#: modules/core/admin.php:245 modules/core/admin.php:419
+#: modules/core/admin.php:542
+msgid "Orbisius Support Tickets"
+msgstr ""
+
+#: modules/core/admin.php:157 modules/core/admin.php:158
+#: modules/core/admin.php:258
+msgid "Dashboard"
+msgstr ""
+
+#: modules/core/admin.php:168 modules/core/admin.php:169
+#: modules/core/cpt.php:39
+msgid "Tickets"
+msgstr ""
+
+#: modules/core/admin.php:178 modules/core/admin.php:179
+#: modules/core/admin.php:547
+msgid "Settings"
+msgstr ""
+
+#: modules/core/admin.php:189 modules/core/admin.php:190
+#: modules/core/admin.php:432
+msgid "About"
+msgstr ""
+
+#: modules/core/admin.php:261
+msgid "Welcome. We, at Orbisius, are hoping that with this plugin you'll be able to provide awesome support to your clients."
+msgstr ""
+
+#: modules/core/admin.php:269
+msgid "Recent tickets"
+msgstr ""
+
+#: modules/core/admin.php:292
+msgid "Nothing found"
+msgstr ""
+
+#: modules/core/admin.php:339 modules/core/admin.php:471
+msgid "Sidebar"
+msgstr ""
+
+#: modules/core/admin.php:362
+msgid "Open Tickets"
+msgstr ""
+
+#: modules/core/admin.php:368
+msgid "Closed Tickets"
+msgstr ""
+
+#: modules/core/admin.php:435
+msgid ""
+"This plugin was created by the <a \n"
+"href='https://orbisius.com/?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>Orbisius</a> team. We love simplicity."
+msgstr ""
+
+#: modules/core/admin.php:440
+msgid ""
+"To find out what products we've created visit our <a \n"
+"href='https://orbisius.com/products?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>products page</a>.\n"
+msgstr ""
+
+#: modules/core/admin.php:447
+msgid ""
+"If you want to hire us to build you a cool custom WordPress plugin you can contact us from our <a \n"
+"href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>free quote page</a>.\n"
+msgstr ""
+
+#: modules/core/admin.php:565
+msgid "General Settings"
+msgstr ""
+
+#: modules/core/admin.php:600 modules/core/admin.php:641
+msgid "View page"
+msgstr ""
+
+#: modules/core/admin.php:608
+msgid "[orbisius_support_tickets_submit_ticket]"
+msgstr ""
+
+#: modules/core/admin.php:649
+msgid "[orbisius_support_tickets_list_tickets]"
+msgstr ""
+
+#: modules/core/admin.php:679
+msgid "[orbisius_support_tickets_view_ticket]"
+msgstr ""
+
+#: modules/core/admin.php:685 modules/core/admin.php:848
+msgid "Save Changes"
+msgstr ""
+
+#: modules/core/admin.php:709
+msgid "Notification Settings"
+msgstr ""
+
+#: modules/core/admin.php:894
+msgid "Extra Stuff"
+msgstr ""
+
+#: modules/core/admin.php:906
+msgid "Create pages"
+msgstr ""
+
+#: modules/core/admin.php:922
+msgid "Contact us"
+msgstr ""
+
+#: modules/core/admin.php:1078
+msgid "Support"
+msgstr ""
+
+#: modules/core/cpt.php:25
+msgctxt "custom post type general name"
+msgid "Ticket"
+msgstr ""
+
+#: modules/core/cpt.php:26
+msgctxt "custom post type singular name"
+msgid "Ticket"
+msgstr ""
+
+#: modules/core/cpt.php:27
+msgctxt "orbisius_support_tickets"
+msgid "Add New"
+msgstr ""
+
+#: modules/core/cpt.php:28
+msgid "Add New Ticket"
+msgstr ""
+
+#: modules/core/cpt.php:29
+msgid "Edit Ticket"
+msgstr ""
+
+#: modules/core/cpt.php:30
+msgid "New Ticket"
+msgstr ""
+
+#: modules/core/cpt.php:31
+msgid "All Tickets"
+msgstr ""
+
+#: modules/core/cpt.php:32
+msgid "View Ticket"
+msgstr ""
+
+#: modules/core/cpt.php:33
+msgid "Search Ticket"
+msgstr ""
+
+#: modules/core/cpt.php:34
+msgid "No Tickets Found"
+msgstr ""
+
+#: modules/core/cpt.php:35
+msgid "The Ticket Could Not Be Found in Trash"
+msgstr ""
+
+#: modules/core/shortcodes.php:148
+msgid "No tickets found."
+msgstr ""
+
+#: modules/core/shortcodes.php:207
+msgid "Ticket ID: %s"
+msgstr ""
+
+#: modules/core/shortcodes.php:219
+msgid "Status: "
+msgstr ""
+
+#: modules/core/shortcodes.php:230
+msgid "Created on: "
+msgstr ""
+
+#: modules/core/shortcodes.php:267
+msgid "Ticket closed"
+msgstr ""
+
+#: modules/core/shortcodes.php:269
+msgid "Cannot close the ticket"
+msgstr ""
+
+#: modules/core/shortcodes.php:278
+msgid "Close Ticket"
+msgstr ""
+
+#: modules/core/shortcodes.php:311
+msgid "Invalid submission"
+msgstr ""
+
+#: modules/core/shortcodes.php:322
+msgid "Ticket created. <a href='%s'>Ticket #%d</a>"
+msgstr ""
+
+#: modules/core/shortcodes.php:358 modules/core/shortcodes.php:362
+msgid "Subject"
+msgstr ""
+
+#: modules/core/shortcodes.php:371
+msgid "Message"
+msgstr ""
+
+#: modules/core/shortcodes.php:387
+msgid "Submit"
+msgstr ""
+
+#: modules/core/shortcodes.php:425 modules/core/shortcodes.php:436
+#: modules/core/shortcodes.php:441 modules/core/shortcodes.php:449
+msgid "Invalid ticket ID"
+msgstr ""
+
+#: modules/core/shortcodes.php:430
+msgid "You must be logged in to view the ticket."
+msgstr ""
+
+#: modules/core/shortcodes.php:534
+msgid "Reply"
+msgstr ""
+
+#: modules/core/shortcodes.php:536
+msgid "Send"
+msgstr ""
+#. Plugin Name of the plugin/theme
+msgid "Orbisius Support Tickets"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://orbisius.com/products/wordpress-plugins/orbisius-support-tickets"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Minimalistic support ticket system that enables you to start providing awesome support in 2 minutes."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Svetoslav Marinov (Slavi) | Orbisius.com"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://orbisius.com"
+msgstr ""
