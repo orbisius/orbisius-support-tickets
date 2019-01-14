@@ -55,6 +55,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	/**
 	 * Highlights the correct submenu for a custom post type. For some odd reasons WP wasn't highlighting it.
      * borrowed ideas from WooCommerce (woocommerce\includes\admin\class-wc-admin-menus.php)
+     * The highlighting may also be doable via these links
+     * @see https://developer.wordpress.org/reference/hooks/parent_file/
+     * @see https://stackoverflow.com/questions/2308569/manually-highlight-wordpress-admin-menu-item
 	 */
 	public function highlightSubmenu() {
 		global $parent_file, $submenu_file, $post_type;
