@@ -286,9 +286,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                             ?>
 
                                             <?php if (empty($items)) : ?>
-
+	                                            <?php _e(
+		                                            "Nothing found",
+		                                            'orbisius_support_tickets'
+	                                            ); ?>
                                             <?php else : ?>
-
                                                 <?php foreach ($items as $item_obj) : ?>
                                                     <div class="ticket">
                                                         #<?php echo $item_obj->ID;?> | <a href="<?php echo esc_url($shortcode_api->generateViewTicketLink( array( 'ticket_id' => $item_obj->ID ) ) );?>"
