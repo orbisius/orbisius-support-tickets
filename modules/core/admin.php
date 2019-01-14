@@ -280,6 +280,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                             $items = $cpt_api->getItems($filter);
                                             $shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
 
+                                            $statuses = $cpt_api->getStatuses();
                                             ?>
 
                                             <?php if (empty($items)) : ?>
@@ -292,6 +293,17 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                                            target="_blank"
                                                             ><?php
                                                             echo $cpt_api->fixOutput($item_obj->post_title); ?></a>
+                                                        | status:
+                                                        <?php
+                                                        $status = $cpt_api->getStatus($item_obj);
+
+                                                        if (!empty($statuses[ $status ])) {
+                                                            echo $statuses[ $status ];
+                                                        } else {
+                                                            echo 'n/a';
+                                                        }
+
+                                                        ?>
                                                     </div>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
