@@ -115,11 +115,12 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$attachments = [];
 		$attachments = apply_filters( 'orbisius_support_tickets_filter_notification_email_attachments', $attachments, $ctx );
 
-		$mail_sent_status = wp_mail($recipient_email, $subject, $message, $headers, $attachments);
-
-		if (empty($notif_opts['support_email_receiver'])) {
-			return;
+		// For now let's BCC the admin
+		if (!empty($notif_opts['support_email_receiver'])) {
+			$headers[] = "Bcc: " . $notif_opts['support_email_receiver'];
 		}
+
+		$mail_sent_status = wp_mail($recipient_email, $subject, $message, $headers, $attachments);
 
 		// 1 email to admin or just BCC?
 //		$subject = $notif_opts['new_ticket_subject'];
