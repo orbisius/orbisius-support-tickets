@@ -66,6 +66,8 @@ The plugin provides merge tags that you can using in the email templates. That w
 
 The plugin should also work even if your hosting is running php v5.2.4 (min php version required by WordPress itself).
 
+You can easily view the View tickets or submit ticket pages from plugin's settings page.
+
 == Demo ==
 
 TODO
@@ -110,10 +112,6 @@ You can get in touch with us at
 <a href="https://orbisius.com/contact/" target="_blank" title="[new window]">https://orbisius.com/contact/</a>
 
 == Changelog ==
-
-= 1.0.1 =
-* Added links to View page in the settings
-* Added code to remove options upon uninstall
 
 = 1.0.0 =
 * Initial release
