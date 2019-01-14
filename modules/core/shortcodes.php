@@ -229,42 +229,44 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			return;
 		}
 
+		$redir = 0;
 		ob_start();
-		?>
-        <div id="orbisius_support_tickets_close_ticket_wrapper" class="orbisius_support_tickets_close_ticket_wrapper">
-            <?php
-		    $data = $this->getData();
-            $admin_api    = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
-            $settings_key = $admin_api->getPluginSettingsKey();
-            $view_ticket_link         = $this->generateViewTicketLink( array( 'ticket_id' => $ctx['ticket_id'] ) );
+		$data = $this->getData();
+        $admin_api    = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+        $settings_key = $admin_api->getPluginSettingsKey();
+        $view_ticket_link = $this->generateViewTicketLink( array( 'ticket_id' => $ctx['ticket_id'] ) );
 
-            if (!empty($data['sub_cmd']) && $data['sub_cmd'] == 'close') {
-	            $status = $cpt_obj->changeStatus($ctx['ticket_id'], Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED);
+		if (!empty($data['sub_cmd']) && $data['sub_cmd'] == 'close') {
+			$status = $cpt_obj->changeStatus( $ctx['ticket_id'], Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED );
 
-                if ($status) {
-	                $msg = Orbisius_Support_Tickets_Msg::success( __('Ticket closed', 'orbisius_support_tickets') );
-                } else {
-	                $msg = Orbisius_Support_Tickets_Msg::error( __('Cannot close the ticket', 'orbisius_support_tickets') );
-                }
+			if ( $status ) {
+				$msg = Orbisius_Support_Tickets_Msg::success( __( 'Ticket closed', 'orbisius_support_tickets' ) );
+			} else {
+				$msg = Orbisius_Support_Tickets_Msg::error( __( 'Cannot close the ticket', 'orbisius_support_tickets' ) );
+			}
 
-                echo $msg;
+			echo $msg;
+			$redir = 1;
+        } else {
+            echo '<div id="orbisius_support_tickets_close_ticket_wrapper" class="orbisius_support_tickets_close_ticket_wrapper">';
+            $view_ticket_link = add_query_arg( "{$settings_key}_data[cmd]", 'view_ticket', $view_ticket_link );
+            $view_ticket_link = add_query_arg( "{$settings_key}_data[sub_cmd]", 'close', $view_ticket_link );
+            $label            = __( 'Close Ticket', 'orbisius_support_tickets' );
+            echo "<a href='$view_ticket_link' id='close_ticket_btn' class='close_ticket_btn btn button'>$label</a>";
+            echo '</div> <!-- /orbisius_support_tickets_close_ticket_wrapper -->';
+        }
 
-                $req_obj = Orbisius_Support_Tickets_Request::getInstance();
-                // we redirect because we want the url to change. The current one has cmd to close the ticket
-	            $req_obj->redirect($view_ticket_link);
-            } else {
-	            $view_ticket_link         = add_query_arg( "{$settings_key}_data[cmd]", 'view_ticket', $view_ticket_link );
-	            $view_ticket_link         = add_query_arg( "{$settings_key}_data[sub_cmd]", 'close', $view_ticket_link );
-	            $label        = __( 'Close Ticket', 'orbisius_support_tickets' );
-	            echo "<a href='$view_ticket_link' id='close_ticket_btn' class='close_ticket_btn btn button'>$label</a>";
-            }
-            ?>
-        </div> <!-- /orbisius_support_tickets_close_ticket_wrapper -->
-		<?php
 		$html = ob_get_contents();
 		ob_end_clean();
 
 		echo $html;
+
+		if ($redir) {
+			$req_obj = Orbisius_Support_Tickets_Request::getInstance();
+
+			// we redirect because we want the url to change. The current one has cmd to close the ticket
+			$req_obj->redirect( $view_ticket_link );
+		}
 	}
 
 	/**
