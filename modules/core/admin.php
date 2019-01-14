@@ -732,7 +732,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                     <p>
                                     <h4>Support Pages Creation Tool</h4>
                                     Click the buttom below and the plugin will create the pages with the shortcodes for you and set the options.
-                                    If a page already exists it won't be created (but support page maybe updated to include links to submit ticket & my tickets).
+                                    If a page already exists it won't be created (but support page maybe updated to include links to submit ticket & my tickets pages).
                                     <br/>
                                     <a href="<?php echo esc_url(add_query_arg('orbisius_support_tickets_admin_create_pages', '1')); ?>"
                                        class="button"
