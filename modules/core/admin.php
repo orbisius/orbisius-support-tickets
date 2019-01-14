@@ -1158,10 +1158,23 @@ Ticket link: {ticket_url}
 
         // fb
 		// https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+        // credit: https://support.imcreator.com/hc/en-us/articles/232392888-Creating-a-Facebook-share-link-on-your-page
 		$fb_params = [
 			'u' => $plugin_data['PluginURI'],
 		];
 		$fb_share_link = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query($fb_params);
+
+        // twitter
+        // https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/parameter-reference1
+		// https://stackoverflow.com/questions/6208363/sharing-a-url-with-a-query-string-on-twitter
+		// http://twitter.com/share?text=text goes here&url=http://url goes here&hashtags=hashtag1,hashtag2,hashtag3
+		$twitter_params = [
+			'url' => $plugin_data['PluginURI'],
+			'text' => $plugin_data['Description'],
+			'hashtags' => 'wordpress,plugin,business',
+			'related' => 'lordspace,orbisius,qsandbox',
+		];
+		$twitter_share_link = 'http://twitter.com/intent/tweet?' . http_build_query($twitter_params);
 
 		ob_start();
         ?>
@@ -1182,7 +1195,7 @@ Ticket link: {ticket_url}
             <br/>
 
             <div>
-                <a href="<?php echo esc_url($fb_share_link); // credit: https://support.imcreator.com/hc/en-us/articles/232392888-Creating-a-Facebook-share-link-on-your-page ?>"
+                <a href="<?php echo esc_url($fb_share_link); ?>"
                    onclick="
                     window.open(
                       '<?php echo esc_url($fb_share_link);?>',
@@ -1190,6 +1203,20 @@ Ticket link: {ticket_url}
                       'width=626,height=436');
                     return false;">
                     Share this plugin on Facebook
+                </a>
+            </div>
+
+            <br/>
+
+            <div>
+                <a href="<?php echo esc_url($twitter_share_link); ?>"
+                   onclick="
+                    window.open(
+                      '<?php echo esc_url($twitter_share_link);?>',
+                      'orbisius_support_tickets_twitter_share_dialog',
+                      'width=626,height=436');
+                    return false;">
+                    Share this plugin on Twitter
                 </a>
             </div>
         </div>
