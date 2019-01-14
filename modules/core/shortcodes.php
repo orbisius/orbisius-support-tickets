@@ -191,7 +191,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function renderSeparator( $ctx = array() ) {
 		?>
-        <hr/>
+        <hr class="ticket_sep"/>
 		<?php
 	}
 
@@ -201,9 +201,11 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function renderTicketInfo( $ctx = array() ) {
 		?>
-		<?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
-		<?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ctx['ticket_id' ] ); ?>
-		<?php do_action('orbisius_support_tickets_view_ticket_after_ticket_id', $ctx); ?>
+        <div id="ticket_meta_ticket_id_wrapper" class="ticket_meta_ticket_id_wrapper">
+            <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
+            <?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ctx['ticket_id' ] ); ?>
+            <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_id', $ctx); ?>
+        </div>
 		<?php
 	}
 
