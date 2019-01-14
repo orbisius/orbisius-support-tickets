@@ -256,7 +256,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	            $view_ticket_link         = add_query_arg( "{$settings_key}_data[cmd]", 'view_ticket', $view_ticket_link );
 	            $view_ticket_link         = add_query_arg( "{$settings_key}_data[sub_cmd]", 'close', $view_ticket_link );
 	            $label        = __( 'Close Ticket', 'orbisius_support_tickets' );
-	            echo "<a href='$view_ticket_link' id='close_ticket_btn' class='close_ticket_btn' class='btn button'>$label</a>";
+	            echo "<a href='$view_ticket_link' id='close_ticket_btn' class='close_ticket_btn btn button'>$label</a>";
             }
             ?>
         </div> <!-- /orbisius_support_tickets_close_ticket_wrapper -->
