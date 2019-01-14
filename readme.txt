@@ -71,6 +71,11 @@ The plugin should also work even if your hosting is running php v5.2.4 (min php 
 TODO
 
 
+= Credits =
+1. WordPress
+2. Plugin's icon/logo is from Rawpixel https://unsplash.com/photos/3BK_DyRVf90
+3. Orbisius for investing and sharing into this plugin.
+
 = Author =
 
 Svetoslav Marinov (Slavi) | <a href="https://orbisius.com" title="Custom Web Programming, Web Design, e-commerce, e-store, WordPress Plugin Development, Facebook and Mobile App Development in Niagara Falls, St. Catharines, Ontario, Canada" target="_blank">Custom Web and Mobile Programming by Orbisius.com</a>
