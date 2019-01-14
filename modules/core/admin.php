@@ -50,6 +50,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
         ];
 
 		do_action('orbisius_support_tickets_admin_action_register_settings', $ctx);
+		add_action('orbisius_support_tickets_admin_action_render_sidebar', [ $this, 'renderSidebarShareLinks' ] );
 	}
 
 	/**
@@ -354,10 +355,14 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                     </table>
 
                                     </p>
-                                </div>
-                                <!-- .inside -->
-                                <!-- .inside -->
+                                </div> <!-- .inside -->
 
+                                <div class="inside">
+                                <?php
+                                    $ctx = [];
+                                    do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
+                                ?>
+                                </div><!-- .inside -->
                             </div>
                             <!-- .postbox -->
 
@@ -454,6 +459,13 @@ href='https://orbisius.com/free-quote/?utm_source=orbisius_support_tickets&utm_m
                                     </p>
                                 </div>
                                 <!-- .inside -->
+
+                                <div class="inside">
+		                            <?php
+		                            $ctx = [];
+		                            do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
+		                            ?>
+                                </div><!-- .inside -->
 
                             </div>
                             <!-- .postbox -->
@@ -877,7 +889,12 @@ href='https://orbisius.com/free-quote/?utm_source=orbisius_support_tickets&utm_m
                                 </div>
                                 <!-- .inside -->
 
-
+                                <div class="inside">
+		                            <?php
+		                            $ctx = [];
+		                            do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
+		                            ?>
+                                </div><!-- .inside -->
 
                             </div>
                             <!-- .postbox -->
@@ -1120,5 +1137,21 @@ Ticket link: {ticket_url}
 	 */
 	public function setPluginSettingsKey( $plugin_settings_key ) {
 		$this->plugin_settings_key = $plugin_settings_key;
+	}
+
+	/**
+	 * @param array $ctx
+	 */
+	public function renderSidebarShareLinks( array $ctx = [] ) {
+		ob_start();
+        ?>
+        <div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
+            aaa
+        </div>
+		<?php
+		$html = ob_get_contents();
+		ob_end_clean();
+
+		echo $html;
 	}
 }
