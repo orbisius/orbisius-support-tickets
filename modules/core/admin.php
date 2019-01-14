@@ -14,6 +14,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	private $plugin_settings_notification_key = 'orbisius_support_tickets_notification';
 	private $plugin_settings_notification_group_key = 'orbisius_support_tickets_notification';
 
+	private $bug_report_url = 'https://github.com/orbisius/orbisius-support-tickets/issues';
+
 	/**
 	 * @var string
 	 */
@@ -53,6 +55,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		do_action('orbisius_support_tickets_admin_action_register_settings', $ctx);
 		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'renderSidebarShareLinks' ) );
+		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'renderReviewPlugin' ) );
 	}
 
 	/**
@@ -211,7 +214,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			$link = "<a href='{$link}'>Settings</a>";
 			$links[] = $link;
 
-			$link = 'https://github.com/orbisius/orbisius-support-tickets/issues';
+			$link = $this->getBugReportUrl();
 			$link = "<a href='{$link}' target='_blank' title='Opens in a new window'>Report a bug</a>";
 			$links[] = $link;
 
@@ -925,7 +928,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                                     <p>
                                         <h4>Want to help?</h4>
                                         If you want to help, make a suggestion or found a glitch
-                                    <a class="button" href="https://github.com/orbisius/orbisius-support-tickets/issues" target="_blank">Submit a ticket</a>
+                                    <a class="button" href="<?php echo esc_url($this->getBugReportUrl()); ?>" target="_blank">Submit a ticket</a>
                                     </p>
                                 </div>
                                 <!-- .inside -->
@@ -1233,9 +1236,12 @@ Ticket link: {ticket_url}
 
 		ob_start();
         ?>
-        <div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
+        <hr/>
 
-            <div>
+        <div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
+            <h3>Share</h3>
+            <ul>
+            <li>
                 <a href="<?php echo esc_url($linked_in_share_link);?>"
                    onclick="
                            window.open(
@@ -1245,11 +1251,9 @@ Ticket link: {ticket_url}
                            return false;">
                     Share this plugin on LinkedIn
                 </a>
-            </div>
+            </li>
 
-            <br/>
-
-            <div>
+            <li>
                 <a href="<?php echo esc_url($fb_share_link); ?>"
                    onclick="
                     window.open(
@@ -1259,11 +1263,9 @@ Ticket link: {ticket_url}
                     return false;">
                     Share this plugin on Facebook
                 </a>
-            </div>
+            </li>
 
-            <br/>
-
-            <div>
+            <li>
                 <a href="<?php echo esc_url($twitter_share_link); ?>"
                    onclick="
                     window.open(
@@ -1272,6 +1274,37 @@ Ticket link: {ticket_url}
                       'width=626,height=436');
                     return false;">
                     Share this plugin on Twitter
+                </a>
+            </li>
+            </ul>
+        </div>
+        <hr/>
+
+		<?php
+		$html = ob_get_contents();
+		ob_end_clean();
+
+		echo $html;
+	}
+
+	/**
+	 * @param array $ctx
+	 */
+	public function renderReviewPlugin( array $ctx = array() ) {
+		ob_start();
+		$plugin_review_link = 'https://wordpress.org/support/plugin/orbisius-support-tickets/reviews/';
+        ?>
+        <div id="orbisius_support_tickets_admin_sidebar_review_plugin" class="orbisius_support_tickets_admin_sidebar_review_plugin">
+            <h3>Plugin Review</h3>
+            <div>
+                We'd appreciate it if write a 5 star review.
+                <a href="<?php echo esc_url($plugin_review_link); ?>" target="_blank" class="button">
+                    Write a review</a>
+                <br/>
+                <br/>
+                <h3>Found a bug?</h3>
+                If something needs fixing please
+                    <a href='<?php echo esc_url($this->getBugReportUrl()); ?>' target="_blank" class="button">Submit a ticket</a>
                 </a>
             </div>
         </div>
@@ -1290,4 +1323,11 @@ Ticket link: {ticket_url}
 		$admin_api->deleteOptions();
 		$admin_api->deleteOptions($admin_api->getPluginSettingsNotificationKey());
     }
+
+	/**
+	 * @return string
+	 */
+	public function getBugReportUrl() {
+		return $this->bug_report_url;
+	}
 }
