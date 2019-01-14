@@ -101,11 +101,12 @@ n/a
 
 = I want to contribute? =
 
-Awesome! Clone the project on github at https://github.com/orbisius/orbisius-support-tickets/issues
+Awesome! Clone the project on github at <a href='https://github.com/orbisius/orbisius-support-tickets/issues' target='_blank'>submit a ticket </a> and make fixes.
+Before doing any work it would be nice to check with us so we can coordinate work because some features may have already been planned.
 
 = How to contact the author? =
 
-You can get in touch with at at
+You can get in touch with us at
 <a href="https://orbisius.com/contact/" target="_blank" title="[new window]">https://orbisius.com/contact/</a>
 
 == Changelog ==
