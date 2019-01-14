@@ -200,9 +200,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * @return string
 	 */
 	public function renderTicketInfo( $ctx = array() ) {
-		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
-		$statuses = $cpt_api->getStatuses();
-		$status = $cpt_api->getStatus($ctx['ticket_id' ]);
+
 		?>
         <div id="ticket_meta_ticket_id_wrapper" class="ticket_meta_ticket_item ticket_meta_ticket_id_wrapper">
             <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
@@ -210,6 +208,11 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
             <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_id', $ctx); ?>
         </div>
 
+        <?php
+		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		$statuses = $cpt_api->getStatuses();
+		$status = $cpt_api->getStatus($ctx['ticket_id' ]);
+        ?>
         <div class="ticket_meta_ticket_status_wrapper ticket_meta_ticket_item ticket_meta_ticket_status_<?php echo $status;?>">
 			<?php
 			if (!empty($statuses[ $status ])) {
@@ -217,6 +220,16 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			}
 			?>
         </div> <!-- /ticket_meta_ticket_status_wrapper -->
+
+		<?php
+		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		$ticket_obj = $cpt_api->getTicket($ctx['ticket_id']);
+		?>
+        <div class="ticket_meta_ticket_creation_date_wrapper ticket_meta_ticket_item">
+			<?php
+            echo __('Created on: ', 'orbisius_support_tickets' ) . sprintf("<span class='creation_date_value'>%s</span>", $ticket_obj->post_date );
+			?>
+        </div> <!-- /ticket_meta_ticket_creation_date_wrapper -->
 		<?php
 	}
 
