@@ -42,12 +42,36 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		$notif_settings_group = $settings_group . '_notification';
 		register_setting($notif_settings_group, $notif_settings_key, array($this, 'validateNotificationSettingsData'));
 
+		add_action( 'admin_head', array( $this, 'highlightSubmenu' ) );
+
 		$ctx = [
 			'settings_key' => $this->plugin_settings_key,
 			'settings_group_key' => $this->plugin_settings_group_key,
         ];
 
 		do_action('orbisius_support_tickets_admin_action_register_settings', $ctx);
+	}
+
+	/**
+	 * Highlights the correct submenu for a custom post type. For some odd reasons WP wasn't highlighting it.
+     * borrowed ideas from WooCommerce (woocommerce\includes\admin\class-wc-admin-menus.php)
+	 */
+	public function highlightSubmenu() {
+		global $parent_file, $submenu_file, $post_type;
+
+		switch ( $post_type ) {
+			case 'orb_support_ticket':
+			    // I may need this for custom tax as well so we'll keep the screen call.
+                $screen = get_current_screen();
+				$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+
+				if ( $screen  ) {
+					$parent_file  = $this->getPluginSettingsKey(); // WPCS: override ok.
+					$submenu_file = admin_url( 'edit.php?post_type=' . $cpt_obj->getCptSupportTicket() ); // WPCS: override ok.
+				}
+
+				break;
+		}
 	}
 
 	/**
@@ -128,9 +152,19 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			array( $this, 'renderPluginDashboardPage' )
 		);
 
+		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+
+		// We actually want the custom post types to show up under our menu
+		add_submenu_page( $ctx['top_menu_slug'],
+			__( 'Tickets', 'orbisius_support_tickets'),
+			__( 'Tickets', 'orbisius_support_tickets'),
+			$ctx['req_cap'],
+			admin_url('/edit.php?post_type=' . $cpt_obj->getCptSupportTicket())
+		);
+
 		$ctx['settings_slug'] = $ctx['top_menu_slug'] . '_settings';
 
-		// This way we have the top level menu leads to this and there's no duplication.
+		// Let's define settings page for the plugin.
 		add_submenu_page( $ctx['top_menu_slug'],
 			__( 'Settings', 'orbisius_support_tickets'),
 			__( 'Settings', 'orbisius_support_tickets'),

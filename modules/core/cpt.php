@@ -49,15 +49,18 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'publicly_queryable' => true,
 			'exclude_from_search' => true,
 			'show_ui' => true, // generate a default admin user interface
-			'show_in_menu' => true, // display as a top-level menu item
+			'show_in_menu' => admin_url('admin.php?page=' . $this->getCptSupportTicket()), // display as a submenu menu item
+			'show_in_menu' => false, // display as a top-level menu item
+			//'show_in_menu' => admin_url('admin.php?page=' . $this->getCptSupportTicket()), // display as a submenu menu item
+			//'show_in_menu' => admin_url('edit.php?page=' . $this->getCptSupportTicket()), // display as a submenu menu item
+			'show_in_nav_menus' => true, // makes this post type available for selection in navigation menus
 			'query_var' => true,
 			'rewrite' => array('slug' => 'orbisius_support_ticket'), // rewrite the url to make it pretty
 			'menu_position' => 2, // show below Posts but above Media
 			'supports' => array( 'title', 'editor', 'comments', 'author', ), // /*'revisions', */  'excerpt', 'custom-fields', 'thumbnail', 'post_formats', 'page-attributes'
 			'has_archive' => true,
-			'hierarchical' => true,
+			'hierarchical' => false,
 			//'taxonomies' => array('orb_support_tickets_cat', 'orb_support_tickets_tag'), // just use default categories and tags
-			'show_in_nav_menus' => true, // makes this post type available for selection in navigation menus
 			'menu_position' => 200,
 		);
 
