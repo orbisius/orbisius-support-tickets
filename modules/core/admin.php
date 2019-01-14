@@ -526,6 +526,11 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 			if ($updates) {
 				$opts = $this->setOptions($opts);
             }
+
+			// We remove this param and redirect to the settings page. That way we the pages dropdowns
+            // should become preselected. The code above overriding the opts array should have set that.
+			$url = remove_query_arg('orbisius_support_tickets_admin_create_pages');
+			$req_obj->redirect($url);
 		}
 
 		?>
