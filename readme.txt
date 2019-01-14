@@ -105,6 +105,9 @@ You can get in touch with at at
 
 == Changelog ==
 
+= 1.0.1 =
+* Added links to View page in the settings
+
 = 1.0.0 =
 * Initial release
 
