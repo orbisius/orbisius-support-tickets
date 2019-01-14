@@ -21,8 +21,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		add_shortcode( 'orbisius_support_tickets_submit_ticket', array( $this, 'renderSubmitTicketForm' ) );
 		add_shortcode( 'orbisius_support_tickets_generate_page_link', array( $this, 'generatePageLink' ) );
 
-		add_action('orbisius_support_tickets_view_ticket_after_output', array( $this, 'renderSeparator' ) );
-		add_action('orbisius_support_tickets_view_ticket_after_output', array( $this, 'renderCloseTicketButton' ), 20 );
+		add_action('orbisius_support_tickets_view_ticket_after_ticket_content_wrapper', array( $this, 'renderSeparator' ) );
+		add_action('orbisius_support_tickets_view_ticket_meta', array( $this, 'renderTicketInfo' ), 20 );
+		add_action('orbisius_support_tickets_view_ticket_meta', array( $this, 'renderCloseTicketButton' ), 20 );
 	}
 
 	private $defaults = array(
@@ -191,6 +192,18 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	public function renderSeparator( $ctx = array() ) {
 		?>
         <hr/>
+		<?php
+	}
+
+	/**
+     * Outputs some
+	 * @return string
+	 */
+	public function renderTicketInfo( $ctx = array() ) {
+		?>
+		<?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
+		<?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ctx['ticket_id' ] ); ?>
+		<?php do_action('orbisius_support_tickets_view_ticket_after_ticket_id', $ctx); ?>
 		<?php
 	}
 
@@ -432,31 +445,33 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			<?php do_action( 'orbisius_support_tickets_action_before_view_ticket', $ctx ); ?>
 
 			<?php if ( empty( $ticket_obj ) ) : ?>
-                <div class="orbisius_support_tickets_list_ticket_msg">
+                <div id="orbisius_support_tickets_view_ticket_msg" class="orbisius_support_tickets_view_ticket_msg">
                     <?php echo $msg; ?>
                 </div>
 			<?php else : ?>
 				<?php echo $msg; ?>
 
-                <div class="table-responsive-md">
+                <div class="ticket_wrapper">
+	                <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_title_wrapper', $ctx); ?>
                     <div class="ticket_title_wrapper">
 	                    <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_title', $ctx); ?>
                         <h3><?php echo $cpt_obj->fixOutput($ticket_obj->post_title); ?></h3>
 	                    <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_title', $ctx); ?>
                     </div>
-                    <div class="ticket_id_wrapper">
-	                    <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
-                        <?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ticket_obj->ID ); ?>
-                        <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_id', $ctx); ?>
-                    </div>
 
-                    <?php do_action('orbisius_support_tickets_view_ticket_before_output', $ctx); ?>
+	                <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_title_wrapper', $ctx); ?>
 
+                    <div id="ticket_meta_wrapper" class="ticket_meta_wrapper">
+	                    <?php do_action('orbisius_support_tickets_view_ticket_meta', $ctx); ?>
+                    </div> <!-- /ticket_meta_wrapper -->
+
+	                <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_content_wrapper', $ctx); ?>
                     <div class="ticket_content_wrapper">
+	                    <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_content', $ctx); ?>
 	                    <?php echo $cpt_obj->fixOutput($ticket_obj->post_content); ?>
+                        <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_content', $ctx); ?>
                     </div>
-
-                    <?php do_action('orbisius_support_tickets_view_ticket_after_output', $ctx); ?>
+                    <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_content_wrapper', $ctx); ?>
                 </div>
 
                 <div id="orbisius_support_tickets_view_ticket_discussion_wrapper" class="orbisius_support_tickets_view_ticket_discussion_wrapper">
