@@ -432,14 +432,14 @@ href='https://orbisius.com/?utm_source=orbisius_support_tickets&utm_medium=about
 										); ?></p>
                                     <p><?php _e(
 											"To find out what products we've created visit our <a 
-href='https://orbisius.com/products/?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>products page</a>.
+href='https://orbisius.com/products?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>products page</a>.
 ",
 											'orbisius_support_tickets'
 										); ?></p>
 
                                     <p><?php _e(
 											"If you want to hire us to build you a cool custom WordPress plugin you can contact us from our <a 
-href='https://orbisius.com/free-quote/?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>free quote page</a>.
+href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>free quote page</a>.
 ",
 											'orbisius_support_tickets'
 										); ?></p>
