@@ -1155,10 +1155,43 @@ Ticket link: {ticket_url}
             'summary' => $plugin_data['Description'],
         ];
 		$linked_in_share_link = 'https://www.linkedin.com/shareArticle?' . http_build_query($linked_in_params);
+
+        // fb
+		// https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+		$fb_params = [
+			'u' => $plugin_data['PluginURI'],
+		];
+		$fb_share_link = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query($fb_params);
+
 		ob_start();
         ?>
         <div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
-            <a href='<?php echo esc_url($linked_in_share_link);?>' target="_blank">Share this plugin on LinkedIn</a>
+
+            <div>
+                <a href="<?php echo esc_url($linked_in_share_link);?>"
+                   onclick="
+                           window.open(
+                           '<?php echo esc_url($linked_in_share_link);?>',
+                           'orbisius_support_tickets_linkedin_share_dialog',
+                           'width=626,height=436');
+                           return false;">
+                    Share this plugin on LinkedIn
+                </a>
+            </div>
+
+            <br/>
+
+            <div>
+                <a href="<?php echo esc_url($fb_share_link); // credit: https://support.imcreator.com/hc/en-us/articles/232392888-Creating-a-Facebook-share-link-on-your-page ?>"
+                   onclick="
+                    window.open(
+                      '<?php echo esc_url($fb_share_link);?>',
+                      'orbisius_support_tickets_fb_share_dialog',
+                      'width=626,height=436');
+                    return false;">
+                    Share this plugin on Facebook
+                </a>
+            </div>
         </div>
 		<?php
 		$html = ob_get_contents();
