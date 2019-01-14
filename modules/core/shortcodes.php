@@ -426,7 +426,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			$msg = Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
         }
 
-
 		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 		?>
         <div id="orbisius_support_tickets_view_ticket_wrapper" class="orbisius_support_tickets_view_ticket_wrapper">
