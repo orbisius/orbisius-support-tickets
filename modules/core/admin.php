@@ -173,6 +173,17 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			array( $this, 'renderPluginSettingsPage' )
 		);
 
+		$ctx['about_slug'] = $ctx['top_menu_slug'] . '_about';
+
+		// Let's define settings page for the plugin.
+		add_submenu_page( $ctx['top_menu_slug'],
+			__( 'About', 'orbisius_support_tickets'),
+			__( 'About', 'orbisius_support_tickets'),
+			$ctx['req_cap'],
+			$ctx['about_slug'],
+			array( $this, 'renderPluginAboutPage' )
+		);
+
 		do_action('orbisius_support_tickets_admin_action_setup_menu', $ctx);
 
 		add_filter( 'plugin_action_links', [ $this, 'addQuickLinksIoPluginListing' ], 10, 2 );
@@ -342,6 +353,103 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                     </p>
                                 </div>
                                 <!-- .inside -->
+                                <!-- .inside -->
+
+                            </div>
+                            <!-- .postbox -->
+
+                        </div>
+                        <!-- .meta-box-sortables -->
+
+                    </div>
+                    <!-- #postbox-container-1 .postbox-container -->
+
+                </div>
+                <!-- #post-body .metabox-holder .columns-2 -->
+
+                <br class="clear">
+            </div>
+            <!-- #poststuff -->
+
+        </div> <!-- .wrap -->
+		<?php
+	}
+
+	/**
+	 * Renders plugin's dashboard
+	 *
+	 * @uses
+	 * @access public
+	 * @since  1.
+	 * @return void
+	 */
+	public function renderPluginAboutPage() {
+		?>
+
+        <div class="wrap">
+
+            <div id="icon-options-general" class="icon32"></div>
+            <h1><?php esc_attr_e( 'Orbisius Support Tickets', 'orbisius_support_tickets' ); ?></h1>
+
+            <div id="poststuff">
+
+                <div id="post-body" class="metabox-holder columns-2">
+
+                    <!-- main content -->
+                    <div id="post-body-content">
+
+                        <div class="meta-box-sortables ui-sortable">
+
+                            <div class="postbox">
+
+                                <h2><span><?php esc_attr_e( 'About', 'orbisius_support_tickets' ); ?></span></h2>
+
+                                <div class="inside">
+                                    <p><?php _e(
+											"This plugin was created by the <a 
+href='https://orbisius.com/?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>Orbisius</a> team. We love simplicity.",
+											'orbisius_support_tickets'
+										); ?></p>
+                                    <p><?php _e(
+											"To find out what products we've created visit our <a 
+href='https://orbisius.com/products/?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>products page</a>.
+",
+											'orbisius_support_tickets'
+										); ?></p>
+
+                                    <p><?php _e(
+											"If you want to hire us to build you a cool custom WordPress plugin you can contact us from our <a 
+href='https://orbisius.com/free-quote/?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>free quote page</a>.
+",
+											'orbisius_support_tickets'
+										); ?></p>
+                                </div>
+
+                            </div>
+                            <!-- .postbox -->
+
+                        </div>
+                        <!-- .meta-box-sortables .ui-sortable -->
+
+                    </div>
+                    <!-- post-body-content -->
+
+                    <!-- sidebar -->
+                    <div id="postbox-container-1" class="postbox-container">
+
+                        <div class="meta-box-sortables">
+
+                            <div class="postbox">
+
+                                <h2><span><?php esc_attr_e(
+											'Sidebar', 'orbisius_support_tickets'
+										); ?></span></h2>
+
+                                <div class="inside">
+                                    <p>
+
+                                    </p>
+                                </div>
                                 <!-- .inside -->
 
                             </div>
