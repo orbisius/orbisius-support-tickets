@@ -19,10 +19,10 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	private $req_cap = 'edit_others_posts'; // editor
 
 	private $replace_vars = [
-		'domain' => 'The current domain',
-		'site_url' => 'Site URL',
+		'domain' => 'The current domain e.g. example.com',
+		'site_url' => 'Site URL e.g. http://example.com',
 		'site_name' => 'Your site name (from WP settings)',
-		'ticket_id' => 'The ticket id',
+		'ticket_id' => 'The ticket id e.g. 123',
 		'ticket_url' => 'The view ticket link',
 		'recipient_email' => 'Who is going to receive the email (ticket creator usually)',
 		//'recipient_name' => 'Who is going to receive',
