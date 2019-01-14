@@ -21,7 +21,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		add_shortcode( 'orbisius_support_tickets_submit_ticket', [ $this, 'renderSubmitTicketForm' ] );
 		add_shortcode( 'orbisius_support_tickets_generate_page_link', [ $this, 'generatePageLink' ] );
 
-		add_action('orbisius_support_tickets_view_ticket_after_output', [ $this, 'renderCloseTicketButton'] );
+		add_action('orbisius_support_tickets_view_ticket_after_output', [ $this, 'renderSeparator' ] );
+		add_action('orbisius_support_tickets_view_ticket_after_output', [ $this, 'renderCloseTicketButton' ], 20 );
 	}
 
 	private $defaults = [
@@ -184,7 +185,17 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	/**
-	 * Processes [orbisius_support_list_tickets] shortcode
+     * Outputs some
+	 * @return string
+	 */
+	public function renderSeparator( $ctx = [] ) {
+		?>
+        <hr/>
+		<?php
+	}
+
+	/**
+	 * Renders the close ticket button if necessary.
 	 * @return string
 	 */
 	public function renderCloseTicketButton( $ctx = [] ) {
@@ -430,10 +441,14 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
                 <div class="table-responsive-md">
                     <div class="ticket_title_wrapper">
+	                    <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_title', $ctx); ?>
                         <h3><?php echo $cpt_obj->fixOutput($ticket_obj->post_title); ?></h3>
+	                    <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_title', $ctx); ?>
                     </div>
                     <div class="ticket_id_wrapper">
+	                    <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
                         <?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ticket_obj->ID ); ?>
+                        <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_id', $ctx); ?>
                     </div>
 
                     <?php do_action('orbisius_support_tickets_view_ticket_before_output', $ctx); ?>
