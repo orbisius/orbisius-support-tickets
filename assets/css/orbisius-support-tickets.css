@@ -37,3 +37,8 @@
 .orbisius_support_tickets_view_ticket_wrapper .orbisius_support_tickets_close_ticket_wrapper {
     text-align: right;
 }
+
+.orbisius_support_tickets_view_ticket_wrapper .ticket_meta_ticket_item {
+    display: inline-block;
+}
+

@@ -201,7 +201,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function renderTicketInfo( $ctx = array() ) {
 		?>
-        <div id="ticket_meta_ticket_id_wrapper" class="ticket_meta_ticket_id_wrapper">
+        <div id="ticket_meta_ticket_id_wrapper" class="ticket_meta_ticket_item ticket_meta_ticket_id_wrapper">
             <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
             <?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ctx['ticket_id' ] ); ?>
             <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_id', $ctx); ?>
@@ -248,7 +248,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			echo $msg;
 			$redir = 1;
         } else {
-            echo '<div id="orbisius_support_tickets_close_ticket_wrapper" class="orbisius_support_tickets_close_ticket_wrapper">';
+            echo '<div id="orbisius_support_tickets_close_ticket_wrapper" class="ticket_meta_ticket_item orbisius_support_tickets_close_ticket_wrapper">';
             $view_ticket_link = add_query_arg( "{$settings_key}_data[cmd]", 'view_ticket', $view_ticket_link );
             $view_ticket_link = add_query_arg( "{$settings_key}_data[sub_cmd]", 'close', $view_ticket_link );
             $label            = __( 'Close Ticket', 'orbisius_support_tickets' );
