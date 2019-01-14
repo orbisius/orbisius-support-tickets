@@ -4,6 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: orbisius,support,ticket,help,helpdesk,tickets
 Requires at least: 3.0
 Tested up to: 5.0
+Requires PHP: 5.4
 Stable tag: 1.0.0
 License: GPLv2 or later
 
