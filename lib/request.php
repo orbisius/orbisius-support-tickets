@@ -49,7 +49,7 @@ class Orbisius_Support_Tickets_Request {
 		// no need each sub class to define this method.
 		if (is_null($instance)) {
 			$instance = new static();
-			$instance->req_init();
+			$instance->initialize();
 		}
 
 		return $instance;
@@ -210,80 +210,34 @@ class Orbisius_Support_Tickets_Request {
 	 * WP puts slashes in the values so we need to remove them.
 	 * @param array $data
 	 */
-	public function req_init( $data = null ) {
+	public function initialize( $data = null ) {
 		// see https://codex.wordpress.org/Function_Reference/stripslashes_deep
 		if ( is_null( $this->data ) ) {
 			$data = empty( $data ) ? $_REQUEST : $data;
 			$this->raw_data = $data;
 			$data = stripslashes_deep( $data );
-			$data = $this->sanitize_data( $data );
+			$data = $this->sanitizeData( $data );
 			$this->data = $data;
 		}
 	}
 
 	/**
 	 *
-	 * @param str/array $data
-	 * @return str/array
+	 * @param mixed|str|array|null $data
+	 * @return mixed|str|array|null
 	 * @throws Exception
 	 */
-	public function sanitize_data( $data = null ) {
+	public function sanitizeData( $data = null ) {
 		if ( is_scalar( $data ) ) {
 			$data = wp_kses_data( $data );
 			$data = trim( $data );
 		} elseif ( is_array( $data ) ) {
-			$data = array_map( array( $this, 'sanitize_data' ), $data );
+			$data = array_map( array( $this, 'sanitizeData' ), $data );
 		} else {
-			throw new Exception( "Invalid data type passed for sanitization" );
+			// we don't know what to do with this type of data so we'll leave it as is.
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Goes through the list of items and checks against the validators
-	 * @param array/void $params
-	 * @return df_crm_result
-	 */
-	public function validate($data, $all_validators) {
-		$res = new df_crm_result();
-		$failed_fields = array();
-
-		foreach ($all_validators as $field => $field_validators) {
-			if (!isset($data[$field])) {
-				continue;
-			}
-
-			$val = $data[$field];
-
-			foreach ($field_validators as $validator) {
-				$label = $validator->get_label() ? $validator->get_label() : $field;
-				$label = ucfirst($label);
-
-				if ( ! $validator->validate( $val ) ) {
-					$failed_fields[ $label ]   = empty( $failed_fields[ $field ] ) ? array() : $failed_fields[ $label ];
-					$failed_fields[ $label ][] = $validator->get_error();
-				}
-			}
-		}
-
-		if (empty($failed_fields)) {
-			$res->status( 1 );
-			return $res;
-		}
-
-		$res->data('failed_fields', $failed_fields);
-		$error_lines = array();
-
-		foreach ($failed_fields as $field => $errors) {
-			$error_lines[] = $field . ': ' . df_crm_string_util::asList($errors);
-		}
-
-		$msg = 'Form validation failed: <br/>' . join("<br/>\n", $error_lines);
-		//$msg = 'Form validation failed: <br/>' . df_crm_string_util::asList($error_lines);
-		$res->msg($msg);
-
-		return $res;
 	}
 
 	/**

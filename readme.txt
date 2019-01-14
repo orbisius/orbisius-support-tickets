@@ -112,6 +112,10 @@ You can get in touch with us at
 
 == Changelog ==
 
+= 1.0.2 =
+* Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.
+* sanitize_data -> sanitizeData
+
 = 1.0.1 =
 * Updated readme to include a shortcode so it YouTube video renders properly.
 * Fixes in the list tickets section (td had to be used when in the table body)
