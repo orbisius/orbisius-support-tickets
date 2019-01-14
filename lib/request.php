@@ -311,7 +311,7 @@ class Orbisius_Support_Tickets_Request {
 
 		if ( headers_sent() ) {
 			echo '<meta http-equiv="refresh" content="0;URL=\'' . $url . '\'" />  '; // jic
-			echo '<script language="javascript">window.parent.location="' . $url . '";</script>';
+			echo '<script language="javascript">window.parent.location="' . esc_url($url) . '";</script>';
 		} else {
 			wp_redirect($url, 302);
 		}
