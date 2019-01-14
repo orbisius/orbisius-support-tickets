@@ -200,7 +200,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * @return string
 	 */
 	public function renderTicketInfo( $ctx = array() ) {
-
 		?>
         <div id="ticket_meta_ticket_id_wrapper" class="ticket_meta_ticket_item ticket_meta_ticket_id_wrapper">
             <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
