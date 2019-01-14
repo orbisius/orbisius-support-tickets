@@ -3,7 +3,7 @@
   Plugin Name: Orbisius Support Tickets
   Plugin URI: https://orbisius.com/products/wordpress-plugins/orbisius-support-tickets
   Description: Minimalistic support ticket system that enables you to start providing awesome support in 2 minutes.
-  Version: 1.0.0
+  Version: 1.0.1
   Author: Svetoslav Marinov (Slavi) | Orbisius.com
   Author URI: http://orbisius.com
   Text Domain: orbisius_support_tickets

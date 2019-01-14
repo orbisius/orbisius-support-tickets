@@ -5,7 +5,7 @@ Tags: orbisius,support,ticket,tickets,help,helpdesk,awesome support
 Requires at least: 3.0
 Requires PHP: 5.2.4
 Tested up to: 5.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,7 +18,7 @@ You need to create/update several pages and paste the relevant shortcodes so you
 There is a tool in the plugin's settings page that can help with the page creation.
 
 This is 2 minute demo showing you how to configure and use the plugin.
-https://youtu.be/4TBbLAjCaFY
+[youtube https://youtu.be/4TBbLAjCaFY]
 
 You can manually create the pages that the plugin needs with the following shortcodes or let the plugin create them for you (Orbisius Support Tickets > Settings).
 Ideally, you should create a top level page called Support (/support) or Help (/help).
@@ -113,6 +113,7 @@ You can get in touch with us at
 == Changelog ==
 
 = 1.0.1 =
+* Updated readme to include a shortcode so it YouTube video renders properly.
 * Fixes in the list tickets section (td had to be used when in the table body)
 
 = 1.0.0 =
