@@ -2,8 +2,8 @@
 
 $admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
 
-add_action('init', [ $admin_api, 'init' ] ) ;
-add_action('init', [ $admin_api, 'performAdminInit' ] ) ;
+add_action('init', array( $admin_api, 'init' ) ) ;
+add_action('init', array( $admin_api, 'performAdminInit' ) ) ;
 
 class Orbisius_Support_Tickets_Module_Core_Admin {
     private $plugin_settings_group_key = 'orbisius_support_tickets';
@@ -18,7 +18,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	//private $req_cap = 'manage_options'; // admin
 	private $req_cap = 'edit_others_posts'; // editor
 
-	private $replace_vars = [
+	private $replace_vars = array(
 		'domain' => 'The current domain e.g. example.com',
 		'site_url' => 'Site URL e.g. http://example.com',
 		'site_name' => 'Your site name (from WP settings)',
@@ -26,7 +26,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		'ticket_url' => 'The view ticket link',
 		'recipient_email' => 'Who is going to receive the email (ticket creator usually)',
 		//'recipient_name' => 'Who is going to receive',
-    ];
+    );
 
 	public function init() {
 	}
@@ -44,13 +44,13 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		add_action( 'admin_head', array( $this, 'highlightSubmenu' ) );
 
-		$ctx = [
+		$ctx = array(
 			'settings_key' => $this->plugin_settings_key,
 			'settings_group_key' => $this->plugin_settings_group_key,
-        ];
+        );
 
 		do_action('orbisius_support_tickets_admin_action_register_settings', $ctx);
-		add_action('orbisius_support_tickets_admin_action_render_sidebar', [ $this, 'renderSidebarShareLinks' ] );
+		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'renderSidebarShareLinks' ) );
 	}
 
 	/**
@@ -126,10 +126,10 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 * @return void
 	 */
 	public function addMenuPages() {
-		$ctx = [
+		$ctx = array(
 			'top_menu_slug' => $this->plugin_settings_key,
 			'req_cap' => $this->req_cap,
-		];
+        );
 
 		$icon_url = '';
 
@@ -190,7 +190,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		do_action('orbisius_support_tickets_admin_action_setup_menu', $ctx);
 
-		add_filter( 'plugin_action_links', [ $this, 'addQuickLinksIoPluginListing' ], 10, 2 );
+		add_filter( 'plugin_action_links', array( $this, 'addQuickLinksIoPluginListing' ), 10, 2 );
 	}
 
 	/**
@@ -269,13 +269,13 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                         <div>
                                             <?php
 
-                                            $filter = [
+                                            $filter = array(
                                                 'order' => 'desc',
                                                 'order_by' => 'date',
                                                 'author' => 0,
                                                 'limit' => 10,
-                                                'fields' => [ 'ID', 'post_title' ],
-                                            ];
+                                                'fields' => array( 'ID', 'post_title', 'post_status' ),
+                                            );
                                             $cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
                                             $items = $cpt_api->getItems($filter);
                                             $shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
@@ -289,7 +289,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
                                                 <?php foreach ($items as $item_obj) : ?>
                                                     <div class="ticket">
-                                                        #<?php echo $item_obj->ID;?> | <a href="<?php echo esc_url($shortcode_api->generateViewTicketLink( [ 'ticket_id' => $item_obj->ID ] ) );?>"
+                                                        #<?php echo $item_obj->ID;?> | <a href="<?php echo esc_url($shortcode_api->generateViewTicketLink( array( 'ticket_id' => $item_obj->ID ) ) );?>"
                                                            target="_blank"
                                                             ><?php
                                                             echo $cpt_api->fixOutput($item_obj->post_title); ?></a>
@@ -337,10 +337,10 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	                            <?php
 	                            $cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 
-	                            $total_tickets_stats = [
+	                            $total_tickets_stats = array(
 		                            'open' => 0,
 		                            'closed' => 0,
-	                            ];
+                                );
 
 	                            $total_tickets_stats_obj = wp_count_posts($cpt_obj->getCptSupportTicket());
 
@@ -952,7 +952,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
     );
 
 	private $plugin_default_opts_other = array(
-        'orbisius_support_tickets_notification' => [
+        'orbisius_support_tickets_notification' => array(
             'support_from_name' => "{site_name} Mailer",
             'support_from_email' => 'mailer@{domain}',
             'support_email_reply_to' => 'support@{domain}',
@@ -975,7 +975,7 @@ Ticket ID: {ticket_id}
 Ticket link: {ticket_url}
 ",
             'ticket_activity_notification_enabled' => 1,
-        ],
+        ),
     );
 
 	/**
@@ -1026,34 +1026,34 @@ Ticket link: {ticket_url}
 			'comment_status' => 'closed',
 		);
 
-	    $parent_page_rec = [
+	    $parent_page_rec = array(
             'id' => 'support_page_id',
             'slug' => $parent_page_slug,
             'page_title' => __('Support', 'orbisius_support_tickets'),
             'post_content' => "\n<div><a href='[orbisius_support_tickets_generate_page_link page=submit_ticket esc=1]'>Submit Ticket</a></div>
 <div><a href='[orbisius_support_tickets_generate_page_link page=list_tickets esc=1]'>My Tickets</a></div>\n",
-        ];
+        );
 
-	    $child_pages = [
-            [
+	    $child_pages = array(
+		    array(
                 'id' => 'list_tickets_page_id',
                 'slug' => 'my-tickets',
                 'page_title' => 'My Tickets',
                 'post_content' => '<div>[orbisius_support_tickets_list_tickets]</div>',
-            ],
-            [
+            ),
+            array(
 	            'id' => 'submit_ticket_page_id',
                 'slug' => 'submit-ticket',
                 'page_title' => 'Submit Ticket',
                 'post_content' => '<div>[orbisius_support_tickets_submit_ticket]</div>',
-            ],
-            [
+            ),
+            array(
 	            'id' => 'view_ticket_page_id',
                 'slug' => 'view-ticket',
                 'page_title' => 'View Ticket',
                 'post_content' => '<div>[orbisius_support_tickets_view_ticket]</div>',
-            ],
-        ];
+            ),
+        );
 
         $parent_page = get_page_by_path($parent_page_slug);
 		$parent_page_created = 0;
@@ -1076,10 +1076,10 @@ Ticket link: {ticket_url}
                     && !preg_match('#Submit[\-\_]*Ticket#si', $parent_page->post_content)
                     && !preg_match('#(list|my)[\-\_]*Ticket#si', $parent_page->post_content)
                 ) {
-	            $up_parent_page_arr = [
+	            $up_parent_page_arr = array(
                     'ID' => $parent_page->ID,
                     'post_content' => $parent_page->post_content . "<br/>" . $parent_page_rec['post_content'],
-                ];
+                );
 
 		        $stat = wp_update_post($up_parent_page_arr, true);
             }
@@ -1160,32 +1160,32 @@ Ticket link: {ticket_url}
 		// https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en
 	    // https://stackoverflow.com/questions/10713542/how-to-make-custom-linkedin-share-button
 	    // https://www.linkedin.com/shareArticle?mini=true&url={articleUrl}&title={articleTitle}&summary={articleSummary}&source={articleSource}
-	    $linked_in_params = [
+	    $linked_in_params = array(
 		    'mini' => 'true',
             'url' => $plugin_data['PluginURI'],
             'title' => $plugin_data['Title'],
             'summary' => $plugin_data['Description'],
-        ];
+        );
 		$linked_in_share_link = 'https://www.linkedin.com/shareArticle?' . http_build_query($linked_in_params);
 
         // fb
 		// https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
         // credit: https://support.imcreator.com/hc/en-us/articles/232392888-Creating-a-Facebook-share-link-on-your-page
-		$fb_params = [
+		$fb_params = array(
 			'u' => $plugin_data['PluginURI'],
-		];
+        );
 		$fb_share_link = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query($fb_params);
 
         // twitter
         // https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/parameter-reference1
 		// https://stackoverflow.com/questions/6208363/sharing-a-url-with-a-query-string-on-twitter
 		// http://twitter.com/share?text=text goes here&url=http://url goes here&hashtags=hashtag1,hashtag2,hashtag3
-		$twitter_params = [
+		$twitter_params = array(
 			'url' => $plugin_data['PluginURI'],
 			'text' => $plugin_data['Description'],
 			'hashtags' => 'wordpress,plugin,business',
 			'related' => 'lordspace,orbisius,qsandbox',
-		];
+        );
 		$twitter_share_link = 'http://twitter.com/intent/tweet?' . http_build_query($twitter_params);
 
 		ob_start();

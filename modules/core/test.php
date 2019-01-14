@@ -9,7 +9,7 @@ if (!isset($_REQUEST['orbisius_support_tickets_test_data'])) {
 }
 
 $test_api = Orbisius_Support_Tickets_Module_Core_Test::getInstance();
-add_action('init', [ $test_api, 'init' ] ) ;
+add_action('init', array( $test_api, 'init' ) ) ;
 
 class Orbisius_Support_Tickets_Module_Core_Test {
 	public function init() {

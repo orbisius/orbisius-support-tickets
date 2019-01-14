@@ -1,10 +1,10 @@
 <?php
 
 $cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
-add_action('init', [ $cpt_obj, 'init' ] ) ;
+add_action('init', array( $cpt_obj, 'init' ) ) ;
 
-register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, [ $cpt_obj, 'processPluginActivate' ] ) ;
-register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, [ $cpt_obj, 'processPluginDeactivate' ] ) ;
+register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, array( $cpt_obj, 'processPluginActivate' ) ) ;
+register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, array( $cpt_obj, 'processPluginDeactivate' ) ) ;
 
 class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_Singleton {
 	private $cpt_support_ticket = 'orb_support_ticket';
@@ -14,7 +14,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		$this->registerCustomContentTypes();
 		$this->registerCommentAdd();
 
-		add_action( 'orbisius_support_tickets_action_ticket_activity', [ $this, 'openClosedTicket' ] );
+		add_action( 'orbisius_support_tickets_action_ticket_activity', array( $this, 'openClosedTicket' ) );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 	public function registerOutput() {
 		if ($this->isMyCpt()) {
-			add_filter( 'the_content', [ $this, 'fixOutput' ], 9999 );
+			add_filter( 'the_content', array( $this, 'fixOutput' ), 9999 );
 		}
 	}
 
@@ -124,11 +124,11 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		return $buff;
 	}
 
-	private $statuses = [
+	private $statuses = array(
 		'draft' => 'open',
 		'private' => 'open',
 		'publish' => 'closed',
-	];
+	);
 
 	/**
 	 *
@@ -173,7 +173,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	}
 
 	public function registerCommentAdd() {
-		add_action( 'comment_post', [ $this, 'processCommentAdd' ], 20, 3 );
+		add_action( 'comment_post', array( $this, 'processCommentAdd' ), 20, 3 );
 	}
 
 	/**
@@ -263,10 +263,10 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		$status_wp_mapping = $this->getStatuses();
 		$wp_post_status = empty($status_wp_mapping[$new_status]) ? self::STATUS_CLOSED : $new_status;
 
-		$up_parent_page_arr = [
+		$up_parent_page_arr = array(
 			'ID' => $ticket_id,
 			'post_status' => $wp_post_status,
-		];
+		);
 
 		$stat = wp_update_post($up_parent_page_arr, true);
 

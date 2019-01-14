@@ -2,12 +2,12 @@
 
 $cpt = Orbisius_Support_Tickets_Module_Core_Assets::getInstance();
 
-add_action('init', [ $cpt, 'init' ] ) ;
+add_action('init', array( $cpt, 'init' ) ) ;
 
 class Orbisius_Support_Tickets_Module_Core_Assets {
 	public function init() {
-		add_action('wp_enqueue_scripts', [ $this, 'enqueue' ]);
-		add_action('admin_enqueue_scripts', [ $this, 'enqueue' ]);
+		add_action('wp_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action('admin_enqueue_scripts', array( $this, 'enqueue' ) );
 	}
 
 	public function enqueue() {
@@ -30,30 +30,30 @@ class Orbisius_Support_Tickets_Module_Core_Assets {
 			return;
 		}
 
-		$shared_libs = [
-			'jquery-' => [],
-			'jquery-ui-core' => [],
-			'jquery-ui-autocomplete' => [],
+		$shared_libs = array(
+			'jquery-' => array(),
+			'jquery-ui-core' => array(),
+			'jquery-ui-autocomplete' => array(),
 
-			'chosen_js' => [
+			'chosen_js' => array(
 				'file_rel' => '/shared/chosen_v1.7.0/chosen.jquery.min.js',
 //	            'ext_src' => '//cdnjs.cloudflare.com/ajax/libs/chosen/1.7.0/chosen.jquery.min.js',
 				'ext_src' => '//cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js',
-			],
+			),
 
-			'chosen_css' => [
+			'chosen_css' => array(
 				'file_rel' => '/shared/chosen_v1.7.0/chosen.min.css',
 				'ext_src' => '//cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.min.css',
-			],
+			),
 
 			// https://clipboardjs.com/
-			'clipboard_js' => [
+			'clipboard_js' => array(
 				'file_rel' => '/shared/clipboard.js-2.0.1/dist/clipboard.min.js',
 
 				// https://github.com/zenorocha/clipboard.js/wiki/CDN-Providers
 				'ext_src' => '//cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js',
-			],
-		];
+			),
+		);
 
 		// https://cdnjs.com/libraries/chosen
 		$wp_scripts = wp_scripts();

@@ -2,13 +2,13 @@
 
 $notif_api = Orbisius_Support_Tickets_Module_Core_Notifications::getInstance();
 
-add_action('init', [ $notif_api, 'init' ] ) ;
+add_action('init', array( $notif_api, 'init' ) ) ;
 
 class Orbisius_Support_Tickets_Module_Core_Notifications {
 	public function init() {
-		//add_action( 'orbisius_support_tickets_admin_action_register_settings', [ $this, 'notifyOnNewTicket' ] );
-		add_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', [ $this, 'notifyOnNewTicket' ] );
-		add_action( 'orbisius_support_tickets_action_ticket_activity', [ $this, 'notifyOnTicketActivity' ] );
+		//add_action( 'orbisius_support_tickets_admin_action_register_settings', array(  $this, 'notifyOnNewTicket' ) );
+		add_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', array(  $this, 'notifyOnNewTicket' ) );
+		add_action( 'orbisius_support_tickets_action_ticket_activity', array( $this, 'notifyOnTicketActivity' ) );
 	}
 
 	/**
@@ -68,14 +68,14 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		$shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
 
-		$vars = [
+		$vars = array(
 			'domain' => $host,
 			'site_url' => site_url('/'),
 			'site_name' => get_bloginfo('name'),
 			'ticket_id' => $ctx['ticket_id'],
-			'ticket_url' => $shortcode_api->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] ),
+			'ticket_url' => $shortcode_api->generateViewTicketLink( array( 'ticket_id' => $ctx['ticket_id'] ) ),
 			'recipient_email' => $email,
-		];
+		);
 
 		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
 
@@ -197,14 +197,14 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		$shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
 
-		$vars = [
+		$vars = array(
 			'domain' => $host,
 			'site_url' => site_url('/'),
 			'site_name' => get_bloginfo('name'),
 			'ticket_id' => $ctx['ticket_id'],
-			'ticket_url' => $shortcode_api->generateViewTicketLink( [ 'ticket_id' => $ctx['ticket_id'] ] ),
+			'ticket_url' => $shortcode_api->generateViewTicketLink( array( 'ticket_id' => $ctx['ticket_id'] ) ),
 			'recipient_email' => $recipient_email,
-		];
+		);
 
 		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
 

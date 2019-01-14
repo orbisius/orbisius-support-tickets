@@ -296,69 +296,6 @@ class Orbisius_Support_Tickets_Request {
 	}
 
 	/**
-	 * @param $url
-	 * @param array $params
-	 */
-	public function call($url, $params = array(), $extra = array()) {
-		$res = new df_crm_result();
-
-		$req_params = array(
-			'method' => 'POST',
-			'timeout' => 45,
-			'redirection' => 5,
-			'httpversion' => '1.0',
-			'sslverify' => 0,
-			'blocking' => true,
-			'headers' => array(),
-			'body' => $params,
-			'cookies' => array(),
-		);
-
-		// Can be used by hash auth.
-		if (!empty($_SERVER['HTTP_USER_AGENT'])) {
-			$req_params['user-agent'] = $_SERVER['HTTP_USER_AGENT'];
-		}
-
-		$req_params['headers'] = empty('headers') ? array() : $req_params['headers'];
-
-		if (!empty($extra['headers'])) {
-			$req_params['headers'] = array_merge($extra['headers'], $req_params['headers']);
-		}
-
-		if (!empty($extra['method'])) {
-			$req_params['method'] = $extra['method'];
-		}
-
-		// @todo smartly detect when to enter this depending on the host.
-		$username = 'wbs';
-		$password = 'wbs777';
-
-		$req_params['headers'] = array_merge( array(
-			'Authorization' => 'Basic ' . base64_encode( $username . ':' . $password ),
-		), $req_params['headers'] );
-
-		$req_params = apply_filters('wbs_filter_req_call_params', $req_params);
-		$response = wp_remote_post( $url, $req_params );
-
-		$response_code = wp_remote_retrieve_response_code($response);
-
-		if ( is_wp_error( $response ) ) {
-			$error_message = $response->get_error_message();
-			$res->msg("Error: $error_message" );
-			$res->data('response_code', $response_code);
-		} else {
-			$buff = wp_remote_retrieve_body( $response );
-			$res = new df_crm_result($buff);
-			$res->data('raw_data', $buff);
-			$res->data('url', $url);
-			$res->data('request_params', $req_params);
-			$res->data('response_code', $response_code);
-		}
-
-		return $res;
-	}
-
-	/**
 	 * Smart redirect method. Sends header redirect or HTTP meta redirect.
 	 * @param string $url
 	 */
