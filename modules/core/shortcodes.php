@@ -200,12 +200,23 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * @return string
 	 */
 	public function renderTicketInfo( $ctx = array() ) {
+		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		$statuses = $cpt_api->getStatuses();
+		$status = $cpt_api->getStatus($ctx['ticket_id' ]);
 		?>
         <div id="ticket_meta_ticket_id_wrapper" class="ticket_meta_ticket_item ticket_meta_ticket_id_wrapper">
             <?php do_action('orbisius_support_tickets_view_ticket_before_ticket_id', $ctx); ?>
             <?php echo sprintf( __( "Ticket ID: %s", 'orbisius_support_tickets' ), $ctx['ticket_id' ] ); ?>
             <?php do_action('orbisius_support_tickets_view_ticket_after_ticket_id', $ctx); ?>
         </div>
+
+        <div class="ticket_meta_ticket_status_wrapper ticket_meta_ticket_item ticket_meta_ticket_status_<?php echo $status;?>">
+			<?php
+			if (!empty($statuses[ $status ])) {
+				echo __('Status: ', 'orbisius_support_tickets' ) . sprintf("<span class='status_value'>%s</span>", $statuses[ $status ] );
+			}
+			?>
+        </div> <!-- /ticket_meta_ticket_status_wrapper -->
 		<?php
 	}
 
