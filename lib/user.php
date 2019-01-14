@@ -175,7 +175,7 @@ class Orbisius_Support_Tickets_User {
      * @param array $params
      * @return array
      */
-    public function search( $params = [] ) {
+    public function search( $params = array() ) {
         $args = array(
             /*'blog_id'      => $GLOBALS['blog_id'],
             'role'         => '',
@@ -198,7 +198,7 @@ class Orbisius_Support_Tickets_User {
             'who'          => ''*/
         );
 
-        $users = [];
+        $users = array();
         $raw_users_obj_arr = get_users( $args );
 
         if ( isset( $params['load_meta'] ) ) {

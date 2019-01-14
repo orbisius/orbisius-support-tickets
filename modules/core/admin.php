@@ -85,7 +85,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 * @return array the modified input array
 	 */
 	function validateSettingsData($input) { // whitelist options
-		$ctx = [];
+		$ctx = array();
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
 		$input = $req_obj->trim($input);
 
@@ -105,7 +105,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 * @return array the modified input array
 	 */
 	function validateNotificationSettingsData($input) { // whitelist options
-		$ctx = [];
+		$ctx = array();
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
 		$input = $req_obj->trim($input);
 
@@ -202,7 +202,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	function addQuickLinksIoPluginListing($links, $file) {
 		if ($file == plugin_basename(ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN)) {
 		    $old_links = $links;
-			$links = [];
+			$links = array();
 
 			// Add the links in the order we want
 			$link = admin_url('admin.php?page=' . urlencode($this->plugin_settings_key . '_settings'));
@@ -371,7 +371,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
                                 <div class="inside">
                                 <?php
-                                    $ctx = [];
+                                    $ctx = array();
                                     do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
                                 ?>
                                 </div><!-- .inside -->
@@ -474,7 +474,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 
                                 <div class="inside">
 		                            <?php
-		                            $ctx = [];
+		                            $ctx = array();
 		                            do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
 		                            ?>
                                 </div><!-- .inside -->
@@ -903,7 +903,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 
                                 <div class="inside">
 		                            <?php
-		                            $ctx = [];
+		                            $ctx = array();
 		                            do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
 		                            ?>
                                 </div><!-- .inside -->
@@ -1154,7 +1154,7 @@ Ticket link: {ticket_url}
 	/**
 	 * @param array $ctx
 	 */
-	public function renderSidebarShareLinks( array $ctx = [] ) {
+	public function renderSidebarShareLinks( array $ctx = array() ) {
 		$plugin_data = get_plugin_data(ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, false);
 
 		// https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en

@@ -98,7 +98,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		}
 
 //		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
-//		$data = $req_obj->getRaw('orbisius_support_tickets_data', []);
+//		$data = $req_obj->getRaw('orbisius_support_tickets_data', array());
 //
 //		if (!empty($data['ticket_id'])) {
 //			$stat = get_post_type($data['ticket_id']) == $this->getCptSupportTicket();
@@ -194,11 +194,11 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		}
 
 		//
-		$ctx = array_replace_recursive( $comment_data, [
+		$ctx = array_replace_recursive( $comment_data, array(
 			'reply_id' => $comment_ID,
 			'ticket_id' => $comment_data['comment_post_ID'],
 			'author_id' => $comment_data['user_id'],
-		]);
+		));
 
 		do_action('orbisius_support_tickets_action_ticket_activity', $ctx);
 	}
@@ -207,14 +207,14 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 * @param array $user_filter
 	 * @return array
 	 */
-	public function getItems(array $user_filter = []) {
+	public function getItems(array $user_filter = array()) {
 		global $wpdb;
 		$post_type = $this->getCptSupportTicket();
 
-		$filter = [
+		$filter = array(
 			'post_type'   => $post_type,
 			'post_status' => array( 'publish', 'draft', 'private', 'trash' ),
-		];
+		);
 
 		$filter['offset']         = empty( $user_filter['offset'] ) ? 0 : absint( $user_filter['offset'] );
 		$filter['posts_per_page'] = empty( $user_filter['limit'] ) ? 250 : absint( $user_filter['limit'] );
@@ -251,7 +251,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		}
 
 		$items = get_posts( $filter );
-		$items = empty($items) ? [] : $items;
+		$items = empty($items) ? array() : $items;
 		return $items;
 	}
 

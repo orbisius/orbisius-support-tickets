@@ -126,7 +126,7 @@ class Orbisius_Support_Tickets_String_Util {
      * @param mixed $param
      * @return string
      */
-    public static function hash( $param, $sel_arr_keys = [] ) {
+    public static function hash( $param, $sel_arr_keys = array() ) {
         // we want db NULL values to be treated as empty strings so the hashes
         // are the same
         $param = Orbisius_Support_Tickets_String_Util::convert_null_to_empty( $param );
@@ -289,11 +289,11 @@ class Orbisius_Support_Tickets_String_Util {
 
 	/**
 	 * Orbisius_Support_Tickets_String_Util::asList()
-	 * @param str $val
-	 * @return str
+	 * @param string $val
+	 * @return string
 	 */
-	public static function asList($arr, $attribs = []) {
-		$lines = [];
+	public static function asList($arr, $attribs = array()) {
+		$lines = array();
 
 		foreach ($arr as $value) {
 			$lines[] = "\t<li>$value</li>";

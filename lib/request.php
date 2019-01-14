@@ -68,7 +68,7 @@ class Orbisius_Support_Tickets_Request {
 		return isset($this->data[$key]);
 	}
 
-	private $raw_data = [];
+	private $raw_data = array();
 
 	/**
 	 * Gets a variable from the request and sanitizes it.
@@ -247,7 +247,7 @@ class Orbisius_Support_Tickets_Request {
 	 */
 	public function validate($data, $all_validators) {
 		$res = new df_crm_result();
-		$failed_fields = [];
+		$failed_fields = array();
 
 		foreach ($all_validators as $field => $field_validators) {
 			if (!isset($data[$field])) {
@@ -261,7 +261,7 @@ class Orbisius_Support_Tickets_Request {
 				$label = ucfirst($label);
 
 				if ( ! $validator->validate( $val ) ) {
-					$failed_fields[ $label ]   = empty( $failed_fields[ $field ] ) ? [] : $failed_fields[ $label ];
+					$failed_fields[ $label ]   = empty( $failed_fields[ $field ] ) ? array() : $failed_fields[ $label ];
 					$failed_fields[ $label ][] = $validator->get_error();
 				}
 			}
@@ -273,7 +273,7 @@ class Orbisius_Support_Tickets_Request {
 		}
 
 		$res->data('failed_fields', $failed_fields);
-		$error_lines = [];
+		$error_lines = array();
 
 		foreach ($failed_fields as $field => $errors) {
 			$error_lines[] = $field . ': ' . df_crm_string_util::asList($errors);
@@ -299,7 +299,7 @@ class Orbisius_Support_Tickets_Request {
 	 * @param $url
 	 * @param array $params
 	 */
-	public function call($url, $params = [], $extra = []) {
+	public function call($url, $params = array(), $extra = array()) {
 		$res = new df_crm_result();
 
 		$req_params = array(
@@ -319,7 +319,7 @@ class Orbisius_Support_Tickets_Request {
 			$req_params['user-agent'] = $_SERVER['HTTP_USER_AGENT'];
 		}
 
-		$req_params['headers'] = empty('headers') ? [] : $req_params['headers'];
+		$req_params['headers'] = empty('headers') ? array() : $req_params['headers'];
 
 		if (!empty($extra['headers'])) {
 			$req_params['headers'] = array_merge($extra['headers'], $req_params['headers']);

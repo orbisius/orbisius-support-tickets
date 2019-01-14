@@ -14,7 +14,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 	/**
 	 * @param array $ctx
 	 */
-	public function notifyOnNewTicket($ctx = []) {
+	public function notifyOnNewTicket($ctx = array()) {
 		if (empty($ctx['ticket_id'])) {
 		    return;
         }
@@ -89,7 +89,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$message = do_shortcode($message);
 		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
 		//$message = nl2br($message);
-		$headers = [];
+		$headers = array();
 
 		$from_name = empty($notif_opts['support_from_name']) ? get_bloginfo('name') . ' Support' : $notif_opts['support_from_name'];
 		$from_email = empty($notif_opts['support_from_email']) ? 'mailer@' . $host : $notif_opts['support_from_email'];
@@ -112,7 +112,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		$headers = apply_filters( 'orbisius_support_tickets_filter_notification_email_headers', $headers, $ctx );
 
-		$attachments = [];
+		$attachments = array();
 		$attachments = apply_filters( 'orbisius_support_tickets_filter_notification_email_attachments', $attachments, $ctx );
 
 		// For now let's BCC the admin
@@ -131,7 +131,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 	 * Notifies the other party about the ticket activity. Admin posts -> notify client. Client posts -> notify admin
 	 * @param array $ctx
 	 */
-	public function notifyOnTicketActivity($ctx = []) {
+	public function notifyOnTicketActivity($ctx = array()) {
 		if (empty($ctx['ticket_id'])) {
 		    return;
         }
@@ -218,7 +218,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		$message = do_shortcode($message);
 		$message = Orbisius_Support_Tickets_String_Util::replaceVars($message, $vars);
 		//$message = nl2br($message);
-		$headers = [];
+		$headers = array();
 
 		$from_name = empty($notif_opts['support_from_name']) ? get_bloginfo('name') . ' Support' : $notif_opts['support_from_name'];
 		$from_email = empty($notif_opts['support_from_email']) ? 'mailer@' . $host : $notif_opts['support_from_email'];
@@ -241,7 +241,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 
 		$headers = apply_filters( 'orbisius_support_tickets_filter_notification_email_headers', $headers, $ctx );
 
-		$attachments = [];
+		$attachments = array();
 		$attachments = apply_filters( 'orbisius_support_tickets_filter_notification_email_attachments', $attachments, $ctx );
 
 		$mail_sent_status = wp_mail($recipient_email, $subject, $message, $headers, $attachments);

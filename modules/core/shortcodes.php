@@ -35,7 +35,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * Processes
 	 * @return Orbisius_Support_Tickets_Result
 	 */
-	public function processTicketSubmission($data = []) {
+	public function processTicketSubmission($data = array()) {
 		try {
 			$user_id = get_current_user_id();
 			$res     = new Orbisius_Support_Tickets_Result();
@@ -120,16 +120,16 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * Processes [orbisius_support_list_tickets] shortcode
 	 * @return string
 	 */
-	public function renderTickets( $attribs = [] ) {
+	public function renderTickets( $attribs = array() ) {
 		ob_start();
 
 		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 
-		$filter = [];
+		$filter = array();
 		$filter['offset']         = empty( $orb_cloud_lib_data['offset'] ) ? 0 : int( $orb_cloud_lib_data['offset'] );
 		$filter['author']         = get_current_user_id();
 		$filter['posts_per_page'] = empty( $orb_cloud_lib_data['limit'] ) ? 250 : int( $orb_cloud_lib_data['limit'] );
-		$orb_cloud_lib_data       = [];
+		$orb_cloud_lib_data       = array();
 
 		if ( ! empty( $orb_cloud_lib_data['search'] ) ) {
 			$filter['search'] = $orb_cloud_lib_data['search'];
@@ -137,7 +137,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 		$items = $cpt_api->getItems($filter);
 
-		$ctx   = [];
+		$ctx   = array();
 		?>
         <div id="orbisius_support_tickets_list_ticket_wrapper" class="orbisius_support_tickets_list_ticket_wrapper">
 			<?php do_action( 'orbisius_support_tickets_action_before_submit_ticket_form', $ctx ); ?>
@@ -188,7 +188,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
      * Outputs some
 	 * @return string
 	 */
-	public function renderSeparator( $ctx = [] ) {
+	public function renderSeparator( $ctx = array() ) {
 		?>
         <hr/>
 		<?php
@@ -198,7 +198,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * Renders the close ticket button if necessary.
 	 * @return string
 	 */
-	public function renderCloseTicketButton( $ctx = [] ) {
+	public function renderCloseTicketButton( $ctx = array() ) {
 	    if (empty($ctx['ticket_id'])) {
 	        return;
         }
@@ -256,7 +256,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * Processes [orbisius_support_submit_ticket] shortcode
 	 * @return string
 	 */
-	public function renderSubmitTicketForm( $attribs = [] ) {
+	public function renderSubmitTicketForm( $attribs = array() ) {
 		ob_start();
 		$id  = 0;
 		$msg = '';
@@ -285,7 +285,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
 		}
 
-		$ctx = [];
+		$ctx = array();
 		$row_num = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_message_row_num', 4 );
 		?>
 
@@ -367,11 +367,11 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * Processes [orbisius_support_view_ticket] shortcode
 	 * @return string
 	 */
-	public function renderViewTicket( $attribs = [] ) {
+	public function renderViewTicket( $attribs = array() ) {
 		ob_start();
 		$msg = '';
-		$ctx = [];
-		$items = [];
+		$ctx = array();
+		$items = array();
 		$ticket_id = $this->getData('ticket_id');
 		$ticket_obj = '';
 		$user_api = Orbisius_Support_Tickets_User::getInstance();
@@ -518,7 +518,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * Processes [orbisius_support_tickets_generate_page_link] shortcode and returns the page URL for a given requested page
 	 * @return string
 	 */
-	public function generatePageLink( $attribs = [] ) {
+	public function generatePageLink( $attribs = array() ) {
 		$link = '#';
 
 		if (empty($attribs['page'])) {
@@ -551,7 +551,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 * Processes [orbisius_support_tickets_field] shortcode and returns the page URL for a given requested page
 	 * @return string
 	 */
-	public function renderTicketField( $attribs = [] ) {
+	public function renderTicketField( $attribs = array() ) {
 		$field = '';
 
 		if (!empty($attribs['id'])) {
@@ -581,7 +581,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function getData($key = '') {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
-		$data = $req_obj->getRaw('orbisius_support_tickets_data', []);
+		$data = $req_obj->getRaw('orbisius_support_tickets_data', array());
 		$data = array_replace_recursive( $this->defaults, $data );
 		$val = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $data );
 
