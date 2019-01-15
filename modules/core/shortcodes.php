@@ -666,18 +666,14 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
             ),
         );
 
-		if (defined('ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL')) {
-			$link = site_url(ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL);
-        } else {
-			$cpt  = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
-			$opts = $cpt->getOptions();
+		$cpt  = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+        $opts = $cpt->getOptions();
 
-			if (!empty($opts['view_ticket_page_id'])) {
-			    $link = get_page_link($opts['view_ticket_page_id']);
-            } else {
-				$link = site_url('/');
-            }
-		}
+        if (!empty($opts['view_ticket_page_id'])) {
+            $link = get_page_link($opts['view_ticket_page_id']);
+        } else {
+            $link = site_url('/');
+        }
 
 		$link = add_query_arg($query_params, $link);
 
