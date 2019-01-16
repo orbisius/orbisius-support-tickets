@@ -343,6 +343,11 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                 $ticket_id = $res_obj->data('id');
                 $ticket_link = $this->generateViewTicketLink( array( 'ticket_id' => $ticket_id, ) );
                 $msg = sprintf( __( "Ticket created. <a href='%s'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
+
+                if ($res_obj->data( 'ticket_pwd')) {
+	                $msg .= "<br/>" . sprintf( __( "Ticket password: %s", 'orbisius_support_tickets' ), $res_obj->data( 'ticket_pwd'));
+				}
+
                 $msg = Orbisius_Support_Tickets_Msg::success($msg);
 			}
         } catch (Exception $e) {
