@@ -9,10 +9,14 @@ register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, array( $cpt_obj,
 class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_Singleton {
 	private $cpt_support_ticket = 'orb_support_ticket';
 
+	/**
+	 *
+	 */
 	public function init() {
 		$this->registerOutput();
 		$this->registerCustomContentTypes();
 		$this->registerCommentAdd();
+		$this->maybeEnableComments();
 
 		add_action( 'orbisius_support_tickets_action_ticket_activity', array( $this, 'openClosedTicket' ) );
 	}
@@ -313,5 +317,20 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		if ($this->getStatus($ctx['ticket_id']) == Orbisius_Support_Tickets_Module_Core_CPT::STATUS_CLOSED) {
 			$this->changeStatus($ctx['ticket_id'], self::STATUS_OPEN);
 		}
+	}
+
+	/**
+	 * Hooked into 'comments_open' filter to ensure that our tickets will always have comments enabled as some people might have then deactivated globally.
+	 */
+	public function maybeEnableComments() {
+		add_filter('comments_open', array( $this, 'enableCommentsForTickets' ), 999, 2);
+	}
+
+	public function enableCommentsForTickets($open, $post_id) {
+		if ($this->getCptSupportTicket() == get_post_type($post_id)) {
+			$open = true;
+		}
+
+		return $open;
 	}
 }
