@@ -149,7 +149,7 @@ class Orbisius_Support_Tickets_String_Util {
         }
 
         $param = serialize( $param );
-        $param = $param . 'AAAAA2345sdfsdfsfsdS23590asfasF';
+        $param = $param . 'A55ffssssssA2345sdfsdfsfsdS23AAA590asfasF';
         $param = sha1( $param );
         $param = strtoupper( $param );
         
