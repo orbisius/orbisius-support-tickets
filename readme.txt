@@ -114,6 +114,7 @@ You can get in touch with us at
 
 = 1.0.3 =
 * Removed ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL const so it doesn't cause some hard to find glitches.
+* Now allowing non-logged in users to view the ticket if they provide the correct ticket password.
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.
