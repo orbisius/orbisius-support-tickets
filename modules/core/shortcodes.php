@@ -42,10 +42,14 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			$res     = new Orbisius_Support_Tickets_Result();
 			$cpt_api       = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 			$post_type     = $cpt_api->getCptSupportTicket();
+
+			$pwd = wp_generate_password( 8, false );
+
 			$ins_post_data = array(
 				'post_type'   => $post_type,
 				'post_author' => $user_id,
-				'post_status' => 'private', // 'publish';
+				'post_status' => Orbisius_Support_Tickets_Module_Core_CPT::STATUS_OPEN,
+                'post_password' => $pwd, // WP will remove this but we'll put it there anyways.
             );
 
 			$raw_post_data = empty($data) ? $this->getData() : $data;
@@ -88,18 +92,37 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			if ( empty( $ins_post_data['ID'] ) ) {
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_insert', $ctx );
+
+				// insert pwd here
 				$id = wp_insert_post( $ins_post_data );
 
 				if ( empty($id) || ! is_numeric( $id ) || $id <= 0 ) {
 					throw new Exception( "Couldn't save item." );
 				}
 
+				// Hack!: WP removes the password for private posts ?!? We'll add this.
+                // We could have hooked into insert post data but I need to give the PWD to the user
+                // if he/she is not logged in. Using a hook would force me to use globals.
+				global $wpdb;
+				$hack_pwd_update_res = $wpdb->update(
+					$wpdb->posts,
+					array(
+						'post_password' => $pwd,
+					),
+					array( 'ID' => $id ),
+					array(
+						'%s',	// value1
+					),
+					array( '%d' )
+				);
+
+				$res->data( 'ticket_pwd', $pwd );
 				$ctx['ticket_id'] = $id;
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', $ctx );
 			} else {
 				$ctx['ticket_id'] = $ins_post_data['ID'];
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_update', $ctx );
-				$id = wp_orbisius_support_tickets( $ins_post_data );
+				$id = wp_update_post( $ins_post_data );
 
 				if ( empty($id) || ! is_numeric( $id ) || $id <= 0 ) {
 					throw new Exception( "Couldn't save item." );
@@ -415,9 +438,11 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$items = array();
 		$ticket_id = $this->getData('ticket_id');
 		$ticket_obj = '';
+		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 		$user_api = Orbisius_Support_Tickets_User::getInstance();
 
 		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
 		$post_type = $cpt_api->getCptSupportTicket();
 
 		try {
@@ -426,11 +451,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	            $ticket_id = 0;
             }
 
-			if (!is_user_logged_in()) {
-				throw new Exception(__("You must be logged in to view the ticket.", 'orbisius_support_tickets'));
-			}
-
-			$ticket_obj = get_post($ticket_id);
+			$ticket_obj = $cpt_obj->getTicket($ticket_id);
 
 			if (empty($ticket_obj)) {
 				throw new Exception( __("Invalid ticket ID", 'orbisius_support_tickets') );
@@ -443,31 +464,44 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			$user_id = get_current_user_id();
 
-			// The current user is not the author of the ticket
-			if ($ticket_obj->post_author > 0 && $user_id != $ticket_obj->post_author) {
-				if (!$user_api->isAdmin()) {
+			if (is_user_logged_in()) {
+				// The current user is not the author of the ticket
+				if ($ticket_obj->post_author > 0 && $user_id != $ticket_obj->post_author) {
+					if (!$user_api->isEditor()) { // editor is OK to view stuff
+						throw new Exception( __( "Invalid ticket ID", 'orbisius_support_tickets' ) );
+					}
+				}
+			} elseif ($req_obj->has('post_password')) {
+				if (empty($ticket_obj->post_password)
+                    || $req_obj->get('post_password') != $ticket_obj->post_password) {
 					throw new Exception( __( "Invalid ticket ID", 'orbisius_support_tickets' ) );
 				}
+			} elseif (post_password_required($ticket_obj)) {
+                $pwd_form   = get_the_password_form( $ticket_obj );
+                $msg        = $pwd_form;
+                $ticket_id  = 0;
+                $ticket_obj = null;
+            }
+
+			if ($ticket_id) {
+				$args = array(
+					'order'     => 'ASC', // DESC
+					'post_id'   => $ticket_id,
+					'count'     => false,
+					'status'    => 'all',
+					'post_type' => $post_type,
+				);
+
+				$items = get_comments( $args );
+
+				$ctx = array(
+					'ticket_id' => $ticket_id,
+				);
 			}
-
-			$args = array(
-				'order' => 'ASC', // DESC
-				'post_id' => $ticket_id,
-				'count' => false,
-				'status' => 'all',
-				'post_type' => $post_type,
-            );
-
-			$items = get_comments( $args );
-
-			$ctx = array(
-				'ticket_id' => $ticket_id,
-            );
 		} catch (Exception $e) {
 			$msg = Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
         }
 
-		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 		?>
         <div id="orbisius_support_tickets_view_ticket_wrapper" class="orbisius_support_tickets_view_ticket_wrapper">
 			<?php do_action( 'orbisius_support_tickets_action_before_view_ticket', $ctx ); ?>
