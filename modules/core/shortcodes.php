@@ -54,7 +54,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				'post_type'   => $post_type,
 				'post_author' => $user_id,
 				'post_status' => Orbisius_Support_Tickets_Module_Core_CPT::STATUS_OPEN,
-                'post_password' => $pwd, // WP will remove this but we'll put it there anyways.
                 'meta_input' => array(),
             );
 
@@ -89,14 +88,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 //			    }
 			}
 
-			// Add guest user's
-			if (!empty($data['email'])) {
-			    $ins_post_data['meta_input']['_orbsuptx_email'] = $data['email'];
-            }
-
-			$user_api = Orbisius_Support_Tickets_User::getInstance();
-			$ins_post_data['meta_input']['_orbsuptx_user_ip'] = $user_api->getUserIP();
-
 			$ctx = array(
 				'author_id' => $user_id,
 				'data' => $ins_post_data,
@@ -105,6 +96,16 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_upsert', $ctx );
 
 			if ( empty( $ins_post_data['ID'] ) ) {
+				// Add guest user's
+				if (!empty($data['email'])) {
+					$ins_post_data['meta_input']['_orbsuptx_email'] = $data['email'];
+				}
+
+				$user_api = Orbisius_Support_Tickets_User::getInstance();
+				// WP causes lots of troubles when the post has a password. Can't comment. WP shows blank page?!?
+				$ins_post_data['meta_input']['_orbsuptx_pwd'] = $pwd;
+				$ins_post_data['meta_input']['_orbsuptx_user_ip'] = $user_api->getUserIP();
+
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_insert', $ctx );
 
 				// insert pwd here
@@ -113,22 +114,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				if ( empty($id) || ! is_numeric( $id ) || $id <= 0 ) {
 					throw new Exception( "Couldn't save item." );
 				}
-
-				// Hack!: WP removes the password for private posts ?!? We'll add this.
-                // We could have hooked into insert post data but I need to give the PWD to the user
-                // if he/she is not logged in. Using a hook would force me to use globals.
-				global $wpdb;
-				$hack_pwd_update_res = $wpdb->update(
-					$wpdb->posts,
-					array(
-						'post_password' => $pwd,
-					),
-					array( 'ID' => $id ),
-					array(
-						'%s',	// value1
-					),
-					array( '%d' )
-				);
 
 				$res->data( 'ticket_pwd', $pwd );
 				$ctx['ticket_id'] = $id;
