@@ -55,7 +55,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				'post_author' => $user_id,
 				'post_status' => Orbisius_Support_Tickets_Module_Core_CPT::STATUS_OPEN,
                 'post_password' => $pwd, // WP will remove this but we'll put it there anyways.
-                'meta_input' => [],
+                'meta_input' => array(),
             );
 
 			$raw_post_data = empty($data) ? $this->getData() : $data;
