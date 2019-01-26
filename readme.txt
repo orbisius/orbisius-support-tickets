@@ -120,6 +120,7 @@ You can get in touch with us at
 * The created by default Ticket submit form shortcode doesn't render its title by default because the page already has a title. The title would be useful if the submit ticket form is used somewhere on an existing page and not standalone.
 * Updated settings to require users to be logged or register in order to submit a ticket.
 * Showing an email field if the user is not logged in.
+* Saving user's IP and email if passed
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.
