@@ -55,6 +55,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				'post_author' => $user_id,
 				'post_status' => Orbisius_Support_Tickets_Module_Core_CPT::STATUS_OPEN,
                 'post_password' => $pwd, // WP will remove this but we'll put it there anyways.
+                'meta_input' => [],
             );
 
 			$raw_post_data = empty($data) ? $this->getData() : $data;
@@ -87,6 +88,14 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 //				    throw new Exception("You have reached your limits. Please, upgrade");
 //			    }
 			}
+
+			// Add guest user's
+			if (!empty($data['email'])) {
+			    $ins_post_data['meta_input']['_orbsuptx_email'] = $data['email'];
+            }
+
+			$user_api = Orbisius_Support_Tickets_User::getInstance();
+			$ins_post_data['meta_input']['_orbsuptx_user_ip'] = $user_api->getUserIP();
 
 			$ctx = array(
 				'author_id' => $user_id,
