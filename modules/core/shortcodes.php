@@ -326,8 +326,22 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$msg = '';
 		$data = $this->getData();
 		$res_obj = new Orbisius_Support_Tickets_Result();
+		$show_form = 1;
 
 		try {
+			$admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
+
+			$opts = $admin_api->getOptions();
+
+			if (1 ||empty($opts['allow_guests_to_submit_tickets']) && !is_user_logged_in()) {
+			    $login_link = '#';
+			    $register_link = '#';
+				$req_login_reg_msg = sprintf("You need to <a href='%s'>Login</a> or <a href='%s'>Register</a> in order to submit a ticket", $login_link, $register_link);
+				$res_obj->msg($req_login_reg_msg);
+				$show_form = 0;
+				throw new Exception( __( $res_obj->msg(), 'orbisius_support_tickets') );
+            }
+
 			if ( ! empty( $data['submit'] ) ) {
 				if ( empty( $_POST['orbisius_support_tickets_submit_ticket_nonce'] )
 				    || ! wp_verify_nonce( $_POST['orbisius_support_tickets_submit_ticket_nonce'], 'orbisius_support_tickets_submit_ticket' ) ) {
@@ -368,7 +382,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			<?php echo $msg; ?>
 
-            <?php if ( empty( $data['submit'] ) || $res_obj->isError() ) : ?>
+            <?php if ( $show_form && (empty( $data['submit'] ) || $res_obj->isError() ) ) : ?>
                 <div id="orbisius_support_tickets_submit_ticket_form_wrapper"
                      class="orbisius_support_tickets_submit_ticket_form_wrapper">
                     <form id="orbisius_support_tickets_submit_ticket_form"

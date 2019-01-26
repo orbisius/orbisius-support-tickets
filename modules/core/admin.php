@@ -680,6 +680,20 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                <tr valign="top">
+                                                    <th scope="row"><?php _e("Other options", 'orbisius_support_tickets');?></th>
+                                                    <td>
+                                                        <input type="hidden" name="<?php echo "{$settings_key}[allow_guests_to_submit_tickets]";?>" value="0" />
+                                                        <label>
+                                                            <input type="checkbox" class=""
+                                                                   name="<?php echo "{$settings_key}[allow_guests_to_submit_tickets]";?>"
+					                                            <?php checked(empty($opts['allow_guests_to_submit_tickets'])
+						                                            ? '' : $opts['allow_guests_to_submit_tickets'], 1); ?>
+                                                                   value="1" />
+	                                                        <?php _e("Allow non-logged in users to submit tickets", 'orbisius_support_tickets');?>
+                                                        </label>
+                                                    </td>
+                                                </tr>
                                             </table>
                                             <p class="submit">
                                                 <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
@@ -981,6 +995,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 		'view_ticket_page_id' => '',
 		'list_tickets_page_id' => '',
 		'submit_ticket_page_id' => '',
+		'allow_guests_to_submit_tickets' => 1,
     );
 
 	private $plugin_default_opts_other = array(
