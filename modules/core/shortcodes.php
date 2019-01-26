@@ -419,9 +419,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
                         <?php do_action( 'orbisius_support_tickets_action_submit_ticket_form_footer', $ctx ); ?>
                     </form>
-                </div>
+                </div> <!-- /orbisius_support_tickets_submit_ticket_form_wrapper -->
                 <?php do_action( 'orbisius_support_tickets_action_after_submit_ticket_form', $ctx ); ?>
-            </div> <!-- /orbisius_support_tickets_submit_ticket_wrapper -->
             <?php endif; ?>
         </div> <!-- /orbisius_support_tickets_submit_ticket_wrapper -->
 		<?php

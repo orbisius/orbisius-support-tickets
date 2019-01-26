@@ -5,7 +5,7 @@ Tags: orbisius,support,ticket,tickets,help,helpdesk,awesome support
 Requires at least: 3.0
 Requires PHP: 5.2.4
 Tested up to: 5.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,6 +116,7 @@ You can get in touch with us at
 * Removed ORBISIUS_SUPPORT_TICKETS_PAGES_VIEW_TICKET_URL const so it doesn't cause some hard to find glitches.
 * Now allowing non-logged in users to view the ticket if they provide the correct ticket password.
 * Hooked into 'comments_open' filter to ensure that our tickets will always have comments enabled as some people might have then deactivated globally.
+* Fixed: removed an extra closing div which was breaking submit ticket page's layout. Thanks again Ivo Minchev for reporting this. Ref: https://github.com/orbisius/orbisius-support-tickets/issues/1
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.
