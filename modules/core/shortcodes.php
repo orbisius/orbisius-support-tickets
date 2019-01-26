@@ -141,7 +141,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	/**
-	 * Processes [orbisius_support_list_tickets] shortcode
+	 * Processes [orbisius_support_tickets_list_tickets] shortcode
 	 * @return string
 	 */
 	public function renderTickets( $attribs = array() ) {
@@ -317,7 +317,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	/**
-	 * Processes [orbisius_support_submit_ticket] shortcode
+	 * Processes [orbisius_support_tickets_submit_ticket] shortcode
 	 * @return string
 	 */
 	public function renderSubmitTicketForm( $attribs = array() ) {
@@ -432,7 +432,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	/**
-	 * Processes [orbisius_support_view_ticket] shortcode
+	 * Processes [orbisius_support_tickets_view_ticket] shortcode
 	 * @return string
 	 */
 	public function renderViewTicket( $attribs = array() ) {

@@ -117,6 +117,7 @@ You can get in touch with us at
 * Now allowing non-logged in users to view the ticket if they provide the correct ticket password.
 * Hooked into 'comments_open' filter to ensure that our tickets will always have comments enabled as some people might have then deactivated globally.
 * Fixed: removed an extra closing div which was breaking submit ticket page's layout. Thanks again Ivo Minchev for reporting this. Ref: https://github.com/orbisius/orbisius-support-tickets/issues/1
+* The created by default Ticket submit form shortcode doesn't render its title by default because the page already has a title. The title would be useful if the submit ticket form is used somewhere on an existing page and not standalone.
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.

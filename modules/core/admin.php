@@ -1091,7 +1091,7 @@ Ticket link: {ticket_url}
 	            'id' => 'submit_ticket_page_id',
                 'slug' => 'submit-ticket',
                 'page_title' => 'Submit Ticket',
-                'post_content' => '<div>[orbisius_support_tickets_submit_ticket]</div>',
+                'post_content' => '<div>[orbisius_support_tickets_submit_ticket render_title=0]</div>',
             ),
             array(
 	            'id' => 'view_ticket_page_id',
