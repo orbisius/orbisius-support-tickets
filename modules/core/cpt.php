@@ -204,6 +204,13 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'author_id' => $comment_data['user_id'],
 		));
 
+		$maybe_email = get_post_meta($ctx['ticket_id'], '_orbsuptx_email', true);
+
+		if (!empty($maybe_email)) {
+			$recipient_email = $maybe_email;
+			$ctx['recipient_email'] = $recipient_email;
+		}
+
 		do_action('orbisius_support_tickets_action_ticket_activity', $ctx);
 	}
 
