@@ -26,8 +26,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		add_action('orbisius_support_tickets_view_ticket_meta', array( $this, 'renderCloseTicketButton' ), 20 );
 	}
 
-	private $defaults = array(
+	/**
+     * This is used in submit ticket form
+	 * @var array
+	 */
+	private $form_data_defaults = array(
 		'id' => 0,
+		'email' => '',
 		'subject' => '',
 		'message' => '',
     );
@@ -327,13 +332,14 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$data = $this->getData();
 		$res_obj = new Orbisius_Support_Tickets_Result();
 		$show_form = 1;
+		$show_email_field = ! is_user_logged_in();
 
 		try {
 			$admin_api = Orbisius_Support_Tickets_Module_Core_Admin::getInstance();
 
 			$opts = $admin_api->getOptions();
 
-			if (1 ||empty($opts['allow_guests_to_submit_tickets']) && !is_user_logged_in()) {
+			if (empty($opts['allow_guests_to_submit_tickets']) && !is_user_logged_in()) {
 			    $login_link = '#';
 			    $register_link = '#';
 				$req_login_reg_msg = sprintf("You need to <a href='%s'>Login</a> or <a href='%s'>Register</a> in order to submit a ticket", $login_link, $register_link);
@@ -346,6 +352,12 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				if ( empty( $_POST['orbisius_support_tickets_submit_ticket_nonce'] )
 				    || ! wp_verify_nonce( $_POST['orbisius_support_tickets_submit_ticket_nonce'], 'orbisius_support_tickets_submit_ticket' ) ) {
 					throw new Exception( __("Invalid submission", 'orbisius_support_tickets') );
+				}
+
+				// If the user is not logged in we'll have to ask for an email.
+				if ($show_email_field && ( empty( $data['email'] ) || ! is_email( $data['email'] ) ) ) {
+					$missing_email_msg = sprintf( __( "Empty or invalid email", 'orbisius_support_tickets' ) );
+					throw new Exception( $missing_email_msg );
 				}
 
 				$res_obj = $this->processTicketSubmission($data);
@@ -393,6 +405,21 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                         <input type="hidden" name="orbisius_support_tickets_data[submit]" value="1"/>
                         <input type="hidden" name="orbisius_support_tickets_data[id]" id="orbisius_support_tickets_data_id"
                                value="<?php echo $id; ?>"/>
+
+	                    <?php if ( $show_email_field ) : ?>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"
+                                       for="orbisius_support_tickets_data_email">
+				                    <?php _e( 'Email', 'orbisius_support_tickets' ); ?></label>
+                                <div class="col-md-9">
+                                    <input name="orbisius_support_tickets_data[email]"
+                                           id="orbisius_support_tickets_data_email"
+                                           type="text" placeholder="<?php _e( 'Email', 'orbisius_support_tickets' ); ?>"
+                                           value="<?php esc_attr_e( $data['email'] ); ?>"
+                                           class="form-control orbisius_support_tickets_data_email orbisius_support_tickets_full_width"/>
+                                </div>
+                            </div>
+	                    <?php endif; ?>
 
                         <div class="form-group">
                             <label class="col-md-3 control-label"
@@ -677,7 +704,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	public function getData($key = '') {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
 		$data = $req_obj->getRaw('orbisius_support_tickets_data', array());
-		$data = array_replace_recursive( $this->defaults, $data );
+		$data = array_replace_recursive( $this->form_data_defaults, $data );
 		$val = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $data );
 
 		if (!empty($key)) {
