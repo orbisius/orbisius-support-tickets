@@ -94,8 +94,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 				$user_api = Orbisius_Support_Tickets_User::getInstance();
 				// WP causes lots of troubles when the post has a password. Can't comment. WP shows blank page?!?
-				$ins_post_data['meta_input']["{$meta_prefix}pwd"] = $pwd;
-				$ins_post_data['meta_input']["{$meta_prefix}_user_ip"] = $user_api->getUserIP();
+                // @todo use fields from CPT to set the meta
+				$ins_post_data['meta_input']["{$meta_prefix}pass"] = $pwd;
+				$ins_post_data['meta_input']["{$meta_prefix}user_ip"] = $user_api->getUserIP();
 
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_insert', $ctx );
 
@@ -106,7 +107,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 					throw new Exception( "Couldn't save item." );
 				}
 
-				$res->data( 'ticket_pwd', $pwd );
+				$res->data( 'ticket_pass', $pwd );
 				$ctx['ticket_id'] = $id;
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', $ctx );
 			} else {
@@ -355,8 +356,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                 $ticket_link = $this->generateViewTicketLink( array( 'ticket_id' => $ticket_id, ) );
                 $msg = sprintf( __( "Ticket created. <a href='%s'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
 
-                if ($res_obj->data( 'ticket_pwd')) {
-	                $msg .= "<br/>" . sprintf( __( "Ticket password: %s", 'orbisius_support_tickets' ), $res_obj->data( 'ticket_pwd'));
+                if ($res_obj->data( 'ticket_pass')) {
+	                $msg .= "<br/>" . sprintf( __( "Ticket password: %s", 'orbisius_support_tickets' ), $res_obj->data( 'ticket_pass'));
 				}
 
                 $msg = Orbisius_Support_Tickets_Msg::success($msg);
@@ -467,13 +468,11 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$ctx = array();
 		$items = array();
 		$ticket_id = $this->getData('ticket_id');
+		$inp_ticket_pass = $this->getData('pass');
 		$ticket_obj = '';
-		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		$cpt_obj  = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+		$req_obj  = Orbisius_Support_Tickets_Request::getInstance();
 		$user_api = Orbisius_Support_Tickets_User::getInstance();
-
-		$cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
-		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
-		$post_type = $cpt_api->getCptSupportTicket();
 
 		try {
             if (empty($ticket_id) || !is_numeric($ticket_id)) {
@@ -487,6 +486,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				throw new Exception( __("Invalid ticket ID", 'orbisius_support_tickets') );
 			}
 
+			$post_type = $cpt_obj->getCptSupportTicket();
+
 			// The ID is a different post type
 			if ($post_type != get_post_type($ticket_obj)) {
 				throw new Exception( __("Invalid ticket ID", 'orbisius_support_tickets') );
@@ -496,19 +497,22 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			if (is_user_logged_in()) {
 				// The current user is not the author of the ticket
+                // @todo create a method hasAccess($ticket_obj) to verify this
 				if ($ticket_obj->post_author > 0 && $user_id != $ticket_obj->post_author) {
 					if (!$user_api->isEditor()) { // editor is OK to view stuff
 						throw new Exception( __( "Invalid ticket ID", 'orbisius_support_tickets' ) );
 					}
 				}
-			} elseif ($req_obj->has('post_password')) {
+			} elseif (!empty($inp_ticket_pass)) {
+				$ticket_pass = $cpt_obj->getTicketPassword($ticket_obj);
+
 			    // get meta pwd
-				if (empty($ticket_obj->post_password)
-                    || $req_obj->get('post_password') != $ticket_obj->post_password) {
-					throw new Exception( __( "Invalid ticket ID", 'orbisius_support_tickets' ) );
+				if (empty($inp_ticket_pass)
+                    || $req_obj->get('ticket_password') != $inp_ticket_pass) {
+					throw new Exception( __( "Invalid ticket password", 'orbisius_support_tickets' ) );
 				}
 			} elseif ($cpt_obj->isPasswordRequired($ticket_obj)) {
-                $pwd_form   = $cpt_obj->getPasswordForm( $ticket_obj );
+                $pwd_form   = $cpt_obj->getPasswordForm($ticket_obj);
                 $msg        = $pwd_form;
                 $ticket_id  = 0;
                 $ticket_obj = null;

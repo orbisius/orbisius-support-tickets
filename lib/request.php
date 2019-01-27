@@ -290,7 +290,7 @@ class Orbisius_Support_Tickets_Request {
 		'email' => '',
 		'subject' => '',
 		'message' => '',
-		'password' => '',
+		'pass' => '',
 	);
 
 	/**
