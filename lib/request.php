@@ -296,7 +296,7 @@ class Orbisius_Support_Tickets_Request {
 	/**
 	 * Gets the data that the plugin expects or the value for a given variable.
 	 * @param string $key (optional
-	 * @return array|mixed
+	 * @return int|string|array|mixed
 	 */
 	public function getTicketData($key = '') {
 		$data = $this->getRaw('orbisius_support_tickets_data', array());
@@ -308,6 +308,10 @@ class Orbisius_Support_Tickets_Request {
 		}
 
 		$val = $this->trim($val);
+
+		if (preg_match('#id#si', $key)) {
+			$val = absint($val);
+		}
 
 		return $val;
 	}
