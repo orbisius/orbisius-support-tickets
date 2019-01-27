@@ -427,7 +427,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 						<?php do_action( 'orbisius_support_tickets_action_submit_ticket_password_form_header', $ctx ); ?>
 						<?php wp_nonce_field( 'orbisius_support_tickets_submit_ticket_password', 'orbisius_support_tickets_submit_ticket_password_nonce' ); ?>
 						<input type="hidden" name="orbisius_support_tickets_data[submit]" value="1"/>
-						<input type="hidden" name="orbisius_support_tickets_data[id]" id="orbisius_support_tickets_data_id"
+						<input type="hidden" name="orbisius_support_tickets_data[ticket_id]" id="orbisius_support_tickets_data_id"
 						       value="<?php echo $ticket_id; ?>"/>
 
 						<div class="form-group">
