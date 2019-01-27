@@ -29,6 +29,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		'ticket_id' => 'The ticket id e.g. 123',
 		'ticket_url' => 'The view ticket link',
 		'recipient_email' => 'Who is going to receive the email (ticket creator usually)',
+		'ticket_password' => "Ticket password. Each ticket has one and can be used to view ticket if the user wasn't logged in or a colleague of the person who submitted the ticket.",
 		//'recipient_name' => 'Who is going to receive',
     );
 

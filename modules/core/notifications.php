@@ -73,6 +73,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			'site_url' => site_url('/'),
 			'site_name' => get_bloginfo('name'),
 			'ticket_id' => $ctx['ticket_id'],
+			'ticket_password' => empty($ctx['ticket_pass']) ? '' : $ctx['ticket_pass'],
 			'ticket_url' => $shortcode_api->generateViewTicketLink( array( 'ticket_id' => $ctx['ticket_id'] ) ),
 			'recipient_email' => $email,
 		);
