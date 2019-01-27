@@ -467,17 +467,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$msg = '';
 		$ctx = array();
 		$items = array();
-		$ticket_id = 0;
-
-		if ($this->getData('ticket_id')) {
-			$ticket_id = $this->getData('ticket_id');
-		}
-
+		$ticket_id = $this->getData('ticket_id');
 		$ticket_id = (int) $ticket_id;
 		$inp_ticket_pass = $this->getData('pass');
 		$ticket_obj = '';
 		$cpt_obj  = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 		$req_obj  = Orbisius_Support_Tickets_Request::getInstance();
+		$ticket_id = $req_obj->getTicketData('ticket_id');
 		$user_api = Orbisius_Support_Tickets_User::getInstance();
 
 		try {

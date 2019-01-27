@@ -22,6 +22,8 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		add_action( 'orbisius_support_tickets_action_ticket_activity', array( $this, 'openClosedTicket' ) );
 		add_filter( 'user_has_cap', array( $this, 'givePermissions' ), 50, 3 );
 		add_filter( 'comment_on_draft', array( $this, 'addComment' ), 50, 1 );
+
+		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
 	}
 
 	// We want people to comment on draft (open) tickets).
@@ -30,20 +32,38 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	);
 
 	/**
+     * Disable URL field in the comment form
+	 * @param array $fields
+	 * @return array $fields
+	 */
+	function modifyCommentDefaultFields($fields) {
+		$req_obj  = Orbisius_Support_Tickets_Request::getInstance();
+		$ticket_id = $req_obj->getTicketData('ticket_id');
+
+		// No ticket id so it's not our comment form
+		if ( empty($ticket_id ) ) {
+			return;
+		}
+
+		// Not our post type. JIC.
+		if ( get_post_type( $ticket_id ) != $this->getCptSupportTicket() ) {
+			return;
+		}
+
+		unset($fields['url']);
+		return $fields;
+	}
+
+	/**
      * WP doesn't allow comments on drafts by default but provides a nice hook to we can actually insert a comment.
 	 * @see http://fastwpdesign.co.uk/how-to-enable-comments-on-draft-posts-in-wordpress/
 	 * @param int $post_id
 	 */
 	function addComment( $post_id ) {
-	    // Not our post type.
-		if ( get_post_type( $post_id ) != $this->getCptSupportTicket() ) {
+		// Not our post type.
+		if ( get_post_type($post_id) != $this->getCptSupportTicket() ) {
 			return;
 		}
-
-		// make sure the user is logged in
-//		if ( ! is_user_logged_in() ) {
-//			return;
-//		}
 
 		//  check we have a comment and if no comment then just return.
 		if ( empty( $_POST['comment'] ) ) {
