@@ -27,17 +27,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	}
 
 	/**
-     * This is used in submit ticket form
-	 * @var array
-	 */
-	private $form_data_defaults = array(
-		'id' => 0,
-		'email' => '',
-		'subject' => '',
-		'message' => '',
-    );
-
-	/**
 	 * Processes
 	 * @return Orbisius_Support_Tickets_Result
 	 */
@@ -95,16 +84,18 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_upsert', $ctx );
 
+			$meta_prefix = $cpt_api->getMetaPrefix();
+
 			if ( empty( $ins_post_data['ID'] ) ) {
 				// Add guest user's
 				if (!empty($data['email'])) {
-					$ins_post_data['meta_input']['_orbsuptx_email'] = $data['email'];
+					$ins_post_data['meta_input']["{$meta_prefix}email"] = $data['email'];
 				}
 
 				$user_api = Orbisius_Support_Tickets_User::getInstance();
 				// WP causes lots of troubles when the post has a password. Can't comment. WP shows blank page?!?
-				$ins_post_data['meta_input']['_orbsuptx_pwd'] = $pwd;
-				$ins_post_data['meta_input']['_orbsuptx_user_ip'] = $user_api->getUserIP();
+				$ins_post_data['meta_input']["{$meta_prefix}pwd"] = $pwd;
+				$ins_post_data['meta_input']["{$meta_prefix}_user_ip"] = $user_api->getUserIP();
 
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_insert', $ctx );
 
@@ -511,12 +502,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 					}
 				}
 			} elseif ($req_obj->has('post_password')) {
+			    // get meta pwd
 				if (empty($ticket_obj->post_password)
                     || $req_obj->get('post_password') != $ticket_obj->post_password) {
 					throw new Exception( __( "Invalid ticket ID", 'orbisius_support_tickets' ) );
 				}
-			} elseif (post_password_required($ticket_obj)) {
-                $pwd_form   = get_the_password_form( $ticket_obj );
+			} elseif ($cpt_obj->isPasswordRequired($ticket_obj)) {
+                $pwd_form   = $cpt_obj->getPasswordForm( $ticket_obj );
                 $msg        = $pwd_form;
                 $ticket_id  = 0;
                 $ticket_obj = null;
@@ -697,17 +689,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 	 */
 	public function getData($key = '') {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
-		$data = $req_obj->getRaw('orbisius_support_tickets_data', array());
-		$data = array_replace_recursive( $this->form_data_defaults, $data );
-		$val = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $data );
-
-		if (!empty($key)) {
-			$val = empty($data[$key]) ? '' : $data[$key];
-        }
-
-		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
-		$val = $req_obj->trim($val);
-
+		$val = $req_obj->getTicketData($key);
 		return $val;
 	}
 

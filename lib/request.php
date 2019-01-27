@@ -281,6 +281,37 @@ class Orbisius_Support_Tickets_Request {
 		return $req_url;
 	}
 
+	/**
+	 * This is used in submit ticket form
+	 * @var array
+	 */
+	private $form_data_defaults = array(
+		'id' => 0,
+		'email' => '',
+		'subject' => '',
+		'message' => '',
+		'password' => '',
+	);
+
+	/**
+	 * Gets the data that the plugin expects or the value for a given variable.
+	 * @param string $key (optional
+	 * @return array|mixed
+	 */
+	public function getTicketData($key = '') {
+		$data = $this->getRaw('orbisius_support_tickets_data', array());
+		$data = array_replace_recursive( $this->form_data_defaults, $data );
+		$val = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_sanitize_data', $data );
+
+		if (!empty($key)) {
+			$val = empty($data[$key]) ? '' : $data[$key];
+		}
+
+		$val = $this->trim($val);
+
+		return $val;
+	}
+
 	// https://code.tutsplus.com/tutorials/deciphering-magic-methods-in-php--net-13085
 	public function __get( $name ) {
 		return $this->get($name);
