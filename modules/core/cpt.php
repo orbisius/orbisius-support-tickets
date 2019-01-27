@@ -389,7 +389,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		try {
 			$req_obj = Orbisius_Support_Tickets_Request::getInstance();
 			$data = $req_obj->getTicketData();
-			$ticket_id = empty($data['ticket_id']) ? 0 : (int) $data['ticket_id'];
+			$ticket_id = $req_obj->getTicketData('ticket_id');
 
 			if ( ! empty( $data['orbisius_support_tickets_submit_ticket_password_form_submit'] ) ) {
 				if ( empty( $_POST['orbisius_support_tickets_submit_ticket_password_nonce'] )
