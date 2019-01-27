@@ -484,8 +484,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 		try {
             if (empty($ticket_id) || !is_numeric($ticket_id)) {
-                throw new Exception(__("Invalid ticket ID", 'orbisius_support_tickets') );
 	            $ticket_id = 0;
+                throw new Exception(__("Invalid ticket ID", 'orbisius_support_tickets') );
             }
 
 			$ticket_obj = $cpt_obj->getTicket($ticket_id);
