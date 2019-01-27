@@ -518,11 +518,11 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				if (empty($inp_ticket_pass)
                     || $ticket_pass != $inp_ticket_pass) {
 					$ticket_obj = null;
+					$msg .= $cpt_obj->getPasswordForm($ticket_obj);
 					throw new Exception( __( "Invalid ticket password", 'orbisius_support_tickets' ) );
 				}
 			} elseif ($cpt_obj->isPasswordRequired($ticket_obj)) {
-                $pwd_form   = $cpt_obj->getPasswordForm($ticket_obj);
-                $msg        = $pwd_form;
+				$msg   = $cpt_obj->getPasswordForm($ticket_obj);
                 $ticket_id  = 0;
                 $ticket_obj = null;
             }
@@ -539,7 +539,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				$items = get_comments( $args );
 			}
 		} catch (Exception $e) {
-			$msg = Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
+			$msg .= Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
         }
 
 		$ctx['ticket_id'] = $ticket_id;
