@@ -121,6 +121,7 @@ You can get in touch with us at
 * Updated settings to require users to be logged or register in order to submit a ticket.
 * Showing an email field if the user is not logged in.
 * Saving user's IP and email if passed
+* Using custom ticket password form
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.

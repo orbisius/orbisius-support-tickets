@@ -377,7 +377,6 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		$msg = '';
 		$res_obj = new Orbisius_Support_Tickets_Result();
 		$show_form = 1;
-		$show_email_field = ! is_user_logged_in();
 
 		try {
 			$req_obj = Orbisius_Support_Tickets_Request::getInstance();
@@ -387,15 +386,9 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			$opts = $admin_api->getOptions();
 
 			if ( ! empty( $data['submit'] ) ) {
-				if ( empty( $_POST['orbisius_support_tickets_submit_ticket_nonce'] )
-				     || ! wp_verify_nonce( $_POST['orbisius_support_tickets_submit_ticket_nonce'], 'orbisius_support_tickets_submit_ticket' ) ) {
+				if ( empty( $_POST['orbisius_support_tickets_submit_ticket_password_nonce'] )
+				     || ! wp_verify_nonce( $_POST['orbisius_support_tickets_submit_ticket_password_nonce'], 'orbisius_support_tickets_submit_ticket' ) ) {
 					throw new Exception( __("Invalid submission", 'orbisius_support_tickets') );
-				}
-
-				// If the user is not logged in we'll have to ask for an email.
-				if ($show_email_field && ( empty( $data['email'] ) || ! is_email( $data['email'] ) ) ) {
-					$missing_email_msg = sprintf( __( "Empty or invalid email", 'orbisius_support_tickets' ) );
-					throw new Exception( $missing_email_msg );
 				}
 
 				$res_obj = $this->processTicketSubmission($data);
@@ -438,7 +431,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 					      class="orbisius_support_tickets_submit_ticket_password_form form-horizontal"
 					      method="post" enctype="multipart/form-data">
 						<?php do_action( 'orbisius_support_tickets_action_submit_ticket_password_form_header', $ctx ); ?>
-						<?php wp_nonce_field( 'orbisius_support_tickets_submit_ticket', 'orbisius_support_tickets_submit_ticket_nonce' ); ?>
+						<?php wp_nonce_field( 'orbisius_support_tickets_submit_ticket_password', 'orbisius_support_tickets_submit_ticket_password_nonce' ); ?>
 						<input type="hidden" name="orbisius_support_tickets_data[submit]" value="1"/>
 						<input type="hidden" name="orbisius_support_tickets_data[id]" id="orbisius_support_tickets_data_id"
 						       value="<?php echo $id; ?>"/>
