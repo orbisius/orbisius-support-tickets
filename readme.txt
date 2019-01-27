@@ -122,6 +122,7 @@ You can get in touch with us at
 * Showing an email field if the user is not logged in.
 * Saving user's IP and email if passed
 * Using custom ticket password form
+* Guests can now really post a reply.
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.
