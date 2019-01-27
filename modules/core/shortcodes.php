@@ -467,7 +467,15 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		$msg = '';
 		$ctx = array();
 		$items = array();
-		$ticket_id = $this->getData('ticket_id');
+		$ticket_id = 0;
+
+		if ($this->getData('id')) {
+			$ticket_id = $this->getData('id');
+		} elseif ($this->getData('ticket_id')) {
+			$ticket_id = $this->getData('ticket_id');
+		}
+
+		$ticket_id = (int) $ticket_id;
 		$inp_ticket_pass = $this->getData('pass');
 		$ticket_obj = '';
 		$cpt_obj  = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
@@ -508,7 +516,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			    // get meta pwd
 				if (empty($inp_ticket_pass)
-                    || $req_obj->get('ticket_password') != $inp_ticket_pass) {
+                    || $ticket_pass != $inp_ticket_pass) {
+					$ticket_obj = null;
 					throw new Exception( __( "Invalid ticket password", 'orbisius_support_tickets' ) );
 				}
 			} elseif ($cpt_obj->isPasswordRequired($ticket_obj)) {
@@ -528,14 +537,12 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				);
 
 				$items = get_comments( $args );
-
-				$ctx = array(
-					'ticket_id' => $ticket_id,
-				);
 			}
 		} catch (Exception $e) {
 			$msg = Orbisius_Support_Tickets_Msg::error( $e->getMessage() );
         }
+
+		$ctx['ticket_id'] = $ticket_id;
 
 		?>
         <div id="orbisius_support_tickets_view_ticket_wrapper" class="orbisius_support_tickets_view_ticket_wrapper">
