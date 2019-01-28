@@ -97,6 +97,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                 // @todo use fields from CPT to set the meta
 				$ins_post_data['meta_input']["{$meta_prefix}pass"] = $pwd;
 				$ins_post_data['meta_input']["{$meta_prefix}user_ip"] = $user_api->getUserIP();
+				$ctx['ticket_password'] = $pwd;
 
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_insert', $ctx );
 
@@ -524,12 +525,18 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			if ($ticket_id) {
 				$args = array(
 					'order'     => 'ASC', // DESC
+					'orderby'   => 'comment_date',
 					'post_id'   => $ticket_id,
 					'count'     => false,
 					'status'    => 'all',
+                    // @todo replace only with our types
+                    'type__in'  => array( $cpt_obj->getCptSupportTicketReplyType(), 'comment' ),
 					'post_type' => $post_type,
 				);
 
+				$ctx['ticket_id'] = $ticket_id;
+
+				$args = apply_filters('orbisius_support_tickets_filter_get_ticket_replies_args', $args, $ctx);
 				$items = get_comments( $args );
 			}
 		} catch (Exception $e) {

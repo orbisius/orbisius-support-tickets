@@ -123,7 +123,8 @@ You can get in touch with us at
 * Saving user's IP and email if passed
 * Using custom ticket password form
 * Guests can now really post a reply.
-* Removed url from reply (comment)
+* Removed url from ticket reply
+* Tickets are 
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.

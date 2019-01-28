@@ -9,6 +9,7 @@ register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, array( $cpt_obj,
 
 class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_Singleton {
 	private $cpt_support_ticket = 'orb_support_ticket';
+	private $cpt_support_ticket_reply = 'orb_support_ticket_reply';
 
 	/**
 	 *
@@ -24,6 +25,8 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		add_filter( 'comment_on_draft', array( $this, 'addComment' ), 50, 1 );
 
 		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
+		//add_filter( 'pre_get_comments', array( $this, 'filterOutTicketReplies' ) );
+		add_filter( 'preprocess_comment', array( $this, 'setCustomCommentType' ) );
 	}
 
 	// We want people to comment on draft (open) tickets).
@@ -32,21 +35,36 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	);
 
 	/**
+     * @see https://wordpress.stackexchange.com/questions/227868/filter-out-comments-with-certain-meta-key-s-in-the-admin-backend
+	 * @param $q
+	 */
+	function setCustomCommentType($comment_data) {
+	    if (!$this->isTicketResource()) {
+	        return $comment_data;
+        }
+
+		$comment_data['comment_type'] = $this->getCptSupportTicketReplyType();
+
+		return $comment_data;
+    }
+
+	/**
+     * @see https://wordpress.stackexchange.com/questions/227868/filter-out-comments-with-certain-meta-key-s-in-the-admin-backend
+	 * @param $q
+	 */
+	function filterOutTicketReplies($q) {
+		$post_type = $this->getCptSupportTicket();
+
+		return $q;
+    }
+
+	/**
      * Disable URL field in the comment form
 	 * @param array $fields
 	 * @return array $fields
 	 */
 	function modifyCommentDefaultFields($fields) {
-		$req_obj  = Orbisius_Support_Tickets_Request::getInstance();
-		$ticket_id = $req_obj->getTicketData('ticket_id');
-
-		// No ticket id so it's not our comment form
-		if ( empty($ticket_id ) ) {
-			return;
-		}
-
-		// Not our post type. JIC.
-		if ( get_post_type( $ticket_id ) != $this->getCptSupportTicket() ) {
+		if (!$this->isTicketResource()) {
 			return;
 		}
 
@@ -605,6 +623,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 	const USER_IP = 'user_ip';
 	const PASSWORD = 'pass';
+	const USER_EMAIL = 'user_email';
 
 	public function getTicketPassword( $ticket_obj ) {
 		return $this->getField( $ticket_obj, self::PASSWORD );
@@ -644,5 +663,39 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		$id = absint( $id );
 
 		return $id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCptSupportTicketReplyType() {
+		return $this->cpt_support_ticket_reply;
+	}
+
+	/**
+	 * @param string $cpt_support_ticket_reply
+	 */
+	public function setCptSupportTicketReplyType( $cpt_support_ticket_reply ) {
+		$this->cpt_support_ticket_reply = $cpt_support_ticket_reply;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isTicketResource( $ticket_id = 0 ) {
+		$req_obj  = Orbisius_Support_Tickets_Request::getInstance();
+		$ticket_id = $ticket_id ? $ticket_id : $req_obj->getTicketData('ticket_id');
+
+		// No ticket id so it's not our comment form
+		if ( empty($ticket_id ) ) {
+			return false;
+		}
+
+		// Not our post type. JIC.
+		if ( get_post_type( $ticket_id ) != $this->getCptSupportTicket() ) {
+			return false;
+		}
+
+		return true;
 	}
 }
