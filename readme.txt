@@ -2,7 +2,7 @@
 Contributors: lordspace,orbisius
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7APYDVPBCSY9A
 Tags: orbisius,support,ticket,tickets,help,helpdesk,awesome support
-Requires at least: 3.0
+Requires at least: 4.0
 Requires PHP: 5.2.4
 Tested up to: 5.0
 Stable tag: 1.0.3

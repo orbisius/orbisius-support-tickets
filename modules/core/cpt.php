@@ -31,7 +31,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
 		add_filter( 'preprocess_comment', array( $this, 'setCustomCommentType' ) );
 		add_filter( 'comment_flood_filter', array( $this, 'maybeDeactivateFastRepliesCheck' ), 20, 3 );
-		add_filter( 'notify_moderator', array( $this, 'deActivateModerationEmails' ), 20, 3 );
+		add_filter( 'notify_moderator', array( $this, 'deActivateModerationEmails' ), 20, 2 );
 	}
 
 	/**
