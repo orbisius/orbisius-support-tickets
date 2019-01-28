@@ -522,13 +522,12 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			if ($ticket_id) {
 				$args = array(
-					'order'     => 'ASC', // DESC
+					'order'     => 'ASC', // chronological order.
 					'orderby'   => 'comment_date',
 					'post_id'   => $ticket_id,
 					'count'     => false,
 					'status'    => 'all',
-                    // @todo replace only with our types
-                    'type__in'  => array( $cpt_obj->getCptSupportTicketReplyType(), 'comment' ),
+                    'type'      => $cpt_obj->getCptSupportTicketReplyType(),
 					'post_type' => $post_type,
 				);
 

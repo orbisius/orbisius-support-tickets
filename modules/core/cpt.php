@@ -20,6 +20,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		$this->registerCustomContentTypes();
 		$this->registerCommentAdd();
 		$this->maybeEnableComments();
+		$this->installExcludeTicketRepliesHook();
 
 		add_action( 'orbisius_support_tickets_action_ticket_activity', array( $this, 'openClosedTicket' ) );
 		add_filter( 'user_has_cap', array( $this, 'givePermissions' ), 50, 3 );
@@ -27,7 +28,6 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 		add_filter( 'comment_form_defaults', array( $this, 'addReplyCommentTypeToForm' ), 50 );
 		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
-		//add_filter( 'pre_get_comments', array( $this, 'filterOutTicketReplies' ) );
 		add_filter( 'preprocess_comment', array( $this, 'setCustomCommentType' ) );
 	}
 
@@ -62,16 +62,6 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	    //$defaults['fields']['comment_type'] = '<input type="hidden" name="comment_type" value="%s" id="comment_type" />';
 
         return $defaults;
-    }
-
-	/**
-     * @see https://wordpress.stackexchange.com/questions/227868/filter-out-comments-with-certain-meta-key-s-in-the-admin-backend
-	 * @param $q
-	 */
-	function filterOutTicketReplies($q) {
-		$post_type = $this->getCptSupportTicket();
-
-		return $q;
     }
 
 	/**
@@ -712,5 +702,31 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		}
 
 		return true;
+	}
+
+	public function installExcludeTicketRepliesHook() {
+		add_filter( 'pre_get_comments', array( $this, 'filterOutTicketReplies' ) );
+	}
+
+	/**
+	 * Here we want to exclude ticket replies from the regular comments unless we specifically query them
+	 * @param $query_obj
+	 */
+	function filterOutTicketReplies($query_obj) {
+	    if (is_admin()) {
+	        return;
+        }
+
+		if (!$this->isTicketResource()) {
+			return;
+		}
+
+		$reply_type = $this->getCptSupportTicketReplyType();
+
+		if (!empty($query_obj->query_vars['type']) && $reply_type == $query_obj->query_vars['type']) { // already set and it's ours
+			return;
+		}
+
+		$query_obj->query_vars['type__not_in'] = $reply_type;
 	}
 }
