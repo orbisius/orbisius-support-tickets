@@ -30,12 +30,26 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		add_filter( 'comment_form_defaults', array( $this, 'addReplyCommentTypeToForm' ), 50 );
 		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
 		add_filter( 'preprocess_comment', array( $this, 'setCustomCommentType' ) );
+		add_filter( 'comment_flood_filter', array( $this, 'maybeDeactivateFastRepliesCheck' ), 20, 3 );
 	}
+
 
 	// We want people to comment on draft (open) tickets).
 	private $perms = array(
 		'read_post',
 	);
+
+	/**
+     * @see https://wordpress.stackexchange.com/questions/227868/filter-out-comments-with-certain-meta-key-s-in-the-admin-backend
+	 * @param $q
+	 */
+	function maybeDeactivateFastRepliesCheck($block, $time_last_comment, $time_new_comment) {
+	    if ($this->isTicketResource()) {
+		    return false;
+        }
+
+		return $block;
+    }
 
 	/**
      * @see https://wordpress.stackexchange.com/questions/227868/filter-out-comments-with-certain-meta-key-s-in-the-admin-backend
@@ -356,7 +370,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'author_id' => $comment_data['user_id'],
 		) );
 
-		$maybe_email = $this->getMeta(self::USER_EMAIL);
+		$maybe_email = $this->getMeta($comment_data['comment_post_ID'], self::USER_EMAIL);
 
 		if ( ! empty( $maybe_email ) ) {
 			$recipient_email        = $maybe_email;
@@ -443,11 +457,10 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	}
 
 	/**
-	 * @param int $ticket_id
+	 * @param int|WP_Post $ticket_id
 	 */
-	public function getTicket( $ticket_id ) {
-		$post_obj = get_post( $ticket_id );
-
+	public function getTicket( $ticket ) {
+		$post_obj = get_post( $ticket );
 		return $post_obj;
 	}
 
@@ -519,112 +532,18 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 	/**
 	 * @param int|WP_Post $ticket_obj
-	 *
 	 * @return bool
 	 */
 	public function isPasswordRequired( $ticket_obj ) {
-		$pwd = $this->getTicketPassword( $ticket_obj );
-		// has access
-		// has access password for this ticket
-		return ! empty( $pwd );
+		return post_password_required($ticket_obj);
 	}
 
 	/**
 	 * @param $ticket_obj
-	 *
 	 * @return string
 	 */
 	public function getPasswordForm( $ticket_obj ) {
-		ob_start();
-		$attribs   = array();
-		$msg       = '';
-		$ctx       = array();
-		$res_obj   = new Orbisius_Support_Tickets_Result();
-		$show_form = 1;
-		$ticket_id = $this->getTicketId( $ticket_obj );
-
-		try {
-			$req_obj   = Orbisius_Support_Tickets_Request::getInstance();
-			$data      = $req_obj->getTicketData();
-			$ticket_id = $req_obj->getTicketData( 'ticket_id' );
-
-			if ( ! empty( $data['orbisius_support_tickets_submit_ticket_password_form_submit'] ) ) {
-				if ( empty( $_POST['orbisius_support_tickets_submit_ticket_password_nonce'] )
-				     || ! wp_verify_nonce( $_POST['orbisius_support_tickets_submit_ticket_password_nonce'], 'orbisius_support_tickets_submit_ticket' ) ) {
-					$err_msg = __( "Invalid ticket password", 'orbisius_support_tickets' );
-					$res_obj->msg( $err_msg );
-					throw new Exception( $err_msg );
-				}
-
-				//$msg = Orbisius_Support_Tickets_Msg::success($msg);
-			}
-		} catch ( Exception $e ) {
-			$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
-		}
-
-		$ctx['ticket_id'] = $ticket_id;
-		?>
-
-        <div id="orbisius_support_tickets_submit_ticket_wrapper" class="orbisius_support_tickets_submit_ticket_wrapper">
-			<?php do_action( 'orbisius_support_tickets_action_before_submit_ticket_password_form', $ctx ); ?>
-
-			<?php if ( ! isset( $attribs['render_title'] ) || $attribs['render_title'] ) : ?>
-				<?php $title = empty( $attribs['title'] ) ? 'Enter Password' : esc_html( $attribs['render_title'] ); ?>
-                <h3><?php _e( $title, 'orbisius_support_tickets' ); ?></h3>
-			<?php endif; ?>
-
-			<?php echo $msg; ?>
-
-			<?php if ( $show_form && ( empty( $data['submit'] ) || $res_obj->isError() ) ) : ?>
-                <div id="orbisius_support_tickets_submit_ticket_password_form_wrapper"
-                     class="orbisius_support_tickets_submit_ticket_password_form_wrapper">
-                    <form id="orbisius_support_tickets_submit_ticket_password_form"
-                          class="orbisius_support_tickets_submit_ticket_password_form form-horizontal"
-                          method="post" enctype="multipart/form-data">
-						<?php do_action( 'orbisius_support_tickets_action_submit_ticket_password_form_header', $ctx ); ?>
-						<?php wp_nonce_field( 'orbisius_support_tickets_submit_ticket_password', 'orbisius_support_tickets_submit_ticket_password_nonce' ); ?>
-                        <input type="hidden" name="orbisius_support_tickets_data[submit]" value="1"/>
-                        <input type="hidden" name="orbisius_support_tickets_data[ticket_id]"
-                               id="orbisius_support_tickets_data_id"
-                               value="<?php echo $ticket_id; ?>"/>
-
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"
-                                   for="orbisius_support_tickets_data_password">
-								<?php _e( 'Password', 'orbisius_support_tickets' ); ?></label>
-                            <div class="col-md-9">
-                                <input name="orbisius_support_tickets_data[pass]"
-                                       id="orbisius_support_tickets_data_password"
-                                       type="password"
-                                       placeholder="<?php _e( 'Password', 'orbisius_support_tickets' ); ?>"
-                                       value="<?php esc_attr_e( $data['pass'] ); ?>"
-                                       class="form-control orbisius_support_tickets_data_password"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-12 text-right">
-                                <button type="submit"
-                                        id="orbisius_support_tickets_submit_ticket_password_form_submit"
-                                        name="orbisius_support_tickets_submit_ticket_password_form_submit"
-                                        class="orbisius_support_tickets_submit_ticket_password_form_submit btn btn-primary">
-									<?php _e( 'Submit', 'orbisius_support_tickets' ); ?>
-                                </button>
-                            </div>
-                        </div>
-
-						<?php do_action( 'orbisius_support_tickets_action_submit_ticket_password_form_footer', $ctx ); ?>
-                    </form>
-                </div> <!-- /orbisius_support_tickets_submit_ticket_password_form_wrapper -->
-				<?php do_action( 'orbisius_support_tickets_action_after_submit_ticket_password_form', $ctx ); ?>
-			<?php endif; ?>
-        </div> <!-- /orbisius_support_tickets_submit_ticket_wrapper -->
-		<?php
-
-		$html = ob_get_contents();
-		ob_end_clean();
-
-		return $html;
+		return get_the_password_form($ticket_obj);
 	}
 
 	const USER_IP = 'user_ip';
@@ -632,7 +551,13 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	const USER_EMAIL = 'user_email';
 
 	public function getTicketPassword( $ticket_obj ) {
-		return $this->getField( $ticket_obj, self::PASSWORD );
+	    $ticket_obj = $this->getTicket($ticket_obj);
+
+	    if (!empty($ticket_obj->post_password)) {
+		    return $ticket_obj->post_password;
+        }
+
+		return '';
 	}
 
 	/**
@@ -657,18 +582,31 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 *
 	 * @return int
 	 */
-	public function getTicketId( $ticket ) {
-		$id = 0;
+	public function getTicketId( $ticket = null ) {
+		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
+		$ticket_id = 0;
 
-		if ( is_object( $ticket ) ) {
-			$id = $ticket->ID;
+		if ( is_null( $ticket ) ) {
+			if (!empty($inp_ticket_id)) {
+				$ticket_id = $inp_ticket_id;
+			} elseif ($req_obj->getTicketData('ticket_id')) {
+				$ticket_id = $req_obj->getTicketData('ticket_id');
+			} elseif ($req_obj->has('comment_post_ID')) {
+				$ticket_id = $req_obj->get('comment_post_ID');
+			} elseif ($req_obj->has('post_id')) {
+				$ticket_id = $req_obj->get('post_id');
+			}
+
+			$ticket_id = absint($ticket_id);
+		} elseif ( is_object( $ticket ) ) {
+			$ticket_id = $ticket->ID;
 		} elseif ( is_numeric( $ticket ) ) {
-			$id = $ticket;
+			$ticket_id = $ticket;
 		}
 
-		$id = absint( $id );
+		$ticket_id = absint( $ticket_id );
 
-		return $id;
+		return $ticket_id;
 	}
 
 	/**
@@ -688,9 +626,21 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	/**
 	 * @return bool
 	 */
-	public function isTicketResource( $ticket_id = 0 ) {
+	public function isTicketResource( $inp_ticket_id = 0 ) {
 		$req_obj  = Orbisius_Support_Tickets_Request::getInstance();
-		$ticket_id = $ticket_id ? $ticket_id : $req_obj->getTicketData('ticket_id');
+		$ticket_id = 0;
+
+		if (!empty($inp_ticket_id)) {
+		    $ticket_id = $inp_ticket_id;
+        } elseif ($req_obj->getTicketData('ticket_id')) {
+			$ticket_id = $req_obj->getTicketData('ticket_id');
+		} elseif ($req_obj->has('comment_post_ID')) {
+			$ticket_id = $req_obj->get('comment_post_ID');
+		} elseif ($req_obj->has('post_id')) {
+			$ticket_id = $req_obj->get('post_id');
+		}
+
+		$ticket_id = absint($ticket_id);
 
 		// No ticket id so it's not our comment form
 		if ( empty($ticket_id ) ) {
