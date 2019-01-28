@@ -579,25 +579,20 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 	/**
 	 * @param int|WP_Post $ticket
-	 *
 	 * @return int
 	 */
-	public function getTicketId( $ticket = null ) {
+	public function getTicketId( $ticket = '' ) {
 		$req_obj = Orbisius_Support_Tickets_Request::getInstance();
 		$ticket_id = 0;
 
-		if ( is_null( $ticket ) ) {
-			if (!empty($inp_ticket_id)) {
-				$ticket_id = $inp_ticket_id;
-			} elseif ($req_obj->getTicketData('ticket_id')) {
+		if ( empty( $ticket ) || $ticket <= 0 ) {
+			if ($req_obj->getTicketData('ticket_id')) {
 				$ticket_id = $req_obj->getTicketData('ticket_id');
 			} elseif ($req_obj->has('comment_post_ID')) {
 				$ticket_id = $req_obj->get('comment_post_ID');
 			} elseif ($req_obj->has('post_id')) {
 				$ticket_id = $req_obj->get('post_id');
 			}
-
-			$ticket_id = absint($ticket_id);
 		} elseif ( is_object( $ticket ) ) {
 			$ticket_id = $ticket->ID;
 		} elseif ( is_numeric( $ticket ) ) {
@@ -627,20 +622,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 * @return bool
 	 */
 	public function isTicketResource( $inp_ticket_id = 0 ) {
-		$req_obj  = Orbisius_Support_Tickets_Request::getInstance();
-		$ticket_id = 0;
-
-		if (!empty($inp_ticket_id)) {
-		    $ticket_id = $inp_ticket_id;
-        } elseif ($req_obj->getTicketData('ticket_id')) {
-			$ticket_id = $req_obj->getTicketData('ticket_id');
-		} elseif ($req_obj->has('comment_post_ID')) {
-			$ticket_id = $req_obj->get('comment_post_ID');
-		} elseif ($req_obj->has('post_id')) {
-			$ticket_id = $req_obj->get('post_id');
-		}
-
-		$ticket_id = absint($ticket_id);
+		$ticket_id = $this->getTicketId($inp_ticket_id);
 
 		// No ticket id so it's not our comment form
 		if ( empty($ticket_id ) ) {
