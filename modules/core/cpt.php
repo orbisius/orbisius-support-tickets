@@ -710,6 +710,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 	/**
 	 * Here we want to exclude ticket replies from the regular comments unless we specifically query them
+     * Miight be useful: Better support for custom comment types https://core.trac.wordpress.org/ticket/12668
 	 * @param $query_obj
 	 */
 	function filterOutTicketReplies($query_obj) {
