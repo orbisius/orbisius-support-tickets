@@ -5,8 +5,6 @@ $shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
 add_action('init', array( $shortcode_api, 'init' ) ) ;
 
 class Orbisius_Support_Tickets_Module_Core_Shortcodes {
-	private $cpt_support_ticket = 'orb_support_tickets_item';
-
 	public function init() {
 		$this->registerCodes();
 	}
