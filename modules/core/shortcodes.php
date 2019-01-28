@@ -507,6 +507,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			// The ID is a different post type
 			if ($post_type != get_post_type($ticket_obj)) {
+				$ticket_obj = null;
 				throw new Exception( __("Invalid ticket ID", 'orbisius_support_tickets') );
 			}
 
