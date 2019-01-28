@@ -404,7 +404,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'recipient_email' => '',
 		) );
 
-		$maybe_email = $this->getMeta($comment_data['comment_post_ID'], self::USER_EMAIL);
+		$maybe_email = $this->getMeta($comment_data['comment_post_ID'], Orbisius_Support_Tickets_Module_Core_CPT::USER_EMAIL);
 
 		if ( ! empty( $maybe_email ) ) {
 			$recipient_email        = $maybe_email;

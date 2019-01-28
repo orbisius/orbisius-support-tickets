@@ -85,9 +85,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			$meta_prefix = $cpt_api->getMetaPrefix();
 
 			if ( empty( $ins_post_data['ID'] ) ) {
-				// Add guest user's
+				// Add guest user's email to the post meta.
 				if (!empty($data['email'])) {
-					$ins_post_data['meta_input']["{$meta_prefix}email"] = $data['email'];
+					$ins_post_data['meta_input'][$meta_prefix . Orbisius_Support_Tickets_Module_Core_CPT::USER_EMAIL] = $data['email'];
 				}
 
 				// WP causes lots of troubles when the post has a password. Can't comment. WP shows blank page?!?
