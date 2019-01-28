@@ -127,6 +127,7 @@ You can get in touch with us at
 * Tickets are custom comment type now: orb_sup_tx_reply so they don't appear in the recent comments widget.
 * Added code that filters 'orb_sup_tx_reply' comment post types because ticket replies could contain sensitive data.
 * Tickets appear in chronological order. That means the oldest one is at the top.
+* Disabled WP comment flood protection for tickets i.e. people can post replies quickly.
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.
