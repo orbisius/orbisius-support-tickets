@@ -25,6 +25,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		add_action( 'orbisius_support_tickets_action_ticket_activity', array( $this, 'openClosedTicket' ) );
 		add_filter( 'user_has_cap', array( $this, 'givePermissions' ), 50, 3 );
 		add_filter( 'comment_on_draft', array( $this, 'addComment' ), 50, 1 );
+		add_filter( 'comment_on_password_protected', array( $this, 'addComment' ), 50, 1 );
 
 		add_filter( 'comment_form_defaults', array( $this, 'addReplyCommentTypeToForm' ), 50 );
 		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
