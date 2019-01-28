@@ -529,6 +529,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 					'status'    => 'all',
                     'type'      => $cpt_obj->getCptSupportTicketReplyType(),
 					'post_type' => $post_type,
+					'update_comment_meta_cache' => false,
 				);
 
 				$ctx['ticket_id'] = $ticket_id;
