@@ -670,20 +670,18 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 * @param $query_obj
 	 */
 	function filterOutTicketReplies($query_obj) {
-	    if (is_admin()) {
+	    if (is_admin()) { // admin can see everything
 	        return;
         }
 
-		if (!$this->isTicketResource()) {
-			return;
-		}
-
 		$reply_type = $this->getCptSupportTicketReplyType();
 
+		// If the type is set that means it's ours.
 		if (!empty($query_obj->query_vars['type']) && $reply_type == $query_obj->query_vars['type']) { // already set and it's ours
 			return;
 		}
 
+		// All other comment queries should exclude our reply type from the listing
 		$query_obj->query_vars['type__not_in'] = $reply_type;
 	}
 }
