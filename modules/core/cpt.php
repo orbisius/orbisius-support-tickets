@@ -31,8 +31,24 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
 		add_filter( 'preprocess_comment', array( $this, 'setCustomCommentType' ) );
 		add_filter( 'comment_flood_filter', array( $this, 'maybeDeactivateFastRepliesCheck' ), 20, 3 );
+		add_filter( 'notify_moderator', array( $this, 'deActivateModerationEmails' ), 20, 3 );
 	}
 
+	/**
+     * WP sends emails when somebody comments on a pwd protected post
+	 * @param bool $maybe_notify
+	 * @param int $comment_id
+	 */
+    public function deActivateModerationEmails($maybe_notify, $comment_id) {
+        $comment = get_comment($comment_id);
+
+        // This comment is a ticket reply.
+        if (!empty($comment->comment_post_ID) && $this->isTicketResource($comment->comment_post_ID)) {
+	        return false;
+        }
+
+	    return $maybe_notify;
+    }
 
 	// We want people to comment on draft (open) tickets).
 	private $perms = array(
@@ -117,6 +133,13 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 		// get the current user
 		$current_user = wp_get_current_user();
+
+		if (empty($current_user)) {
+			$current_user = new stdClass();
+			$current_user->ID = 0;
+			$current_user->user_email = '';
+			$current_user->user_login = '';
+        }
 
 		// set up the comment data
 		$data = array(
