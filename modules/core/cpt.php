@@ -29,7 +29,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 		add_filter( 'comment_form_defaults', array( $this, 'addReplyCommentTypeToForm' ), 50 );
 		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
-		add_filter( 'preprocess_comment', array( $this, 'setCustomCommentType' ) );
+		add_filter( 'preprocess_comment', array( $this, 'preProcessCommentData' ) );
 		add_filter( 'comment_flood_filter', array( $this, 'maybeDeactivateFastRepliesCheck' ), 20, 3 );
 		add_filter( 'notify_moderator', array( $this, 'deActivateModerationEmails' ), 20, 2 );
 	}
@@ -71,13 +71,13 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
      * @see https://wordpress.stackexchange.com/questions/227868/filter-out-comments-with-certain-meta-key-s-in-the-admin-backend
 	 * @param $q
 	 */
-	function setCustomCommentType($comment_data) {
+	function preProcessCommentData($comment_data) {
 	    if (!$this->isTicketResource()) {
 	        return $comment_data;
         }
 
 		$comment_data['comment_type'] .= $this->getCptSupportTicketReplyType();
-//		$comment_data['comment_type'] = $this->getCptSupportTicketReplyType();
+		$comment_data['comment_approved'] = 1;
 
 		return $comment_data;
     }
@@ -141,26 +141,36 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			$current_user->user_login = '';
         }
 
+		$user_api = Orbisius_Support_Tickets_User::getInstance();
+
 		// set up the comment data
 		$data = array(
 			'comment_post_ID'      => $post_id,
+			'comment_author_IP'    => $user_api->getUserIP(),
+			'comment_author_url'   => '',
 			'comment_author'       => $current_user->user_login,
 			'comment_author_email' => $current_user->user_email,
-			'comment_author_url'   => '',
+			'user_id'              => $current_user->ID,
             'comment_content'      => $comment,
             'comment_type'         => $this->getCptSupportTicketReplyType(),
 			'comment_parent'       => 0,
-			'user_id'              => $current_user->ID,
-			//'comment_author_IP'    => '',
-            //'comment_agent'        => '',
-			'comment_date'         => current_time( "mysql" ),
+            'comment_agent'        => empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'],
+			'comment_date'         => current_time('mysql'),
 			'comment_approved'     => 1,
 		);
 
         // insert the comment and get the comment ID
 		$comment_id = wp_insert_comment( $data );
 
+		// not sure why this is not called by WP on draft posts.
+		// could this cause a loop?
+		do_action( 'comment_post', $comment_id, $data['comment_approved'], $data );
+
 		$permalink = wp_get_referer();
+
+		if (empty($permalink)) {
+
+		}
 
         // redirect back to the page that the comment was on.
 		wp_redirect( $permalink );
@@ -391,6 +401,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'reply_id'  => $comment_ID,
 			'ticket_id' => $comment_data['comment_post_ID'],
 			'author_id' => $comment_data['user_id'],
+			'recipient_email' => '',
 		) );
 
 		$maybe_email = $this->getMeta($comment_data['comment_post_ID'], self::USER_EMAIL);
@@ -398,6 +409,10 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		if ( ! empty( $maybe_email ) ) {
 			$recipient_email        = $maybe_email;
 			$ctx['recipient_email'] = $recipient_email;
+		}
+
+		if (!empty($comment_data['comment_author_email']) && $comment_data['comment_author_email'] != $ctx['recipient_email']) {
+			$ctx['recipient_email'] .= ',' . $comment_data['comment_author_email'];
 		}
 
 		do_action( 'orbisius_support_tickets_action_ticket_activity', $ctx );
