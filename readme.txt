@@ -124,7 +124,7 @@ You can get in touch with us at
 * Using custom ticket password form
 * Guests can now really post a reply.
 * Removed url from ticket reply
-* Tickets are 
+* Tickets are custom comment type now: orb_support_ticket_reply so they don't appear in the recent comments widget.
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.

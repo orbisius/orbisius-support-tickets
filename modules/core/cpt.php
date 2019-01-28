@@ -8,8 +8,9 @@ register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, array( $cpt_obj,
 
 
 class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_Singleton {
+	private $meta_prefix = '_orb_sup_tx_';
 	private $cpt_support_ticket = 'orb_support_ticket';
-	private $cpt_support_ticket_reply = 'orb_support_ticket_reply';
+	private $cpt_support_ticket_reply = 'orb_sup_tx_reply';
 
 	/**
 	 *
@@ -24,6 +25,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		add_filter( 'user_has_cap', array( $this, 'givePermissions' ), 50, 3 );
 		add_filter( 'comment_on_draft', array( $this, 'addComment' ), 50, 1 );
 
+		add_filter( 'comment_form_defaults', array( $this, 'addReplyCommentTypeToForm' ), 50 );
 		add_filter( 'comment_form_default_fields', array( $this, 'modifyCommentDefaultFields' ) );
 		//add_filter( 'pre_get_comments', array( $this, 'filterOutTicketReplies' ) );
 		add_filter( 'preprocess_comment', array( $this, 'setCustomCommentType' ) );
@@ -43,9 +45,23 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	        return $comment_data;
         }
 
-		$comment_data['comment_type'] = $this->getCptSupportTicketReplyType();
+		$comment_data['comment_type'] .= $this->getCptSupportTicketReplyType();
+//		$comment_data['comment_type'] = $this->getCptSupportTicketReplyType();
 
 		return $comment_data;
+    }
+
+    public function addReplyCommentTypeToForm($defaults) {
+	    if (!$this->isTicketResource()) {
+		    return $defaults;
+	    }
+
+	    $comment_type = $this->getCptSupportTicketReplyType();
+	    $defaults['title_reply_after'] .= sprintf('<input type="hidden" name="comment_type" value="%s" id="comment_type" />', esc_attr($comment_type));
+	    //$defaults['comment_field'] .= sprintf('<input type="hidden" name="comment_type" value="%s" id="comment_type" />', esc_attr($comment_type));
+	    //$defaults['fields']['comment_type'] = '<input type="hidden" name="comment_type" value="%s" id="comment_type" />';
+
+        return $defaults;
     }
 
 	/**
@@ -67,6 +83,9 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		if (!$this->isTicketResource()) {
 			return;
 		}
+
+		$comment_type = $this->getCptSupportTicketReplyType();
+		$fields['comment_type'] = sprintf('<input type="hidden" name="comment_type" value="%s" id="comment_type" />', esc_attr($comment_type));
 
 		unset($fields['url']);
 		return $fields;
@@ -100,13 +119,13 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'comment_author'       => $current_user->user_login,
 			'comment_author_email' => $current_user->user_email,
 			'comment_author_url'   => '',
-            'comment_content'       => $comment,
-            'comment_type'         => '',
+            'comment_content'      => $comment,
+            'comment_type'         => $this->getCptSupportTicketReplyType(),
 			'comment_parent'       => 0,
 			'user_id'              => $current_user->ID,
 			//'comment_author_IP'    => '',
             //'comment_agent'        => '',
-			'comment_date'         => date( "Y-m-d h:m:s" ),
+			'comment_date'         => current_time( "mysql" ),
 			'comment_approved'     => 1,
 		);
 
@@ -346,7 +365,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'author_id' => $comment_data['user_id'],
 		) );
 
-		$maybe_email = get_post_meta( $ctx['ticket_id'], '_orbsuptx_email', true );
+		$maybe_email = $this->getMeta(self::USER_EMAIL);
 
 		if ( ! empty( $maybe_email ) ) {
 			$recipient_email        = $maybe_email;
@@ -488,19 +507,15 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		return $open;
 	}
 
-	private $meta_prefix = '_orbsuptx_';
-
 	public function getMeta( $post_id, $key ) {
 		$key = $this->meta_prefix . $key;
 		$val = get_post_meta( $post_id, $key, true );
-
 		return $val;
 	}
 
 	public function setMeta( $post_id, $key, $val ) {
 		$key = $this->meta_prefix . $key;
 		$val = update_post_meta( $post_id, $key, $val );
-
 		return $val;
 	}
 
