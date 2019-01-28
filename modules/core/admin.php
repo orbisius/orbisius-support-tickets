@@ -1011,6 +1011,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 
 Ticket ID: {ticket_id}
 Ticket link: {ticket_url}
+Ticket password: {ticket_password}
 ",
             'new_ticket_notification_enabled' => 1,
 
