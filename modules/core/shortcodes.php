@@ -90,11 +90,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 					$ins_post_data['meta_input']["{$meta_prefix}email"] = $data['email'];
 				}
 
-				$user_api = Orbisius_Support_Tickets_User::getInstance();
 				// WP causes lots of troubles when the post has a password. Can't comment. WP shows blank page?!?
-                // @todo use fields from CPT to set the meta
-				$ins_post_data['meta_input']["{$meta_prefix}pass"] = $pwd;
-				$ins_post_data['meta_input']["{$meta_prefix}user_ip"] = $user_api->getUserIP();
 				$ctx['ticket_password'] = $pwd;
 
 				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_insert', $ctx );
