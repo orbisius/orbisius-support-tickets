@@ -8,9 +8,13 @@ register_activation_hook( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, array( $cpt_obj,
 
 
 class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_Singleton {
-	private $meta_prefix = '_orb_sup_tx_';
 	private $cpt_support_ticket = 'orb_support_ticket';
 	private $cpt_support_ticket_reply = 'orb_sup_tx_reply';
+
+	// Sync prefix if necessary.
+	private $meta_prefix = '_orb_sup_tx_';
+	const USER_IP = '_orb_sup_tx_user_ip';
+	const USER_EMAIL = '_orb_sup_tx_user_email';
 
 	/**
 	 *
@@ -391,8 +395,8 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			return;
 		}
 
-		// Not our ticket comment type
-		if ( $this->getCptSupportTicket() != get_post_type( $comment_data['comment_post_ID'] ) ) {
+		// Not a ticket so take a break
+		if ( ! $this->isTicketResource( $comment_data['comment_post_ID'] ) ) {
 			return;
 		}
 
@@ -412,7 +416,11 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		}
 
 		if (!empty($comment_data['comment_author_email']) && $comment_data['comment_author_email'] != $ctx['recipient_email']) {
-			$ctx['recipient_email'] .= ',' . $comment_data['comment_author_email'];
+			$san_email = sanitize_email($comment_data['comment_author_email']);
+
+			if (!empty($san_email)) {
+				$ctx['recipient_email'] .= ',' . $san_email;
+			}
 		}
 
 		do_action( 'orbisius_support_tickets_action_ticket_activity', $ctx );
@@ -517,7 +525,6 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 	/**
 	 * @param array $ctx
-	 *
 	 * @return void
 	 */
 	public function openClosedTicket( array $ctx ) {
@@ -525,6 +532,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			return;
 		}
 
+		// author? check admin or author??? what about non-logged in user?
 		if ( ! current_user_can( 'edit_post', $ctx['ticket_id'] ) ) {
 			return;
 		}
@@ -583,10 +591,6 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	public function getPasswordForm( $ticket_obj ) {
 		return get_the_password_form($ticket_obj);
 	}
-
-	const USER_IP = 'user_ip';
-	const PASSWORD = 'pass';
-	const USER_EMAIL = 'user_email';
 
 	public function getTicketPassword( $ticket_obj ) {
 	    $ticket_obj = $this->getTicket($ticket_obj);
