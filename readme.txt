@@ -88,7 +88,8 @@ n/a
 1. Submit ticket (as non-logged in user)
 1. Submit ticket (as logged in user)
 1. Listing user's tickets
-1. View ticket's info
+1. View ticket
+1. Plugin's dashboard
 1. Plugin's settings Page
 
 == Installation ==
