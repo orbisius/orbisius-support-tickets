@@ -56,6 +56,13 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			//return ''; // no email
 		}
 
+		$vars = array_merge_recursive( $this->prepMergeTags($ctx), array(
+			'recipient_email' => $recipient_email,
+		));
+
+		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
+		$host = $vars['host'];
+
 		if (!empty($notif_opts['support_email_receiver'])) {
 			$support_email_receiver = $notif_opts['support_email_receiver'];
 		} else {
@@ -63,13 +70,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		}
 
 		$merge_tags['support_email_receiver'] = $support_email_receiver;
-
-		$vars = array_merge_recursive( $this->prepMergeTags($ctx), array(
-			'recipient_email' => $recipient_email,
-		));
-
-		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
-		$host = $vars['host'];
+		$support_email_receiver = Orbisius_Support_Tickets_String_Util::replaceVars($support_email_receiver, $vars);
 
 		// subject
 		$subject = $notif_opts['new_ticket_subject'];
