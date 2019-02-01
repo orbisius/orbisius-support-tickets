@@ -318,4 +318,16 @@ class Orbisius_Support_Tickets_User {
 
 		return true;
 	}
+
+	/**
+	 * For now we'll consider people who have at least editor role are suppot reps.
+	 * @todo come up with a better way because a support rep could be replying to another support rep via a ticket.
+	 * orb->obj->isEditor();
+	 * @param $user_id
+	 * @return bool
+	 */
+	public function isSupportRep( $user_id = 0 ) {
+		$res = $this->isEditor($user_id);
+		return $res;
+	}
 }
