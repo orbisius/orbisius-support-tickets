@@ -138,10 +138,17 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		// get the current user
 		$current_user = wp_get_current_user();
 
-		if (empty($current_user)) {
+		if (empty($current_user->ID)) {
+			$email = '';
+
+			if (!empty($_REQUEST['email'])) {
+				$email = sanitize_email($_REQUEST['email']);
+				$email = empty($email) || ! is_email($email) ? '' : $email;
+			}
+
 			$current_user = new stdClass();
 			$current_user->ID = 0;
-			$current_user->user_email = '';
+			$current_user->user_email = $email;
 			$current_user->user_login = '';
         }
 
