@@ -5,7 +5,7 @@ Tags: orbisius,support,ticket,tickets,help,helpdesk,awesome support
 Requires at least: 4.0
 Requires PHP: 5.2.4
 Tested up to: 5.0
-Stable tag: 1.0.3
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,7 +85,11 @@ Svetoslav Marinov (Slavi) | <a href="https://orbisius.com" title="Custom Web Pro
 n/a
 
 == Screenshots ==
-1. Plugin's Settings Page - todo
+1. Submit ticket (as non-logged in user)
+1. Submit ticket (as logged in user)
+1. Listing user's tickets
+1. View ticket's info
+1. Plugin's settings Page
 
 == Installation ==
 
