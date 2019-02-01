@@ -129,6 +129,7 @@ You can get in touch with us at
 * Tickets appear in chronological order. That means the oldest one is at the top.
 * Disabled WP comment flood protection for tickets i.e. people can post replies quickly.
 * Disabled WP comment moderation emails for tickets. We use WP's internal post password system and WP "feels" it's necessary to alert the admin about this. In our case it's not necessary and is annoying.
+* Fixed email notifications.
 
 = 1.0.2 =
 * Fixed: Do not throw an exception when sanitizeData doesn't know how to sanitize the passed data e.g. NULL or object. Thanks Ivo Minchev for reporting this.
