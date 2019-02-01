@@ -47,8 +47,6 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			}
 
 			$recipient_email = $user_obj->user_email;
-		} elseif (!empty($ctx['recipient_email']) && is_email($ctx['recipient_email'])) {
-			$recipient_email = $ctx['recipient_email'];
 		} elseif (!empty($ctx['author_email']) && is_email($ctx['author_email'])) {
 			$recipient_email = $ctx['author_email'];
 		} else {
@@ -69,8 +67,8 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			$support_email_receiver = get_option( 'admin_email' );
 		}
 
-		$merge_tags['support_email_receiver'] = $support_email_receiver;
 		$support_email_receiver = Orbisius_Support_Tickets_String_Util::replaceVars($support_email_receiver, $vars);
+		$merge_tags['support_email_receiver'] = $support_email_receiver;
 
 		// subject
 		$subject = $notif_opts['new_ticket_subject'];
@@ -144,53 +142,47 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 		    return;
         }
 
-		// @todo decide the context. admin -> posts a reply OR client posts a reply.
-		if (!empty($ctx['author_id'])) {
-			$user_id = $ctx['author_id'];
-			$user_obj = get_user_by('id', $user_id);
-
-			if (empty($user_obj)) { // user not found.
-				return;
-			}
-
-			$email = $user_obj->user_email;
-		} elseif (!empty($ctx['recipient_email'])) {
-			$email = $ctx['recipient_email'];
-		} else {
-			return '';
-		}
-
 		$user_api = Orbisius_Support_Tickets_User::getInstance();
 
+		$author_email = '';
+		$recipient_email = '';
+
 		if (!empty($notif_opts['support_email_receiver'])) {
-			$recipient_email = $notif_opts['support_email_receiver'];
+			$support_email_receiver = $notif_opts['support_email_receiver'];
 		} else {
-			$recipient_email         = get_option( 'admin_email' );
+			$support_email_receiver = get_option( 'admin_email' );
 		}
 
-		$event_type = 'client_reply';
+		$vars = array_replace_recursive( $this->prepMergeTags($ctx) );
+		$support_email_receiver = Orbisius_Support_Tickets_String_Util::replaceVars($support_email_receiver, $vars);
+		$vars['support_email_receiver'] = $support_email_receiver;
+		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
 
-		if (empty($ctx['author_id']) || ! is_user_logged_in()) { // not logged in user
-			$event_type = 'client_reply';
+		$event_type = 'client_reply'; // by default
+
+		// Support posts a reply -> notify client.
+		// Support reps must always be logged in so any other case is user not logged in, ticket owner etc.
+		if (!empty($ctx['author_id']) && $user_api->isSupportRep($ctx['author_id'])) {
+			$event_type = 'support_reply';
 		}
-		// Support posts a reply -> notify client
-		elseif ($user_api->isSupportRep($ctx['author_id'])) {
+
+		if ($event_type == 'support_reply') { // notify client
 			if (!empty($ticket_obj->post_author)) {
 				$client_obj = $user_api->getUser( $ticket_obj->post_author ); // Find who created the ticket.
 
 				if ( ! empty( $client_obj->user_email ) ) {
 					$recipient_email = $client_obj->user_email;
 				}
+			} elseif (!empty($ctx['author_email'])) { // we'll trust the user supplied email.
+				$recipient_email = $ctx['author_email'];
 			}
-
-			$event_type = 'support_reply';
 		}
 
-		$vars = array_replace_recursive( $this->prepMergeTags($ctx), array(
-			'recipient_email' => $recipient_email,
-		));
+		if (empty($recipient_email)) {
+			$recipient_email = $support_email_receiver;
+		}
 
-		$vars = apply_filters( 'orbisius_support_tickets_filter_notification_replace_vars', $vars, $ctx );
+		$vars['recipient_email'] = $recipient_email;
 		$host = $vars['host'];
 
 		// subject

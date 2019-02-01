@@ -405,23 +405,23 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			'reply_id'  => $comment_ID,
 			'ticket_id' => $comment_data['comment_post_ID'],
 			'author_id' => $comment_data['user_id'],
-			'recipient_email' => '',
+			'author_email' => '',
 		) );
 
-		$maybe_email = $this->getMeta($comment_data['comment_post_ID'], Orbisius_Support_Tickets_Module_Core_CPT::USER_EMAIL);
 
-		if ( ! empty( $maybe_email ) ) {
-			$recipient_email        = $maybe_email;
-			$ctx['recipient_email'] = $recipient_email;
-		}
+		$author_email = '';
 
-		if (!empty($comment_data['comment_author_email']) && $comment_data['comment_author_email'] != $ctx['recipient_email']) {
-			$san_email = sanitize_email($comment_data['comment_author_email']);
+		if ( ! empty( $comment_data['comment_author_email'] ) ) {
+			$author_email = sanitize_email($comment_data['comment_author_email']);
+		} else {
+			$maybe_email = $this->getMeta($comment_data['comment_post_ID'], Orbisius_Support_Tickets_Module_Core_CPT::USER_EMAIL);
 
-			if (!empty($san_email)) {
-				$ctx['recipient_email'] .= ',' . $san_email;
+			if ( ! empty( $maybe_email ) ) {
+				$author_email = $maybe_email;
 			}
 		}
+
+		$ctx['author_email'] = is_email($author_email) ? $author_email : '';
 
 		do_action( 'orbisius_support_tickets_action_ticket_activity', $ctx );
 	}
