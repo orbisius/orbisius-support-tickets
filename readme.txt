@@ -90,7 +90,7 @@ n/a
 1. Listing user's tickets
 1. View ticket
 1. Plugin's dashboard
-1. Plugin's settings Page
+1. Plugin's settings page
 
 == Installation ==
 
