@@ -69,10 +69,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				// admin OR the author???... only admin
 				$id                  = (int) $raw_post_data['id'];
 				$ins_post_data['ID'] = $id;
-			} else {
-//			    if ($user_api->get_user_posts($post_type, $user_id) >= $this->max_snippets) {
-//				    throw new Exception("You have reached your limits. Please, upgrade");
-//			    }
 			}
 
 			$ctx = array(
@@ -84,7 +80,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 			$meta_prefix = $cpt_api->getMetaPrefix();
 
-			if ( empty( $ins_post_data['ID'] ) ) {
+			if ( empty( $ins_post_data['ID'] ) ) { // new ticket
 				// Add guest user's email to the post meta.
 				if (!empty($data['email'])) {
 					$ins_post_data['meta_input'][$meta_prefix . Orbisius_Support_Tickets_Module_Core_CPT::USER_EMAIL] = $data['email'];
@@ -119,7 +115,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 					array( '%d' )
 				);
 
-				$res->data( 'ticket_pass', $pwd );
+				$res->data( 'ticket_password', $pwd );
 				$ctx['ticket_id'] = $id;
 				do_action( 'orbisius_support_tickets_action_submit_ticket_after_insert', $ctx );
 			} else {
@@ -368,8 +364,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                 $ticket_link = $this->generateViewTicketLink( array( 'ticket_id' => $ticket_id, ) );
                 $msg = sprintf( __( "Ticket created. <a href='%s'>Ticket #%d</a>", 'orbisius_support_tickets' ), $ticket_link, $ticket_id);
 
-                if ($res_obj->data( 'ticket_pass')) {
-	                $msg .= "<br/>" . sprintf( __( "Ticket password: %s", 'orbisius_support_tickets' ), $res_obj->data( 'ticket_pass'));
+                if ($res_obj->data( 'ticket_password')) {
+	                $msg .= "<br/>" . sprintf( __( "Ticket password: %s", 'orbisius_support_tickets' ), $res_obj->data( 'ticket_password'));
 				}
 
                 $msg = Orbisius_Support_Tickets_Msg::success($msg);

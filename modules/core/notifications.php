@@ -56,7 +56,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			//return ''; // no email
 		}
 
-		$vars = array_merge_recursive( $this->prepMergeTags($ctx), array(
+		$vars = array_replace_recursive( $this->prepMergeTags($ctx), array(
 			'recipient_email' => $recipient_email,
 		));
 
@@ -186,7 +186,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			$event_type = 'support_reply';
 		}
 
-		$vars = array_merge_recursive( $this->prepMergeTags($ctx), array(
+		$vars = array_replace_recursive( $this->prepMergeTags($ctx), array(
 			'recipient_email' => $recipient_email,
 		));
 
@@ -266,7 +266,7 @@ class Orbisius_Support_Tickets_Module_Core_Notifications {
 			'site_name' => get_bloginfo('name'),
 			'ticket_id' => 0,
 			'ticket_url' => '#',
-			'ticket_password' => empty($ctx['ticket_pass']) ? '' : $ctx['ticket_pass'],
+			'ticket_password' => empty($ctx['ticket_password']) ? '' : $ctx['ticket_password'],
 		);
 
 		if (!empty($ctx['ticket_id'])) {
