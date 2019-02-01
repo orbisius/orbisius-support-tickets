@@ -88,6 +88,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 				// Add guest user's email to the post meta.
 				if (!empty($data['email'])) {
 					$ins_post_data['meta_input'][$meta_prefix . Orbisius_Support_Tickets_Module_Core_CPT::USER_EMAIL] = $data['email'];
+				    $ctx['author_email'] = $data['email'];
 				}
 
 				// WP causes lots of troubles when the post has a password. Can't comment. WP shows blank page?!?
@@ -120,10 +121,10 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 
 				$res->data( 'ticket_pass', $pwd );
 				$ctx['ticket_id'] = $id;
-				do_action( 'orbisius_support_tickets_action_before_submit_ticket_after_insert', $ctx );
+				do_action( 'orbisius_support_tickets_action_submit_ticket_after_insert', $ctx );
 			} else {
 				$ctx['ticket_id'] = $ins_post_data['ID'];
-				do_action( 'orbisius_support_tickets_action_before_submit_ticket_before_update', $ctx );
+				do_action( 'orbisius_support_tickets_action_submit_ticket_before_update', $ctx );
 				$id = wp_update_post( $ins_post_data );
 
 				if ( empty($id) || ! is_numeric( $id ) || $id <= 0 ) {
