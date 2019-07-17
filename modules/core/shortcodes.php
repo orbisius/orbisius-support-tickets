@@ -440,6 +440,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                                           rows="<?php echo $row_num; ?>"><?php esc_attr_e( $data['message'] ); ?></textarea>
                             </div>
                         </div>
+                        
+                        <?php do_action( 'orbisius_support_tickets_action_submit_ticket_form_add_fields', $ctx ); ?>
 
                         <div class="form-group">
                             <div class="col-md-12 text-right">
