@@ -870,7 +870,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                                     If a page already exists it won't be created (but support page maybe updated to include links to submit ticket & my tickets pages).
                                     <br/>
                                     <a href="<?php echo esc_url(add_query_arg('orbisius_support_tickets_admin_create_pages', '1')); ?>"
-                                       class="button"
+                                       class="button button-primary"
                                     ><?php esc_attr_e(
 				                            'Create pages', 'orbisius_support_tickets'
 			                            ); ?>
