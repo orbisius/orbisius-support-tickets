@@ -54,8 +54,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
         );
 
 		do_action('orbisius_support_tickets_admin_action_register_settings', $ctx);
-		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'render_sideba_share_links' ) );
-		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'render_review_plugin' ) );
+		add_action( 'orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'render_sideba_share_links' ) );
+		add_action( 'orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'render_plugin_links' ) );
 	}
 
 	/**
@@ -1209,9 +1209,11 @@ Ticket link: {ticket_url}
 		$this->plugin_settings_key = $plugin_settings_key;
 	}
 
-
+	/**
+	 * Render share links section for sidebar.
+	 */
 	public function render_sideba_share_links() {
-		$plugin_data = get_plugin_data(ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, false);
+		$plugin_data = get_plugin_data( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, false );
 
 		// LinkedIn
 		// https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en
@@ -1294,8 +1296,10 @@ Ticket link: {ticket_url}
 		echo ob_get_clean();
 	}
 
-
-	public function render_review_plugin() {
+	/**
+	 * Render plugin links. Review and Rate.
+	 */
+	public function render_plugin_links() {
 		ob_start();
 		?>
 		<div id="orbisius_support_tickets_admin_sidebar_review_plugin" class="orbisius_support_tickets_admin_sidebar_review_plugin">
@@ -1304,12 +1308,12 @@ Ticket link: {ticket_url}
 				<p>
 					<p><?php esc_html_e( 'We\'d appreciate it if write a 5 star review.', 'orbisius_support_tickets' ); ?></p>
 					<a href="https://wordpress.org/support/plugin/orbisius-support-tickets/reviews/" target="_blank" class="button">
-						<?php  esc_html_e( 'Write a review', 'orbisius_support_tickets' ); ?>
+						<?php esc_html_e( 'Write a review', 'orbisius_support_tickets' ); ?>
 					</a>
 				</p>
 				<p>
-					<h3><?php  esc_html_e( 'Found a bug?', 'orbisius_support_tickets' ); ?></h3>
-					<p><?php  esc_html_e( 'If something needs fixing please', 'orbisius_support_tickets' ); ?></p>
+					<h3><?php esc_html_e( 'Found a bug?', 'orbisius_support_tickets' ); ?></h3>
+					<p><?php esc_html_e( 'If something needs fixing please', 'orbisius_support_tickets' ); ?></p>
 					<a href="<?php echo esc_url( $this->getBugReportUrl() ); ?>" target="_blank" class="button">
 						<?php esc_html_e( 'Submit a ticket', 'orbisius_support_tickets' ); ?></a>
 					</a>
