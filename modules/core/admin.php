@@ -245,6 +245,16 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		return $total_tickets_stats;
 	}
 
+	public function sidebar_extra_inside() {
+		?>
+		<div class="inside">
+		<?php
+			do_action( 'orbisius_support_tickets_admin_action_render_sidebar', array() );
+		?>
+		</div>
+		<?php
+	}
+
 	/**
 	 * Renders plugin's dashboard
 	 *
@@ -379,12 +389,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                     </p>
                                 </div> <!-- .inside -->
 
-                                <div class="inside">
-                                <?php
-                                    $ctx = array();
-                                    do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
-                                ?>
-                                </div><!-- .inside -->
+								<?php $this->sidebar_extra_inside(); ?>
                             </div>
                             <!-- .postbox -->
 
@@ -482,12 +487,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                                 </div>
                                 <!-- .inside -->
 
-                                <div class="inside">
-		                            <?php
-		                            $ctx = array();
-		                            do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
-		                            ?>
-                                </div><!-- .inside -->
+								<?php $this->sidebar_extra_inside(); ?>
 
                             </div>
                             <!-- .postbox -->
@@ -949,13 +949,6 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                                     </p>
                                 </div>
                                 <!-- .inside -->
-
-                                <div class="inside">
-		                            <?php
-		                            $ctx = array();
-		                            do_action('orbisius_support_tickets_admin_action_render_sidebar', $ctx);
-		                            ?>
-                                </div><!-- .inside -->
 
                             </div>
                             <!-- .postbox -->
