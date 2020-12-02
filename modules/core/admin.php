@@ -510,12 +510,6 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                         <div class="meta-box-sortables ui-sortable">
 
                             <div class="postbox">
-
-                                <button type="button" class="handlediv" aria-expanded="true" >
-                                    <span class="screen-reader-text">Toggle panel</span>
-                                    <span class="toggle-indicator" aria-hidden="true"></span>
-                                </button>
-                                <!-- Toggle -->
                                 <h2 class="hndle"><span><?php esc_attr_e( 'General Settings', 'orbisius_support_tickets' ); ?></span></h2>
 
                                 <div class="inside">
@@ -668,12 +662,6 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                             $notif_opts = $this->getOptions($notif_settings_key);
                             ?>
                             <div class="postbox">
-
-                                <button type="button" class="handlediv" aria-expanded="true" >
-                                    <span class="screen-reader-text">Toggle panel</span>
-                                    <span class="toggle-indicator" aria-hidden="true"></span>
-                                </button>
-                                <!-- Toggle -->
                                 <h2 class="hndle"><span><?php esc_attr_e( 'Notification Settings', 'orbisius_support_tickets' ); ?></span></h2>
 
                                 <div class="inside">
@@ -846,74 +834,58 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                     </div>
                     <!-- post-body-content -->
 
-                    <!-- sidebar -->
-                    <div id="postbox-container-1" class="postbox-container">
+					<!-- sidebar -->
+					<div id="postbox-container-1" class="postbox-container">
+						<div class="meta-box-sortables">
+							<div class="postbox">
+								<h2 class="hndle"><?php esc_attr_e( 'Extra Stuff', 'orbisius_support_tickets' ); ?></h2>
 
-                        <div class="meta-box-sortables">
+								<div class="inside">
+									<h4><?php esc_html_e( 'Support Pages Creation Tool', 'orbisius_support_tickets' ); ?></h4>
+									<p>
+										<?php _e( 'Click the buttom below and the plugin will create the pages with the shortcodes for you and set the options.', 'orbisius_support_tickets' ); ?>
+										<?php _e( 'If a page already exists it won\'t be created (but support page maybe updated to include links to submit ticket & my tickets pages).', 'orbisius_support_tickets' ); ?>
+									</p>
+									<a
+										href="<?php echo esc_url( add_query_arg( 'orbisius_support_tickets_admin_create_pages', '1' ) ); ?>"
+										class="button button-primary"
+									>
+									<?php esc_html_e( 'Create pages', 'orbisius_support_tickets' ); ?>
+									</a>
+									<hr/>
+								</div>
 
-                            <div class="postbox">
+								<div class="inside">
+									<h4><?php _e( 'Custom WordPress Plugin Development', 'orbisius_support_tickets' ); ?></h4>
+									<p>
+										<?php _e( 'Do you need a custom plugin developed specifically for your needs?', 'orbisius_support_tickets' ); ?>
+									</p>
+									<a
+										href="//orbisius.com/free-quote/?utm_source=orbisius_support_tickets"
+										target="_blank"
+										class="button"
+										>
+										<?php esc_attr_e( 'Contact us', 'orbisius_support_tickets' ); ?>
+									</a>
+									<hr/>
+								</div>
 
-                                <button type="button" class="handlediv" aria-expanded="true" >
-                                    <span class="screen-reader-text">Toggle panel</span>
-                                    <span class="toggle-indicator" aria-hidden="true"></span>
-                                </button>
-                                <!-- Toggle -->
-
-                                <h2 class="hndle"><span><?php esc_attr_e(
-											'Extra Stuff', 'orbisius_support_tickets'
-										); ?></span></h2>
-
-                                <div class="inside">
-                                    <p>
-                                    <h4>Support Pages Creation Tool</h4>
-                                    Click the buttom below and the plugin will create the pages with the shortcodes for you and set the options.
-                                    If a page already exists it won't be created (but support page maybe updated to include links to submit ticket & my tickets pages).
-                                    <br/>
-                                    <a href="<?php echo esc_url(add_query_arg('orbisius_support_tickets_admin_create_pages', '1')); ?>"
-                                       class="button button-primary"
-                                    ><?php esc_attr_e(
-				                            'Create pages', 'orbisius_support_tickets'
-			                            ); ?>
-                                    </a>
-                                    </p>
-                                </div>
-                                <!-- .inside -->
-                                <hr/>
-                                <div class="inside">
-                                    <p>
-                                        <h4>Custom WordPress Plugin Development</h4>
-                                        Do you need a custom plugin developed specifically for your needs?
-                                        <br/>
-                                        <a href="//orbisius.com/free-quote/?utm_source=orbisius_support_tickets"
-                                           target="_blank"
-                                           class="button"
-                                            ><?php esc_attr_e(
-		                                        'Contact us', 'orbisius_support_tickets'
-	                                        ); ?>
-                                        </a>
-                                    </p>
-                                    <hr/>
-                                    <p>
-                                        <h4>Want to help?</h4>
-                                        If you want to help, make a suggestion or found a glitch
-                                    <a class="button" href="<?php echo esc_url($this->getBugReportUrl()); ?>" target="_blank">Submit a ticket</a>
-                                    </p>
-                                </div>
-                                <!-- .inside -->
-
-                            </div>
-                            <!-- .postbox -->
-
+								<div class="inside">
+									<h4><?php esc_attr_e( 'Want to help?', 'orbisius_support_tickets' ); ?></h4>
+									<p>
+										<?php esc_attr_e( 'If you want to help, make a suggestion or found a glitch', 'orbisius_support_tickets' ); ?>
+									</p>
+									<a class="button" href="<?php echo esc_url( $this->getBugReportUrl() ); ?>" target="_blank">
+										<?php esc_attr_e( 'Submit a ticket', 'orbisius_support_tickets' ); ?>
+									</a>
+								</div>
+							<!-- .postbox -->
                         </div>
                         <!-- .meta-box-sortables -->
-
                     </div>
                     <!-- #postbox-container-1 .postbox-container -->
-
                 </div>
                 <!-- #post-body .metabox-holder .columns-2 -->
-
-                <br class="clear">
             </div>
             <!-- #poststuff -->
 
