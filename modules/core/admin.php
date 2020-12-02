@@ -138,7 +138,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		$top_menu_page_hook = add_menu_page(
 			__('Orbisius Support Tickets', 'orbisius_support_tickets'),
-			__('Orbisius Support Tickets', 'orbisius_support_tickets'),
+			__('Support Tickets', 'orbisius_support_tickets'),
 			$ctx['req_cap'],
 			$ctx['top_menu_slug'],
 			array( $this, 'render_plugin_dashboard_page' ),
