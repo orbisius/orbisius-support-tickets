@@ -964,7 +964,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 		ob_start();
 		?>
 		<div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
-			<h3><?php esc_html_e( 'Share', 'orbisius_support_tickets' ); ?></h3>
+			<h3><?php esc_html_e( 'Share this plugin on', 'orbisius_support_tickets' ); ?></h3>
 			<ul>
 				<li>
 					<a href="<?php echo esc_url( $linked_in_share_link ); ?>"
@@ -974,7 +974,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 							'orbisius_support_tickets_linkedin_share_dialog',
 							'width=626,height=436');
 							return false;">
-						<?php esc_html_e( 'Share this plugin on LinkedIn', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+						<?php esc_html_e( 'LinkedIn', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
 					</a>
 				</li>
 				<li>
@@ -985,7 +985,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 						'orbisius_support_tickets_fb_share_dialog',
 						'width=626,height=436');
 						return false;">
-						<?php esc_html_e( 'Share this plugin on Facebook', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+						<?php esc_html_e( 'Facebook', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
 					</a>
 				</li>
 				<li>
@@ -996,7 +996,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 						'orbisius_support_tickets_twitter_share_dialog',
 						'width=626,height=436');
 						return false;">
-						<?php esc_html_e( 'Share this plugin on Twitter', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+						<?php esc_html_e( 'Twitter', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
 					</a>
 				</li>
 			</ul>
