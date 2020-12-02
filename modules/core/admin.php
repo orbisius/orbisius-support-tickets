@@ -1290,7 +1290,6 @@ Ticket link: {ticket_url}
 				</ul>
 			</div>
 		</div>
-		<hr>
 
 		<?php
 		echo ob_get_clean();
@@ -1302,6 +1301,7 @@ Ticket link: {ticket_url}
 	public function render_plugin_links() {
 		ob_start();
 		?>
+		<hr>
 		<div id="orbisius_support_tickets_admin_sidebar_review_plugin" class="orbisius_support_tickets_admin_sidebar_review_plugin">
 			<div class="inside">
 				<h3><?php esc_html_e( 'Plugin Review', 'orbisius_support_tickets' ); ?></h3>
