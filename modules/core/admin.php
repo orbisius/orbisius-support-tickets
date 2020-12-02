@@ -228,6 +228,23 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		return $links;
 	}
 
+	public function total_tickets_stats() {
+		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+
+		$total_tickets_stats = array(
+			'open'   => 0,
+			'closed' => 0,
+		);
+
+		$total_tickets_stats_obj = wp_count_posts( $cpt_obj->getCptSupportTicket() );
+
+		$total_tickets_stats['open']   = $total_tickets_stats_obj->draft + $total_tickets_stats_obj->private;
+		$total_tickets_stats['closed'] = $total_tickets_stats_obj->publish;
+		$total_tickets_stats['total']  = $total_tickets_stats['open'] + $total_tickets_stats['closed'];
+
+		return $total_tickets_stats;
+	}
+
 	/**
 	 * Renders plugin's dashboard
 	 *
@@ -340,21 +357,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 											'Sidebar', 'orbisius_support_tickets'
 										); ?></span></h2>
 
-                                <!--                                Stats -->
-	                            <?php
-	                            $cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 
-	                            $total_tickets_stats = array(
-		                            'open' => 0,
-		                            'closed' => 0,
-                                );
-
-	                            $total_tickets_stats_obj = wp_count_posts($cpt_obj->getCptSupportTicket());
-
-	                            $total_tickets_stats['open'] = $total_tickets_stats_obj->draft + $total_tickets_stats_obj->private;
-	                            $total_tickets_stats['closed'] = $total_tickets_stats_obj->publish;
-
-	                            ?>
                                 <div class="inside">
                                     <p>
                                     <table class="widefat">
@@ -362,13 +365,13 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                                             <td class="row-title"><label for="tablecell"><?php esc_attr_e(
 							                            'Open Tickets', 'orbisius_support_tickets'
 						                            ); ?></label></td>
-                                            <td><?php echo $total_tickets_stats['open']; ?></td>
+                                            <td><?php echo $this->total_tickets_stats()['open']; ?></td>
                                         </tr>
                                         <tr>
                                             <td class="row-title"><label for="tablecell"><?php esc_attr_e(
 							                            'Closed Tickets', 'orbisius_support_tickets'
 						                            ); ?></label></td>
-                                            <td><?php echo $total_tickets_stats['closed']; ?></td>
+                                            <td><?php echo $this->total_tickets_stats()['closed']; ?></td>
                                         </tr>
 
                                     </table>
@@ -433,19 +436,19 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
                                 <div class="inside">
                                     <p><?php _e(
-											"This plugin was created by the <a 
+											"This plugin was created by the <a
 href='https://orbisius.com/?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>Orbisius</a> team. We love simplicity.",
 											'orbisius_support_tickets'
 										); ?></p>
                                     <p><?php _e(
-											"To find out what products we've created visit our <a 
+											"To find out what products we've created visit our <a
 href='https://orbisius.com/products?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>products page</a>.
 ",
 											'orbisius_support_tickets'
 										); ?></p>
 
                                     <p><?php _e(
-											"If you want to hire us to build you a cool custom WordPress plugin you can contact us from our <a 
+											"If you want to hire us to build you a cool custom WordPress plugin you can contact us from our <a
 href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>free quote page</a>.
 ",
 											'orbisius_support_tickets'
