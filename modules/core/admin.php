@@ -187,7 +187,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			__( 'About', 'orbisius_support_tickets'),
 			$ctx['req_cap'],
 			$ctx['about_slug'],
-			array( $this, 'renderPluginAboutPage' )
+			array( $this, 'render_plugin_about_page' )
 		);
 
 		do_action('orbisius_support_tickets_admin_action_setup_menu', $ctx);
@@ -393,68 +393,75 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 * @since  1.
 	 * @return void
 	 */
-	public function renderPluginAboutPage() {
+	public function render_plugin_about_page() {
 		?>
-
         <div class="wrap">
-
-            <div id="icon-options-general" class="icon32"></div>
             <h1><?php esc_attr_e( 'Orbisius Support Tickets', 'orbisius_support_tickets' ); ?></h1>
 
             <div id="poststuff">
-
                 <div id="post-body" class="metabox-holder columns-2">
 
-                    <!-- main content -->
-                    <div id="post-body-content">
-
+					<div id="post-body-content">
                         <div class="meta-box-sortables ui-sortable">
-
                             <div class="postbox">
+
 								<div class="postbox-header">
 									<h2 class="hndle"><?php esc_attr_e( 'About', 'orbisius_support_tickets' ); ?></h2>
 								</div>
 
                                 <div class="inside">
-                                    <p><?php _e(
-											"This plugin was created by the <a
-href='https://orbisius.com/?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>Orbisius</a> team. We love simplicity.",
+                                    <p>
+										<?php
+										_e(
+											"This plugin was created by the
+											<a
+												href='https://orbisius.com/?utm_source=orbisius_support_tickets&utm_medium=about'
+												target='_blank'
+											>
+												Orbisius
+											</a>
+											team. We love simplicity.",
 											'orbisius_support_tickets'
-										); ?></p>
-                                    <p><?php _e(
-											"To find out what products we've created visit our <a
-href='https://orbisius.com/products?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>products page</a>.
-",
-											'orbisius_support_tickets'
-										); ?></p>
+										);
+										?>
+									</p>
 
-                                    <p><?php _e(
-											"If you want to hire us to build you a cool custom WordPress plugin you can contact us from our <a
-href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_medium=about' target='_blank'>free quote page</a>.
-",
+                                    <p>
+										<?php
+										_e(
+											"To find out what products we've created visit our <a
+											href='https://orbisius.com/products?utm_source=orbisius_support_tickets&utm_medium=about'
+											target='_blank'
+											>
+												products page
+											</a>.",
 											'orbisius_support_tickets'
-										); ?></p>
-                                </div>
+										);
+										?>
+									</p>
+
+                                    <p>
+										<?php
+										_e(
+											"If you want to hire us to build you a cool custom WordPress plugin you can contact us from our <a
+											href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_medium=about'
+											target='_blank'
+											>
+											free quote page
+											</a>.",
+											'orbisius_support_tickets'
+										); ?>
+									</p>
+								</div>
 
                             </div>
-                            <!-- .postbox -->
-
                         </div>
-                        <!-- .meta-box-sortables .ui-sortable -->
-
-                    </div>
-                    <!-- post-body-content -->
+					</div>
 
 					<?php $this->render_sidebar(); ?>
-
                 </div>
-                <!-- #post-body .metabox-holder .columns-2 -->
-
-                <br class="clear">
             </div>
-            <!-- #poststuff -->
-
-        </div> <!-- .wrap -->
+        </div>
 		<?php
 	}
 
