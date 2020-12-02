@@ -141,7 +141,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			__('Orbisius Support Tickets', 'orbisius_support_tickets'),
 			$ctx['req_cap'],
 			$ctx['top_menu_slug'],
-			array( $this, 'renderPluginDashboardPage' ),
+			array( $this, 'render_plugin_dashboard_page' ),
 			$icon_url,
 			2
 		);
@@ -155,7 +155,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 			__( 'Dashboard', 'orbisius_support_tickets'),
 			$ctx['req_cap'],
 			$ctx['top_menu_slug'],
-			array( $this, 'renderPluginDashboardPage' )
+			array( $this, 'render_plugin_dashboard_page' )
 		);
 
 		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
@@ -318,101 +318,73 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 	 * @since  1.
 	 * @return void
 	 */
-	public function renderPluginDashboardPage() {
+	public function render_plugin_dashboard_page() {
 		?>
+		<div class="wrap">
+			<h1><?php esc_attr_e( 'Orbisius Support Tickets', 'orbisius_support_tickets' ); ?></h1>
+			<div id="poststuff">
+				<div id="post-body" class="metabox-holder columns-2">
+					<div id="post-body-content">
+						<div class="meta-box-sortables ui-sortable">
+							<div class="postbox">
+								<div class="inside">
+									<p>
+										<h3>
+											<?php esc_attr_e(
+												'Recent tickets',
+												'orbisius_support_tickets'
+											); ?>
+										</h3>
+										<div>
+										<?php
+											$filter = array(
+												'order'    => 'desc',
+												'order_by' => 'date',
+												'author'   => 0,
+												'limit'    => 10,
+												'fields'   => array( 'ID', 'post_title', 'post_status' ),
+											);
 
-        <div class="wrap">
-            <h1><?php esc_attr_e( 'Orbisius Support Tickets', 'orbisius_support_tickets' ); ?></h1>
+											$cpt_api       = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
+											$items         = $cpt_api->getItems( $filter );
+											$shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
+											$statuses      = $cpt_api->getStatuses();
+										?>
 
-            <div id="poststuff">
-                <div id="post-body" class="metabox-holder columns-2">
-                    <!-- main content -->
-                    <div id="post-body-content">
+										<?php if ( empty( $items ) ) : ?>
+											<?php _e( 'Nothing found', 'orbisius_support_tickets' ); ?>
+										<?php else : ?>
+											<?php foreach ( $items as $item_obj ) : ?>
+												<div class="ticket">
+													#<?php echo $item_obj->ID; ?> | <a href="<?php echo esc_url( $shortcode_api->generateViewTicketLink( array( 'ticket_id' => $item_obj->ID ) ) );?>"
+														target="_blank"
+														><?php
+														echo $cpt_api->fixOutput( $item_obj->post_title ); ?></a>
+													| status:
+													<?php
+													$status = $cpt_api->getStatus( $item_obj );
 
-                        <div class="meta-box-sortables ui-sortable">
+													if ( ! empty( $statuses[ $status ] ) ) {
+														echo $statuses[ $status ];
+													} else {
+														echo 'n/a';
+													}
 
-                            <div class="postbox">
-
-                                <h2><span><?php esc_attr_e( 'Dashboard', 'orbisius_support_tickets' ); ?></span></h2>
-
-                                <div class="inside">
-                                    <p><?php esc_attr_e(
-											"Welcome. We, at Orbisius, are hoping that with this plugin you'll be able to provide awesome support to your clients.",
-											'orbisius_support_tickets'
-										); ?></p>
-                                </div>
-
-                                <div class="inside">
-                                    <p>
-                                        <h3><?php esc_attr_e(
-											"Recent tickets",
-											'orbisius_support_tickets'
-										); ?> </h3>
-
-                                        <div>
-                                            <?php
-
-                                            $filter = array(
-                                                'order' => 'desc',
-                                                'order_by' => 'date',
-                                                'author' => 0,
-                                                'limit' => 10,
-                                                'fields' => array( 'ID', 'post_title', 'post_status' ),
-                                            );
-                                            $cpt_api   = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
-                                            $items = $cpt_api->getItems($filter);
-                                            $shortcode_api = Orbisius_Support_Tickets_Module_Core_Shortcodes::getInstance();
-
-                                            $statuses = $cpt_api->getStatuses();
-                                            ?>
-
-                                            <?php if (empty($items)) : ?>
-	                                            <?php _e(
-		                                            "Nothing found",
-		                                            'orbisius_support_tickets'
-	                                            ); ?>
-                                            <?php else : ?>
-                                                <?php foreach ($items as $item_obj) : ?>
-                                                    <div class="ticket">
-                                                        #<?php echo $item_obj->ID;?> | <a href="<?php echo esc_url($shortcode_api->generateViewTicketLink( array( 'ticket_id' => $item_obj->ID ) ) );?>"
-                                                           target="_blank"
-                                                            ><?php
-                                                            echo $cpt_api->fixOutput($item_obj->post_title); ?></a>
-                                                        | status:
-                                                        <?php
-                                                        $status = $cpt_api->getStatus($item_obj);
-
-                                                        if (!empty($statuses[ $status ])) {
-                                                            echo $statuses[ $status ];
-                                                        } else {
-                                                            echo 'n/a';
-                                                        }
-
-                                                        ?>
-                                                    </div>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </div>
-                                    </p>
-                                </div>
-
-
-
-                            </div>
-                            <!-- .postbox -->
-
-                        </div>
-                        <!-- .meta-box-sortables .ui-sortable -->
-
-                    </div>
-                    <!-- post-body-content -->
-					<?php $this->render_sidebar(); ?>
-                </div>
-                <!-- #post-body .metabox-holder .columns-2 -->
-                <br class="clear">
-            </div>
-            <!-- #poststuff -->
-        </div> <!-- .wrap -->
+													?>
+												</div>
+											<?php endforeach; ?>
+										<?php endif; ?>
+										</div>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+						<?php $this->render_sidebar(); ?>
+				</div>
+					<br class="clear">
+			</div>
+    	</div>
 		<?php
 	}
 
