@@ -225,6 +225,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		return $links;
 	}
 
+	/**
+	 * Get number of open and closed tickets.
+	 *
+	 * @return array $total_tickets_stats Array of total, open and closed tickets' count.
+	 */
 	public function total_tickets_stats() {
 		$cpt_obj = Orbisius_Support_Tickets_Module_Core_CPT::getInstance();
 
@@ -242,6 +247,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		return $total_tickets_stats;
 	}
 
+	/**
+	 * Render an extra inside div in sidebar to let others to add custom section in sidebar using hooks.
+	 *
+	 * @return void
+	 */
 	public function render_sidebar_extra_inside() {
 		?>
 		<div class="inside">
@@ -252,6 +262,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		<?php
 	}
 
+	/**
+	 * Render the stats section.
+	 *
+	 * @return void
+	 */
 	public function render_sidebar_stats() {
 		?>
 		<div class="inside">
@@ -277,6 +292,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		<?php
 	}
 
+	/**
+	 * Render the sidebar.
+	 *
+	 * @return void
+	 */
 	public function render_sidebar() {
 		?>
 		<div id="postbox-container-1" class="postbox-container">
@@ -930,6 +950,119 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 	}
 
 	/**
+	 * Render share links section for sidebar.
+	 *
+	 * @return void
+	 */
+	public function render_sideba_share_links() {
+		$plugin_data = get_plugin_data( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, false );
+
+		// LinkedIn
+		// https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en
+		// https://stackoverflow.com/questions/10713542/how-to-make-custom-linkedin-share-button
+		// https://www.linkedin.com/shareArticle?mini=true&url={articleUrl}&title={articleTitle}&summary={articleSummary}&source={articleSource}
+		$linked_in_params = array(
+			'mini'    => 'true',
+			'url'     => $plugin_data['PluginURI'],
+			'title'   => $plugin_data['Title'],
+			'summary' => $plugin_data['Description'],
+		);
+		$linked_in_share_link = 'https://www.linkedin.com/shareArticle?' . http_build_query( $linked_in_params );
+
+		// Facebook
+		// https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+		// credit: https://support.imcreator.com/hc/en-us/articles/232392888-Creating-a-Facebook-share-link-on-your-page
+		$fb_params = array(
+			'u' => $plugin_data['PluginURI'],
+		);
+		$fb_share_link = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query( $fb_params );
+
+		// Twitter
+		// https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/parameter-reference1
+		// https://stackoverflow.com/questions/6208363/sharing-a-url-with-a-query-string-on-twitter
+		// https://twitter.com/share?text=text goes here&url=http://url goes here&hashtags=hashtag1,hashtag2,hashtag3
+		$twitter_params = array(
+			'url'      => $plugin_data['PluginURI'],
+			'text'     => $plugin_data['Description'],
+			'hashtags' => 'wordpress,plugin,business',
+			'related'  => 'lordspace,orbisius,qsandbox',
+ 		);
+		$twitter_share_link = 'https://twitter.com/intent/tweet?' . http_build_query( $twitter_params );
+
+		ob_start();
+		?>
+		<div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
+			<h3><?php esc_html_e( 'Share', 'orbisius_support_tickets' ); ?></h3>
+			<ul>
+				<li>
+					<a href="<?php echo esc_url( $linked_in_share_link ); ?>"
+					onclick="
+							window.open(
+							'<?php echo esc_url( $linked_in_share_link ); ?>',
+							'orbisius_support_tickets_linkedin_share_dialog',
+							'width=626,height=436');
+							return false;">
+						<?php esc_html_e( 'Share this plugin on LinkedIn', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+					</a>
+				</li>
+				<li>
+					<a href="<?php echo esc_url( $fb_share_link ); ?>"
+					onclick="
+						window.open(
+						'<?php echo esc_url( $fb_share_link );?>',
+						'orbisius_support_tickets_fb_share_dialog',
+						'width=626,height=436');
+						return false;">
+						<?php esc_html_e( 'Share this plugin on Facebook', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+					</a>
+				</li>
+				<li>
+					<a href="<?php echo esc_url( $twitter_share_link ); ?>"
+					onclick="
+						window.open(
+						'<?php echo esc_url( $twitter_share_link );?>',
+						'orbisius_support_tickets_twitter_share_dialog',
+						'width=626,height=436');
+						return false;">
+						<?php esc_html_e( 'Share this plugin on Twitter', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<hr>
+		<?php
+		echo ob_get_clean();
+	}
+
+	/**
+	 * Render plugin links. Review and Rate.
+	 *
+	 * @return void
+	 */
+	public function render_plugin_links() {
+		ob_start();
+		?>
+		<div id="orbisius_support_tickets_admin_sidebar_review_plugin" class="orbisius_support_tickets_admin_sidebar_review_plugin">
+			<h3><?php esc_html_e( 'Plugin Review', 'orbisius_support_tickets' ); ?></h3>
+			<p>
+				<p><?php esc_html_e( 'We\'d appreciate it if write a 5 star review.', 'orbisius_support_tickets' ); ?></p>
+				<a href="https://wordpress.org/support/plugin/orbisius-support-tickets/reviews/" target="_blank" class="button">
+					<?php esc_html_e( 'Write a review', 'orbisius_support_tickets' ); ?>
+				</a>
+			</p>
+			<p>
+				<h3><?php esc_html_e( 'Found a bug?', 'orbisius_support_tickets' ); ?></h3>
+				<p><?php esc_html_e( 'If something needs fixing please', 'orbisius_support_tickets' ); ?></p>
+				<a href="<?php echo esc_url( $this->getBugReportUrl() ); ?>" target="_blank" class="button">
+					<?php esc_html_e( 'Submit a ticket', 'orbisius_support_tickets' ); ?></a>
+				</a>
+			</p>
+		</div>
+		<?php
+		echo ob_get_clean();
+	}
+
+	/**
 	 * Singleton pattern i.e. we have only one instance of this obj
 	 * @staticvar Orbisius_Support_Tickets_Module_Core_Admin $instance
 	 * @return Orbisius_Support_Tickets_Module_Core_Admin
@@ -1166,115 +1299,6 @@ Ticket link: {ticket_url}
 	 */
 	public function setPluginSettingsKey( $plugin_settings_key ) {
 		$this->plugin_settings_key = $plugin_settings_key;
-	}
-
-	/**
-	 * Render share links section for sidebar.
-	 */
-	public function render_sideba_share_links() {
-		$plugin_data = get_plugin_data( ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, false );
-
-		// LinkedIn
-		// https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en
-		// https://stackoverflow.com/questions/10713542/how-to-make-custom-linkedin-share-button
-		// https://www.linkedin.com/shareArticle?mini=true&url={articleUrl}&title={articleTitle}&summary={articleSummary}&source={articleSource}
-		$linked_in_params = array(
-			'mini'    => 'true',
-			'url'     => $plugin_data['PluginURI'],
-			'title'   => $plugin_data['Title'],
-			'summary' => $plugin_data['Description'],
-		);
-		$linked_in_share_link = 'https://www.linkedin.com/shareArticle?' . http_build_query( $linked_in_params );
-
-		// Facebook
-		// https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-		// credit: https://support.imcreator.com/hc/en-us/articles/232392888-Creating-a-Facebook-share-link-on-your-page
-		$fb_params = array(
-			'u' => $plugin_data['PluginURI'],
-		);
-		$fb_share_link = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query( $fb_params );
-
-		// Twitter
-		// https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/parameter-reference1
-		// https://stackoverflow.com/questions/6208363/sharing-a-url-with-a-query-string-on-twitter
-		// https://twitter.com/share?text=text goes here&url=http://url goes here&hashtags=hashtag1,hashtag2,hashtag3
-		$twitter_params = array(
-			'url'      => $plugin_data['PluginURI'],
-			'text'     => $plugin_data['Description'],
-			'hashtags' => 'wordpress,plugin,business',
-			'related'  => 'lordspace,orbisius,qsandbox',
- 		);
-		$twitter_share_link = 'https://twitter.com/intent/tweet?' . http_build_query( $twitter_params );
-
-		ob_start();
-		?>
-		<div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
-			<h3><?php esc_html_e( 'Share', 'orbisius_support_tickets' ); ?></h3>
-			<ul>
-				<li>
-					<a href="<?php echo esc_url( $linked_in_share_link ); ?>"
-					onclick="
-							window.open(
-							'<?php echo esc_url( $linked_in_share_link ); ?>',
-							'orbisius_support_tickets_linkedin_share_dialog',
-							'width=626,height=436');
-							return false;">
-						<?php esc_html_e( 'Share this plugin on LinkedIn', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
-					</a>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( $fb_share_link ); ?>"
-					onclick="
-						window.open(
-						'<?php echo esc_url( $fb_share_link );?>',
-						'orbisius_support_tickets_fb_share_dialog',
-						'width=626,height=436');
-						return false;">
-						<?php esc_html_e( 'Share this plugin on Facebook', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
-					</a>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( $twitter_share_link ); ?>"
-					onclick="
-						window.open(
-						'<?php echo esc_url( $twitter_share_link );?>',
-						'orbisius_support_tickets_twitter_share_dialog',
-						'width=626,height=436');
-						return false;">
-						<?php esc_html_e( 'Share this plugin on Twitter', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
-					</a>
-				</li>
-			</ul>
-		</div>
-		<hr>
-		<?php
-		echo ob_get_clean();
-	}
-
-	/**
-	 * Render plugin links. Review and Rate.
-	 */
-	public function render_plugin_links() {
-		ob_start();
-		?>
-		<div id="orbisius_support_tickets_admin_sidebar_review_plugin" class="orbisius_support_tickets_admin_sidebar_review_plugin">
-			<h3><?php esc_html_e( 'Plugin Review', 'orbisius_support_tickets' ); ?></h3>
-			<p>
-				<p><?php esc_html_e( 'We\'d appreciate it if write a 5 star review.', 'orbisius_support_tickets' ); ?></p>
-				<a href="https://wordpress.org/support/plugin/orbisius-support-tickets/reviews/" target="_blank" class="button">
-					<?php esc_html_e( 'Write a review', 'orbisius_support_tickets' ); ?>
-				</a>
-			</p>
-			<p>
-				<h3><?php esc_html_e( 'Found a bug?', 'orbisius_support_tickets' ); ?></h3>
-				<p><?php esc_html_e( 'If something needs fixing please', 'orbisius_support_tickets' ); ?></p>
-				<a href="<?php echo esc_url( $this->getBugReportUrl() ); ?>" target="_blank" class="button">
-					<?php esc_html_e( 'Submit a ticket', 'orbisius_support_tickets' ); ?></a>
-				</a>
-			</p>
-		</div>
-		<?php
-		echo ob_get_clean();
 	}
 
 	/**
