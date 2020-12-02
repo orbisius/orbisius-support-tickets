@@ -54,7 +54,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
         );
 
 		do_action('orbisius_support_tickets_admin_action_register_settings', $ctx);
-		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'renderSidebarShareLinks' ) );
+		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'render_sideba_share_links' ) );
 		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'renderReviewPlugin' ) );
 	}
 
@@ -1209,95 +1209,89 @@ Ticket link: {ticket_url}
 		$this->plugin_settings_key = $plugin_settings_key;
 	}
 
-	/**
-	 * @param array $ctx
-	 */
-	public function renderSidebarShareLinks( array $ctx = array() ) {
+
+	public function render_sideba_share_links() {
 		$plugin_data = get_plugin_data(ORBISIUS_SUPPORT_TICKETS_BASE_PLUGIN, false);
 
+		// LinkedIn
 		// https://www.linkedin.com/help/linkedin/answer/46687/making-your-website-shareable-on-linkedin?lang=en
-	    // https://stackoverflow.com/questions/10713542/how-to-make-custom-linkedin-share-button
-	    // https://www.linkedin.com/shareArticle?mini=true&url={articleUrl}&title={articleTitle}&summary={articleSummary}&source={articleSource}
-	    $linked_in_params = array(
-		    'mini' => 'true',
-            'url' => $plugin_data['PluginURI'],
-            'title' => $plugin_data['Title'],
-            'summary' => $plugin_data['Description'],
-        );
-		$linked_in_share_link = 'https://www.linkedin.com/shareArticle?' . http_build_query($linked_in_params);
+		// https://stackoverflow.com/questions/10713542/how-to-make-custom-linkedin-share-button
+		// https://www.linkedin.com/shareArticle?mini=true&url={articleUrl}&title={articleTitle}&summary={articleSummary}&source={articleSource}
+		$linked_in_params = array(
+			'mini'    => 'true',
+			'url'     => $plugin_data['PluginURI'],
+			'title'   => $plugin_data['Title'],
+			'summary' => $plugin_data['Description'],
+		);
+		$linked_in_share_link = 'https://www.linkedin.com/shareArticle?' . http_build_query( $linked_in_params );
 
-        // fb
+		// Facebook
 		// https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-        // credit: https://support.imcreator.com/hc/en-us/articles/232392888-Creating-a-Facebook-share-link-on-your-page
+		// credit: https://support.imcreator.com/hc/en-us/articles/232392888-Creating-a-Facebook-share-link-on-your-page
 		$fb_params = array(
 			'u' => $plugin_data['PluginURI'],
-        );
-		$fb_share_link = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query($fb_params);
+		);
+		$fb_share_link = 'https://www.facebook.com/sharer/sharer.php?' . http_build_query( $fb_params );
 
-        // twitter
-        // https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/parameter-reference1
+		// Twitter
+		// https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/parameter-reference1
 		// https://stackoverflow.com/questions/6208363/sharing-a-url-with-a-query-string-on-twitter
-		// http://twitter.com/share?text=text goes here&url=http://url goes here&hashtags=hashtag1,hashtag2,hashtag3
+		// https://twitter.com/share?text=text goes here&url=http://url goes here&hashtags=hashtag1,hashtag2,hashtag3
 		$twitter_params = array(
-			'url' => $plugin_data['PluginURI'],
-			'text' => $plugin_data['Description'],
+			'url'      => $plugin_data['PluginURI'],
+			'text'     => $plugin_data['Description'],
 			'hashtags' => 'wordpress,plugin,business',
-			'related' => 'lordspace,orbisius,qsandbox',
-        );
-		$twitter_share_link = 'http://twitter.com/intent/tweet?' . http_build_query($twitter_params);
+			'related'  => 'lordspace,orbisius,qsandbox',
+ 		);
+		$twitter_share_link = 'https://twitter.com/intent/tweet?' . http_build_query( $twitter_params );
 
 		ob_start();
-        ?>
-        <hr/>
-
-        <div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
-            <h3>Share</h3>
-            <ul>
-            <li>
-                <a href="<?php echo esc_url($linked_in_share_link);?>"
-                   onclick="
-                           window.open(
-                           '<?php echo esc_url($linked_in_share_link);?>',
-                           'orbisius_support_tickets_linkedin_share_dialog',
-                           'width=626,height=436');
-                           return false;">
-                    Share this plugin on LinkedIn
-                </a>
-            </li>
-
-            <li>
-                <a href="<?php echo esc_url($fb_share_link); ?>"
-                   onclick="
-                    window.open(
-                      '<?php echo esc_url($fb_share_link);?>',
-                      'orbisius_support_tickets_fb_share_dialog',
-                      'width=626,height=436');
-                    return false;">
-                    Share this plugin on Facebook
-                </a>
-            </li>
-
-            <li>
-                <a href="<?php echo esc_url($twitter_share_link); ?>"
-                   onclick="
-                    window.open(
-                      '<?php echo esc_url($twitter_share_link);?>',
-                      'orbisius_support_tickets_twitter_share_dialog',
-                      'width=626,height=436');
-                    return false;">
-                    Share this plugin on Twitter
-                </a>
-            </li>
-            </ul>
-        </div>
-        <hr/>
+		?>
+		<hr>
+		<div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
+			<h3><?php esc_html_e( 'Share', 'orbisius_support_tickets' ); ?></h3>
+			<ul>
+				<li>
+					<a href="<?php echo esc_url( $linked_in_share_link ); ?>"
+					onclick="
+							window.open(
+							'<?php echo esc_url( $linked_in_share_link ); ?>',
+							'orbisius_support_tickets_linkedin_share_dialog',
+							'width=626,height=436');
+							return false;">
+						<?php esc_html_e( 'Share this plugin on LinkedIn', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+					</a>
+				</li>
+				<li>
+					<a href="<?php echo esc_url( $fb_share_link ); ?>"
+					onclick="
+						window.open(
+						'<?php echo esc_url( $fb_share_link );?>',
+						'orbisius_support_tickets_fb_share_dialog',
+						'width=626,height=436');
+						return false;">
+						<?php esc_html_e( 'Share this plugin on Facebook', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+					</a>
+				</li>
+				<li>
+					<a href="<?php echo esc_url( $twitter_share_link ); ?>"
+					onclick="
+						window.open(
+						'<?php echo esc_url( $twitter_share_link );?>',
+						'orbisius_support_tickets_twitter_share_dialog',
+						'width=626,height=436');
+						return false;">
+						<?php esc_html_e( 'Share this plugin on Twitter', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<hr>
 
 		<?php
-		$html = ob_get_contents();
-		ob_end_clean();
-
-		echo $html;
+		echo ob_get_clean();
 	}
+
 
 	/**
 	 * @param array $ctx
