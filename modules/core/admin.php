@@ -287,8 +287,8 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 					</tr>
 				</table>
 			</p>
+			<hr>
 		</div>
-		<hr>
 		<?php
 	}
 
