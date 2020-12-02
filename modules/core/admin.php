@@ -12,14 +12,12 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
     private $plugin_settings_key = 'orbisius_support_tickets';
 
 	private $plugin_settings_notification_key = 'orbisius_support_tickets_notification';
-	private $plugin_settings_notification_group_key = 'orbisius_support_tickets_notification';
 
 	private $bug_report_url = 'https://github.com/orbisius/orbisius-support-tickets/issues';
 
 	/**
 	 * @var string
 	 */
-	//private $req_cap = 'manage_options'; // admin
 	private $req_cap = 'edit_others_posts'; // editor
 
 	private $replace_vars = array(
@@ -150,7 +148,6 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		$ctx['top_menu_page_hook'] = 'admin_print_scripts-' . $top_menu_page_hook;
 		$ctx['top_menu_hook_suffix'] = $top_menu_page_hook;
-//		add_action( $ctx['top_menu_page_hook'], array( $this, 'add_highlight_js' ) );
 
 		// This way we have the top level menu leads to this and there's no duplication.
 		add_submenu_page( $ctx['top_menu_slug'],
