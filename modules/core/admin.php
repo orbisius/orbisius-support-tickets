@@ -55,7 +55,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 		do_action('orbisius_support_tickets_admin_action_register_settings', $ctx);
 		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'render_sideba_share_links' ) );
-		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'renderReviewPlugin' ) );
+		add_action('orbisius_support_tickets_admin_action_render_sidebar', array( $this, 'render_review_plugin' ) );
 	}
 
 	/**
@@ -1249,42 +1249,44 @@ Ticket link: {ticket_url}
 		?>
 		<hr>
 		<div id="orbisius_support_tickets_admin_sidebar" class="orbisius_support_tickets_admin_sidebar">
-			<h3><?php esc_html_e( 'Share', 'orbisius_support_tickets' ); ?></h3>
-			<ul>
-				<li>
-					<a href="<?php echo esc_url( $linked_in_share_link ); ?>"
-					onclick="
+			<div class="inside">
+				<h3><?php esc_html_e( 'Share', 'orbisius_support_tickets' ); ?></h3>
+				<ul>
+					<li>
+						<a href="<?php echo esc_url( $linked_in_share_link ); ?>"
+						onclick="
+								window.open(
+								'<?php echo esc_url( $linked_in_share_link ); ?>',
+								'orbisius_support_tickets_linkedin_share_dialog',
+								'width=626,height=436');
+								return false;">
+							<?php esc_html_e( 'Share this plugin on LinkedIn', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+						</a>
+					</li>
+					<li>
+						<a href="<?php echo esc_url( $fb_share_link ); ?>"
+						onclick="
 							window.open(
-							'<?php echo esc_url( $linked_in_share_link ); ?>',
-							'orbisius_support_tickets_linkedin_share_dialog',
+							'<?php echo esc_url( $fb_share_link );?>',
+							'orbisius_support_tickets_fb_share_dialog',
 							'width=626,height=436');
 							return false;">
-						<?php esc_html_e( 'Share this plugin on LinkedIn', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
-					</a>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( $fb_share_link ); ?>"
-					onclick="
-						window.open(
-						'<?php echo esc_url( $fb_share_link );?>',
-						'orbisius_support_tickets_fb_share_dialog',
-						'width=626,height=436');
-						return false;">
-						<?php esc_html_e( 'Share this plugin on Facebook', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
-					</a>
-				</li>
-				<li>
-					<a href="<?php echo esc_url( $twitter_share_link ); ?>"
-					onclick="
-						window.open(
-						'<?php echo esc_url( $twitter_share_link );?>',
-						'orbisius_support_tickets_twitter_share_dialog',
-						'width=626,height=436');
-						return false;">
-						<?php esc_html_e( 'Share this plugin on Twitter', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
-					</a>
-				</li>
-			</ul>
+							<?php esc_html_e( 'Share this plugin on Facebook', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+						</a>
+					</li>
+					<li>
+						<a href="<?php echo esc_url( $twitter_share_link ); ?>"
+						onclick="
+							window.open(
+							'<?php echo esc_url( $twitter_share_link );?>',
+							'orbisius_support_tickets_twitter_share_dialog',
+							'width=626,height=436');
+							return false;">
+							<?php esc_html_e( 'Share this plugin on Twitter', 'orbisius_support_tickets_linkedin_share_dialog' ); ?>
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 		<hr>
 
@@ -1293,32 +1295,29 @@ Ticket link: {ticket_url}
 	}
 
 
-	/**
-	 * @param array $ctx
-	 */
-	public function renderReviewPlugin( array $ctx = array() ) {
+	public function render_review_plugin() {
 		ob_start();
-		$plugin_review_link = 'https://wordpress.org/support/plugin/orbisius-support-tickets/reviews/';
-        ?>
-        <div id="orbisius_support_tickets_admin_sidebar_review_plugin" class="orbisius_support_tickets_admin_sidebar_review_plugin">
-            <h3>Plugin Review</h3>
-            <div>
-                We'd appreciate it if write a 5 star review.
-                <a href="<?php echo esc_url($plugin_review_link); ?>" target="_blank" class="button">
-                    Write a review</a>
-                <br/>
-                <br/>
-                <h3>Found a bug?</h3>
-                If something needs fixing please
-                    <a href='<?php echo esc_url($this->getBugReportUrl()); ?>' target="_blank" class="button">Submit a ticket</a>
-                </a>
-            </div>
-        </div>
+		?>
+		<div id="orbisius_support_tickets_admin_sidebar_review_plugin" class="orbisius_support_tickets_admin_sidebar_review_plugin">
+			<div class="inside">
+				<h3><?php esc_html_e( 'Plugin Review', 'orbisius_support_tickets' ); ?></h3>
+				<p>
+					<p><?php esc_html_e( 'We\'d appreciate it if write a 5 star review.', 'orbisius_support_tickets' ); ?></p>
+					<a href="https://wordpress.org/support/plugin/orbisius-support-tickets/reviews/" target="_blank" class="button">
+						<?php  esc_html_e( 'Write a review', 'orbisius_support_tickets' ); ?>
+					</a>
+				</p>
+				<p>
+					<h3><?php  esc_html_e( 'Found a bug?', 'orbisius_support_tickets' ); ?></h3>
+					<p><?php  esc_html_e( 'If something needs fixing please', 'orbisius_support_tickets' ); ?></p>
+					<a href="<?php echo esc_url( $this->getBugReportUrl() ); ?>" target="_blank" class="button">
+						<?php esc_html_e( 'Submit a ticket', 'orbisius_support_tickets' ); ?></a>
+					</a>
+				</p>
+			</div>
+		</div>
 		<?php
-		$html = ob_get_contents();
-		ob_end_clean();
-
-		echo $html;
+		echo ob_get_clean();
 	}
 
 	/**
