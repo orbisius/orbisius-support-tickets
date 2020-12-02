@@ -242,8 +242,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		return $total_tickets_stats;
 	}
 
-	public function sidebar_extra_inside() {
-		ob_start();
+	public function render_sidebar_extra_inside() {
 		?>
 		<div class="inside">
 		<?php
@@ -251,11 +250,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		?>
 		</div>
 		<?php
-		echo ob_get_clean();
 	}
 
-	public function sidebar_stats() {
-		ob_start();
+	public function render_sidebar_stats() {
 		?>
 		<div class="inside">
 			<h3><?php esc_html_e( 'Stats', 'orbisius_support_tickets' ); ?></h3>
@@ -278,7 +275,19 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 		</div>
 		<hr>
 		<?php
-		echo ob_get_clean();
+	}
+
+	public function render_sidebar() {
+		?>
+		<div id="postbox-container-1" class="postbox-container">
+			<div class="meta-box-sortables">
+				<div class="postbox">
+					<?php $this->render_sidebar_stats(); ?>
+					<?php $this->render_sidebar_extra_inside(); ?>
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
@@ -377,15 +386,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
                     </div>
                     <!-- post-body-content -->
-                    <!-- sidebar -->
-                    <div id="postbox-container-1" class="postbox-container">
-						<div class="postbox">
-							<?php $this->sidebar_stats(); ?>
-							<?php $this->sidebar_extra_inside(); ?>
-						</div>
-						<!-- .postbox -->
-                    </div>
-                    <!-- #postbox-container-1 .postbox-container -->
+					<?php $this->render_sidebar(); ?>
                 </div>
                 <!-- #post-body .metabox-holder .columns-2 -->
                 <br class="clear">
@@ -454,34 +455,7 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                     </div>
                     <!-- post-body-content -->
 
-                    <!-- sidebar -->
-                    <div id="postbox-container-1" class="postbox-container">
-
-                        <div class="meta-box-sortables">
-
-                            <div class="postbox">
-
-                                <h2><span><?php esc_attr_e(
-											'Sidebar', 'orbisius_support_tickets'
-										); ?></span></h2>
-
-                                <div class="inside">
-                                    <p>
-
-                                    </p>
-                                </div>
-                                <!-- .inside -->
-
-								<?php $this->sidebar_extra_inside(); ?>
-
-                            </div>
-                            <!-- .postbox -->
-
-                        </div>
-                        <!-- .meta-box-sortables -->
-
-                    </div>
-                    <!-- #postbox-container-1 .postbox-container -->
+					<?php $this->render_sidebar(); ?>
 
                 </div>
                 <!-- #post-body .metabox-holder .columns-2 -->
