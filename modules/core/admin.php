@@ -327,14 +327,11 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 					<div id="post-body-content">
 						<div class="meta-box-sortables ui-sortable">
 							<div class="postbox">
+								<div class="postbox-header">
+									<h3 class="hndle"><?php esc_attr_e( 'Recent tickets', 'orbisius_support_tickets' ); ?></h3>
+								</div>
 								<div class="inside">
 									<p>
-										<h3>
-											<?php esc_attr_e(
-												'Recent tickets',
-												'orbisius_support_tickets'
-											); ?>
-										</h3>
 										<div>
 										<?php
 											$filter = array(
@@ -414,8 +411,9 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
                         <div class="meta-box-sortables ui-sortable">
 
                             <div class="postbox">
-
-                                <h2><span><?php esc_attr_e( 'About', 'orbisius_support_tickets' ); ?></span></h2>
+								<div class="postbox-header">
+									<h2 class="hndle"><?php esc_attr_e( 'About', 'orbisius_support_tickets' ); ?></h2>
+								</div>
 
                                 <div class="inside">
                                     <p><?php _e(
@@ -510,8 +508,9 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                         <div class="meta-box-sortables ui-sortable">
 
                             <div class="postbox">
-                                <h2 class="hndle"><span><?php esc_attr_e( 'General Settings', 'orbisius_support_tickets' ); ?></span></h2>
-
+								<div class="postbox-header">
+                                	<h2 class="hndle"><span><?php esc_attr_e( 'General Settings', 'orbisius_support_tickets' ); ?></span></h2>
+								</div>
                                 <div class="inside">
                                     <p>
                                         <form method="post" action="options.php">
@@ -662,7 +661,9 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
                             $notif_opts = $this->getOptions($notif_settings_key);
                             ?>
                             <div class="postbox">
-                                <h2 class="hndle"><span><?php esc_attr_e( 'Notification Settings', 'orbisius_support_tickets' ); ?></span></h2>
+								<div class="postbox-header">
+									<h2 class="hndle"><span><?php esc_attr_e( 'Notification Settings', 'orbisius_support_tickets' ); ?></span></h2>
+								</div>
 
                                 <div class="inside">
                                     <p>
@@ -838,8 +839,9 @@ href='https://orbisius.com/free-quote?utm_source=orbisius_support_tickets&utm_me
 					<div id="postbox-container-1" class="postbox-container">
 						<div class="meta-box-sortables">
 							<div class="postbox">
-								<h2 class="hndle"><?php esc_attr_e( 'Extra Stuff', 'orbisius_support_tickets' ); ?></h2>
-
+								<div class="postbox-header">
+									<h2 class="hndle"><?php esc_attr_e( 'Extra Stuff', 'orbisius_support_tickets' ); ?></h2>
+								</div>
 								<div class="inside">
 									<h4><?php esc_html_e( 'Support Pages Creation Tool', 'orbisius_support_tickets' ); ?></h4>
 									<p>
