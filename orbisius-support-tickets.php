@@ -5,7 +5,7 @@
   Description: Minimalistic support ticket system that enables you to start providing awesome support in 2 minutes.
   Version: 1.0.3
   Author: Svetoslav Marinov (Slavi) | Orbisius.com
-  Author URI: http://orbisius.com
+  Author URI: https://orbisius.com
   Text Domain: orbisius_support_tickets
   Domain Path: /lang
  */
