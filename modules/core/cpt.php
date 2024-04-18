@@ -253,15 +253,15 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 		// https://codex.wordpress.org/Function_Reference/register_post_type
 		$cpt_args = array(
 			'labels'              => $cpt_labels,
-			'public'              => true,
+			'public'              => false,
 			// true=show the post type in the admin section
-			'publicly_queryable'  => true,
+			'publicly_queryable'  => false,
 			'exclude_from_search' => true,
 			'show_ui'             => true,
 			// generate a default admin user interface
-			'show_in_menu'        => admin_url( 'admin.php?page=' . $this->getCptSupportTicket() ),
+			//'show_in_menu'        => admin_url( 'admin.php?page=' . urlencode($this->getCptSupportTicket()) ),
 			// display as a submenu menu item
-			'show_in_menu'        => false,
+			'show_in_menu'        => false, // we have a custom top level menu
 			// display as a top-level menu item
 			//'show_in_menu' => admin_url('admin.php?page=' . $this->getCptSupportTicket()), // display as a submenu menu item
 			//'show_in_menu' => admin_url('edit.php?page=' . $this->getCptSupportTicket()), // display as a submenu menu item
@@ -274,11 +274,11 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			// show below Posts but above Media
 			'supports'            => array( 'title', 'editor', 'comments', 'author', ),
 			// /*'revisions', */  'excerpt', 'custom-fields', 'thumbnail', 'post_formats', 'page-attributes'
-			'has_archive'         => true,
+			'has_archive'         => false,
 			'hierarchical'        => false,
 			//'taxonomies' => array('orb_support_tickets_cat', 'orb_support_tickets_tag'), // just use default categories and tags
 			'menu_position'       => 200,
-			//'capability_type' => 'post',
+			'capability_type' => 'post',
 		);
 
 		$cpt_args = apply_filters( 'orbisius_support_tickets_filter_ticket_arg', $cpt_args );
