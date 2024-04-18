@@ -323,6 +323,7 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 		ob_start();
 		$id  = 0;
 		$msg = '';
+		$ctx = [];
 		$data = $this->getData();
 		$res_obj = new Orbisius_Support_Tickets_Result();
 		$show_form = 1;
@@ -354,6 +355,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 					throw new Exception( $missing_email_msg );
 				}
 
+				$data = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_data', $data, $ctx );
+
 				$res_obj = $this->processTicketSubmission($data);
 
 				if ( $res_obj->isError() ) {
@@ -374,7 +377,6 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
 			$msg = Orbisius_Support_Tickets_Msg::error( $res_obj->msg() );
 		}
 
-		$ctx = array();
 		$row_num = apply_filters( 'orbisius_support_tickets_filter_submit_ticket_form_message_row_num', 4 );
 		?>
 
