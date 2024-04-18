@@ -127,13 +127,16 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			return;
 		}
 
+		// remove all html and sanitize comment.
+		$comment = empty($_POST['comment']) ? '' : $_POST['comment'];
+		$comment = wp_strip_all_tags($comment);
+		$comment = sanitize_text_field($comment);
+		$comment = trim($comment);
+
 		//  check we have a comment and if no comment then just return.
-		if ( empty( $_POST['comment'] ) ) {
+		if ( empty( $comment ) ) {
 			return;
 		}
-
-        // remove all html and sanitize comment.
-        $comment = sanitize_text_field( wp_strip_all_tags( $_POST['comment'] ) );
 
 		// get the current user
 		$current_user = wp_get_current_user();
@@ -142,8 +145,14 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 			$email = '';
 
 			if (!empty($_REQUEST['email'])) {
-				$email = sanitize_email($_REQUEST['email']);
-				$email = empty($email) || ! is_email($email) ? '' : $email;
+				$email = $_REQUEST['email'];
+				$email = sanitize_email($email);
+				$email = trim($email);
+				$email = substr($email, 0, 100);
+
+				if (!is_email($email)) {
+					wp_die("Invalid email address." . esc_html($email));
+				}
 			}
 
 			$current_user = new stdClass();
