@@ -118,7 +118,7 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 
 	/**
      * WP doesn't allow comments on drafts by default but provides a nice hook to we can actually insert a comment.
-	 * @see http://fastwpdesign.co.uk/how-to-enable-comments-on-draft-posts-in-wordpress/
+	 * @see https://fastwpdesign.co.uk/how-to-enable-comments-on-draft-posts-in-wordpress/
 	 * @param int $post_id
 	 */
 	function addComment( $post_id ) {

@@ -1,6 +1,6 @@
 <?php
 
-// Credits: Gregor at der-meyer dot de http://php.net/manual/en/function.array-replace-recursive.php
+// Credits: Gregor at der-meyer dot de https://php.net/manual/en/function.array-replace-recursive.php
 // renamed recurse -> orbisius_support_tickets_recurse to avoid php function name conflicts with other code.
 if ( ! function_exists( 'array_replace_recursive' ) ) {
 	function array_replace_recursive( $array, $array1 ) {

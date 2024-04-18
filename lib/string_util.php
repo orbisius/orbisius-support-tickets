@@ -38,7 +38,7 @@ class Orbisius_Support_Tickets_String_Util {
      * 
      * @param type $str
      * @return string/array
-     * Ideas gotten from: http://www.jonasjohn.de/snippets/php/trim-array.htm
+     * Ideas gotten from: https://www.jonasjohn.de/snippets/php/trim-array.htm
       * borrowed from Slavi's qSandbox
      */
     public static function trim($data) {
@@ -193,7 +193,7 @@ class Orbisius_Support_Tickets_String_Util {
      */
     public static function normalize_site($site) {
         if ( ! empty( $site ) && ! preg_match( '#^\w+:/+#si', $site ) ) {
-            $site = 'http://' . $site;
+            $site = 'https://' . $site;
         }
         
         return $site;

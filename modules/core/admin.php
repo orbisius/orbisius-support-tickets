@@ -24,7 +24,7 @@ class Orbisius_Support_Tickets_Module_Core_Admin {
 
 	private $replace_vars = array(
 		'domain' => 'The current domain e.g. example.com',
-		'site_url' => 'Site URL e.g. http://example.com',
+		'site_url' => 'Site URL e.g. https://example.com',
 		'site_name' => 'Your site name (from WP settings)',
 		'ticket_id' => 'The ticket id e.g. 123',
 		'ticket_url' => 'The view ticket link',
@@ -1241,14 +1241,14 @@ Ticket link: {ticket_url}
         // twitter
         // https://developer.twitter.com/en/docs/twitter-for-websites/tweet-button/guides/parameter-reference1
 		// https://stackoverflow.com/questions/6208363/sharing-a-url-with-a-query-string-on-twitter
-		// http://twitter.com/share?text=text goes here&url=http://url goes here&hashtags=hashtag1,hashtag2,hashtag3
+		// https://twitter.com/share?text=text goes here&url=https://url goes here&hashtags=hashtag1,hashtag2,hashtag3
 		$twitter_params = array(
 			'url' => $plugin_data['PluginURI'],
 			'text' => $plugin_data['Description'],
 			'hashtags' => 'wordpress,plugin,business',
 			'related' => 'lordspace,orbisius,qsandbox',
         );
-		$twitter_share_link = 'http://twitter.com/intent/tweet?' . http_build_query($twitter_params);
+		$twitter_share_link = 'https://twitter.com/intent/tweet?' . http_build_query($twitter_params);
 
 		ob_start();
         ?>

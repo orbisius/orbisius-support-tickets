@@ -224,7 +224,7 @@ class Orbisius_Support_Tickets_User {
 	}
 
 	/**
-	 * Credit: http://itman.in/en/how-to-get-client-ip-address-in-php/
+	 * Credit: https://itman.in/en/how-to-get-client-ip-address-in-php/
 	 * @return mixed
 	 */
 	public function getUserIP() {
