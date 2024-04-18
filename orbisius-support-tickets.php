@@ -21,8 +21,9 @@ define('ORBISIUS_SUPPORT_TICKETS_LIVE_ENV', !ORBISIUS_SUPPORT_TICKETS_DEV_ENV);
 
 $libs = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/lib/*.php');
 $mods = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/modules/*/*.php');
+$addons = glob(ORBISIUS_SUPPORT_TICKETS_BASE_DIR . '/addons/*/*.php');
 
-$libs = array_merge((array) $libs, (array) $mods);
+$libs = array_merge((array) $libs, (array) $mods, (array) $addons);
 $libs = array_unique($libs);
 $libs = array_filter($libs);
 
