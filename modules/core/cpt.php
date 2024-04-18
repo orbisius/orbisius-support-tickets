@@ -354,7 +354,6 @@ class Orbisius_Support_Tickets_Module_Core_CPT extends Orbisius_Support_Tickets_
 	 */
 	public function getStatuses() {
 		$statuses = apply_filters( 'orbisius_support_tickets_filter_ticket_statuses', $this->statuses );
-
 		return $statuses;
 	}
 
