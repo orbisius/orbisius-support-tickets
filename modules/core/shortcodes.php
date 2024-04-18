@@ -391,6 +391,9 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
             <?php if ( $show_form && (empty( $data['submit'] ) || $res_obj->isError() ) ) : ?>
                 <div id="orbisius_support_tickets_submit_ticket_form_wrapper"
                      class="orbisius_support_tickets_submit_ticket_form_wrapper">
+
+	                <?php do_action( 'orbisius_support_tickets_action_before_submit_ticket_form', $ctx ); ?>
+
                     <form id="orbisius_support_tickets_submit_ticket_form"
                           class="orbisius_support_tickets_submit_ticket_form form-horizontal"
                           method="post" enctype="multipart/form-data">
@@ -428,6 +431,8 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                             </div>
                         </div>
 
+	                    <?php do_action( 'orbisius_support_tickets_action_after_subject_field', $ctx ); ?>
+
                         <div class="form-group">
                             <label class="col-md-3 control-label"
                                    for="orbisius_support_tickets_data_message">
@@ -454,8 +459,13 @@ class Orbisius_Support_Tickets_Module_Core_Shortcodes {
                             </div>
                         </div>
 
+	                    <?php do_action( 'orbisius_support_tickets_action_submit_ticket_form_after_submit_button', $ctx ); ?>
+
                         <?php do_action( 'orbisius_support_tickets_action_submit_ticket_form_footer', $ctx ); ?>
                     </form>
+
+	                <?php do_action( 'orbisius_support_tickets_action_after_submit_ticket_form', $ctx ); ?>
+
                 </div> <!-- /orbisius_support_tickets_submit_ticket_form_wrapper -->
                 <?php do_action( 'orbisius_support_tickets_action_after_submit_ticket_form', $ctx ); ?>
             <?php endif; ?>
