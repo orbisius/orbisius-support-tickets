@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Layout</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Use full viewport height */
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: auto;
+            flex-grow: 1;
+            overflow-y: auto; /* Enable scroll if content overflows */
+            padding: 10px 10px 0;
+        }
+        .message {
+            padding: 10px;
+            border-radius: 10px;
+            margin: 5px 0;
+            max-width: 80%;
+        }
+        .msg_author {
+            background-color: #007bff;
+            color: white;
+            align-self: flex-end;
+        }
+        .msg_sender {
+            background-color: #e5e5ea;
+            color: black;
+            align-self: flex-start;
+        }
+        .reply-box {
+            display: flex;
+            margin: 10px 0;
+        }
+        .reply-message {
+            flex-grow: 1; /* Input will grow to take up available space */
+            margin-right: 10px; /* Space between input and button */
+        }
+        .send-button {
+            /* Styles for the send button */
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container orbisius-xp-chat-container">
+    <!-- Example messages -->
+    <div class="message msg_sender">Hello! How are you today?</div>
+    <div class="message msg_author">I'm good, thank you! And you?</div>
+    <div class="message msg_sender">I'm great, thanks for asking!</div>
+    <!-- Add more messages here -->
+
+    <div class="reply-box">
+        <input type="text" id="replyMessage" class="reply-message" placeholder="Type your message here...">
+        <button id="sendMessage" class="send-button">SEND</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Scroll to the last message on initial load
+        $('.chat-container').scrollTop($('.chat-container')[0].scrollHeight);
+
+        // Scroll to the last message when a new message is sent
+        $('#sendMessage').click(function() {
+            var newMsg = $('<div>').addClass('message msg_author').text($('#replyMessage').val());
+            $('.chat-container').append(newMsg);
+            $('#replyMessage').val('');
+            $('.chat-container').scrollTop($('.chat-container')[0].scrollHeight);
+        });
+    });
+</script>
+
+</body>
+</html>
