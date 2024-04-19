@@ -1,14 +1,38 @@
+.orbisius_support_tickets_view_ticket_discussion_wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.orbisius_support_tickets_view_ticket_discussion_item .comment-meta {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+}
+
+.orbisius_support_tickets_view_ticket_discussion_item .comment-meta span {
+    font-size: 12px;
+    margin-bottom: 0.5rem;
+}
 
 .orbisius_support_tickets_view_ticket_author_msg {
-    border: 1px solid #aaa;
-    /*background: #aaa;*/
-    padding: 3px;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    max-width: 80%;
+    background-color: #e5e5ea;
+    color: black;
+    align-self: flex-start;
 }
 
 .orbisius_support_tickets_view_ticket_rep_msg {
-    border: 1px solid #aaa;
-    background: #ccc;
-    padding: 3px;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    max-width: 80%;
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
 }
 
 .orbisius_support_tickets_full_width {
@@ -21,24 +45,77 @@
 }
 
 .orbisius_support_tickets_app_error {
-    color:red;
+    color: red;
+}
+
+.orbisius_support_tickets_view_ticket_draft_msg {
+    background: darkred;
+    color: #fff;
 }
 
 .orbisius_support_tickets_app_success {
-    color:green;
+    color: green;
 }
 
 .orbisius_support_tickets_view_ticket_wrapper .ticket_content_wrapper {
-    margin: 10px 0;
-    background: #eee;
-    padding: 5px;
+    margin: 10px 0 20px 0;
+    box-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.1);
+    background: #fefefe;
+    padding: 1rem;
+    border-radius: 10px;
 }
 
 .orbisius_support_tickets_view_ticket_wrapper .orbisius_support_tickets_close_ticket_wrapper {
     text-align: right;
 }
 
-.orbisius_support_tickets_view_ticket_wrapper .ticket_meta_ticket_item {
-    display: inline-block;
+.orbisius_support_tickets_view_ticket_wrapper .ticket_meta_ticket_item .button {
+    display: block;
+    background: darkred;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
+.orbisius_support_tickets_view_ticket_wrapper .ticket_meta_ticket_item .button:hover {
+    background: #b60000;
+}
+
+.ticket_meta_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .ticket_meta_wrapper {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+}
+
+.ticket_meta_ticket_item {
+    color: #626262;
+    font-size: 14px;
+}
+
+.orbisius_support_tickets_full_width {
+    background: #fefefe;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid #e5e5ea;
+}
+
+.orbisius_support_tickets_submit_ticket_form_submit {
+    background: #000;
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
